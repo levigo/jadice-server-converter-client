@@ -9,8 +9,8 @@
   <url>http://www.levigo.de</url>
   
   <scm>
-    <connection>scm:git:ssh://git@github.com:levigo/jadice-server-converter-client.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com:levigo/jadice-server-converter-client.git</developerConnection>
+    <connection>scm:git:ssh://git@github.com/levigo/jadice-server-converter-client.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/levigo/jadice-server-converter-client.git</developerConnection>
     <url>https://github.com/levigo/jadice-server-converter-client</url>
     <tag>HEAD</tag>
   </scm>  

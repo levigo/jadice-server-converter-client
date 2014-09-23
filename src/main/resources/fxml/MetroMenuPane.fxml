@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="870.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<bottom><FlowPane fx:id="bottomBar" alignment="CENTER" columnHalignment="CENTER" hgap="30.0" prefHeight="50.0" prefWidth="200.0" styleClass="bg-black" BorderPane.alignment="CENTER">
+<children>
+	<Button fx:id="fullscreen" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="button-navigation-small" text="Fullscreen" />
+	<Button fx:id="exitFullscreen" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="button-navigation-small" text="Exit Fullscreen" />
+	<Button fx:id="options" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="button-navigation-small" text="Options" />
+	<Button fx:id="about" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="button-navigation-small" text="About" />
+</children>
+<padding>
+<Insets bottom="10.0" top="10.0" />
+</padding></FlowPane>
+</bottom>
+<top><FlowPane BorderPane.alignment="CENTER">
+<children><Label styleClass="label-top" text="jadice server :: Converter Client" BorderPane.alignment="CENTER">
+<BorderPane.margin>
+<Insets left="10.0" />
+</BorderPane.margin></Label>
+</children>
+<padding>
+<Insets bottom="5.0" left="10.0" top="5.0" />
+</padding></FlowPane>
+</top>
+<center><GridPane alignment="BASELINE_LEFT" hgap="15.0" vgap="15.0">
+  <columnConstraints>
+    <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
+    <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" valignment="TOP" vgrow="NEVER" />
+    <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" valignment="TOP" vgrow="NEVER" />
+  </rowConstraints>
+<children><Button fx:id="conversion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="250.0" prefWidth="250.0" styleClass="button-navigation" text="Conversion" AnchorPane.leftAnchor="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" /><Button fx:id="serverLog" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="250.0" prefWidth="250.0" styleClass="button-navigation" text="Server Log" AnchorPane.leftAnchor="280.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" /><Button fx:id="jmx" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="250.0" prefWidth="250.0" styleClass="button-navigation" text="JMX" AnchorPane.leftAnchor="280.0" AnchorPane.topAnchor="270.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" /><Button fx:id="inspector" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="250.0" prefWidth="250.0" styleClass="button-navigation" text="Inspector" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="270.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+</children>
+<BorderPane.margin>
+<Insets left="45.0" />
+</BorderPane.margin>
+</GridPane>
+</center>
+</fx:root>

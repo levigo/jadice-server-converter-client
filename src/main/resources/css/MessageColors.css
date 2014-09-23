@@ -1,0 +1,82 @@
+# special class in order to "reset" text settings in LogMessagesWindow. Bug in JVM?
+.STATE .text,
+.SUB_NODE_CREATED .text {
+  -fx-font-weight: normal;
+  -fx-effect: none;
+}
+
+.WARNING {
+  -fx-text-fill: #FFF000;
+}
+
+.WARNING .text {
+  -fx-font-weight: bold;
+  -fx-effect: dropshadow(gaussian, derive(#FFF000, -50%) , 1, 3.0 , 0 , 0);
+}
+
+.ERROR {
+  -fx-text-fill: #FFC800;
+}
+
+.ERROR .text {
+  -fx-font-weight: bold;
+  -fx-effect: dropshadow(gaussian, derive(#FFC800, -50%) , 1, 3.0 , 0 , 0);
+}
+
+
+.FATAL {
+  -fx-text-fill: #FF0000;
+}
+.FATAL .text {
+  -fx-font-weight: bold;
+}
+
+
+.NEW {
+  -fx-background-color: #F6FFF6;
+  -fx-background-radius: 3px;
+  -fx-background-insets: 1px;
+}
+
+.SUBMITTED {
+  -fx-background-color: #E4FFE4;
+  -fx-background-radius: 3px;
+  -fx-background-insets: 1px;
+}
+
+.ACCEPTED {
+  -fx-background-color: #E4FFE4;
+  -fx-background-radius: 3px;
+  -fx-background-insets: 1px;
+}
+
+.STARTED {
+  -fx-background-color: #B4FFB4;
+  -fx-background-radius: 3px;
+  -fx-background-insets: 1px;
+}
+
+.FINISHED {
+  -fx-background-color: #1BE61B;
+  -fx-background-radius: 3px;
+  -fx-background-insets: 1px;
+}
+
+.FAILED,
+.ABORTED  {
+  -fx-background-color: #FF0000;
+  -fx-background-radius: 3px;
+  -fx-background-insets: 1px;
+}
+
+.WARNING_BACKGROUND {
+  -fx-background-color: #FFC800;
+  -fx-background-radius: 3px;
+  -fx-background-insets: 1px
+}
+
+.ERROR_BACKGROUND {
+  -fx-background-color: #FFF000;
+  -fx-background-radius: 3px;
+  -fx-background-insets: 1px
+}

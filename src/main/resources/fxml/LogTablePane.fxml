@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<center><TableView fx:id="logTable" prefHeight="230.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+  <columns>
+    <TableColumn fx:id="timestamp" minWidth="140.0" prefWidth="145.0" text="Time" />
+    <TableColumn fx:id="type" minWidth="50.0" prefWidth="155.0" text="Type" />
+    <TableColumn fx:id="messageId" minWidth="100.0" prefWidth="230.0" text="MessageID" />
+    <TableColumn fx:id="node" minWidth="60.0" prefWidth="100.0" text="Node" />
+    <TableColumn fx:id="message" minWidth="100.0" prefWidth="300.0" text="Message" />
+    <TableColumn fx:id="cause" maxWidth="1.7976931348623157E308" minWidth="50.0" prefWidth="-1.0" text="Cause" />
+  </columns>
+<columnResizePolicy>
+<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+</columnResizePolicy>
+</TableView>
+</center></BorderPane>

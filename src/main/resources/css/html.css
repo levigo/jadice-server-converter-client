@@ -1,0 +1,25 @@
+body {
+	font-family:sans-serif
+}
+
+h1 {
+	font-size: 150%;
+}
+
+h2 {
+	font-size: 120%;
+}
+
+tr, td {
+	padding-bottom: 1em;
+	padding-left: 1em;
+}
+
+/* unvisited link */
+a:link,
+a:visited,
+a:hover,
+a:active {
+	color: DarkBlue;
+	text-decoration: none;
+}

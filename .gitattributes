@@ -1,0 +1,114 @@
+* text=auto !eol
+/README.txt -text svneol=unset#text/plain
+artwork/Everaldo[!!-~][!!-~]Crysta_License.htm -text svneol=unset#text/plain
+artwork/crystal-icons.zip -text
+artwork/readme.txt -text svneol=unset#text/plain
+/launch-console.bat -text
+/launch.bat -text
+/pom.xml -text svneol=unset#text/plain
+src/main/java/ConverterClient.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/CommandLineConversion.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/JobCard.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/JobCardFactory.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/JobCardListener.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/JobCardScheduler.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/LogMessage.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/LogMessageListener.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/Preferences.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/ExcelConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/GhostscriptPclConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/GhostscriptPclXlConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/GhostscriptPdfConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/GhostscriptPsConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/GhostscriptTiffConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/HTMLConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/Html2DocxConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/LibreOfficeConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/MSGConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/MSGPreviewConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/MSGtoEMLConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/MSOfficeConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/MSOfficeMailConverterConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/MSProjectConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/MailConverterConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/MailPreviewConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/OutlookConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/PDFShaperConfiguration.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/PowerpointToPdf15Config.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/PowerpointToPdfAConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/PrintConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/ShuntThroughConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/TNEFConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/TiffConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/VisioToPdf15Config.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/VisioToPdfAConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/WordToPdf15Config.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/WordToPdfAConfig.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/configurations/WorkflowConfiguration.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/ConverterClientFrame.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/OSHelper.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/StacktraceRenderer.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/StateColors.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/TimeStampCellRenderer.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/about/AboutPanel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/ConversionPanel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/DropStartTransferHandler.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/JobStarterPanel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/LogMessagesFrame.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/LogMessagesTable.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/LogMessagesTableModel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/ResultPanel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/StatusChartPanel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/table/IntegerCellRenderer.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/table/JobTable.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/table/JobTableContextMenu.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/table/JobTableModel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/table/JobTableModelListener.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/table/PopupMouseListener.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/conversion/table/StateCellRenderer.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/inspector/CodeGenerator.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/inspector/ConfigurationInspectorPanel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/inspector/NodeSelectionListener.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/inspector/WorkflowDisplay.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/inspector/WorkflowLayout.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/jmx/AbstractChartPanel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/jmx/ConnectionPanel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/jmx/DurationDistributionChart.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/jmx/GaugeRateCharts.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/jmx/JMXHandler.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/jmx/JMXPanel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/jmx/JobStateEventDTO.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/jmx/PerformanceChart.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/jmx/PerformanceInfoDTO.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/options/OptionsPanel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/serverlog/LogPanel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/serverlog/LogSubscriptionPanel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/serverlog/Subscription.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/serverlog/SubscriptionFactory.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/serverlog/table/LevelCellRenderer.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/serverlog/table/LogTable.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/gui/serverlog/table/LogTableModel.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/util/FilenameGenerator.java -text svneol=unset#text/plain
+src/main/java/org/levigo/jadice/server/converterclient/util/Objects.java -text
+src/main/resources/about.html -text svneol=unset#text/plain
+src/main/resources/icons/16x16/actions/14_layer_deletelayer.png -text
+src/main/resources/icons/16x16/actions/button_cancel.png -text
+src/main/resources/icons/16x16/actions/fileopen.png -text
+src/main/resources/icons/16x16/actions/filesave.png -text
+src/main/resources/icons/16x16/actions/recur.png -text
+src/main/resources/icons/16x16/apps/agent.png -text
+src/main/resources/icons/48x48/apps/3d.png -text
+src/main/resources/icons/48x48/apps/advancedsettings.png -text
+src/main/resources/icons/48x48/apps/agent.png -text
+src/main/resources/icons/48x48/apps/easymoblog.png -text
+src/main/resources/icons/48x48/apps/kded.png -text
+src/main/resources/icons/48x48/apps/ktip.png -text
+src/main/resources/icons/Everaldo[!!-~][!!-~]Crysta_License.htm -text svneol=unset#text/plain
+src/main/resources/icons/readme.txt -text svneol=unset#text/plain
+src/main/resources/jadice.ico -text
+src/main/resources/jadice.png -text
+src/main/resources/licenses/3rd_party.html -text svneol=unset#text/plain
+src/main/resources/licenses/crystal_project.html -text svneol=unset#text/plain
+src/main/resources/licenses/levigo_bsd.html -text svneol=unset#text/plain
+src/main/resources/log4j.xml -text
+src/main/resources/splash.bmp -text

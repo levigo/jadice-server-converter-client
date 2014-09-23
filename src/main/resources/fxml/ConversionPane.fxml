@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="493.0" prefWidth="775.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<top>
+<VBox>
+<children><FlowPane styleClass="label-top">
+<children><Button fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="home" text="home">
+<FlowPane.margin>
+<Insets right="10.0" />
+</FlowPane.margin></Button><Label styleClass="label-top" text="Conversion" />
+</children>
+<VBox.margin>
+<Insets />
+</VBox.margin>
+<padding>
+<Insets left="10.0" top="5.0" />
+</padding></FlowPane><FlowPane alignment="CENTER_LEFT" hgap="5.0">
+<children><ComboBox fx:id="servers" editable="true" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="230.0" promptText="Server URL" /><ComboBox fx:id="configurations" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="350.0" promptText="Workflow" /><Button fx:id="startConversion" defaultButton="true" mnemonicParsing="false" text="Start" />
+</children>
+<BorderPane.margin>
+<Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+</BorderPane.margin></FlowPane>
+</children></VBox>
+</top>
+<center><TableView fx:id="jobTable" prefWidth="200.0" BorderPane.alignment="CENTER">
+  <columns>
+    <TableColumn fx:id="jobId" maxWidth="1000.0" prefWidth="120.0" text="Job ID" />
+    <TableColumn fx:id="jobFiles" maxWidth="1000.0" prefWidth="90.0" text="File(s)" />
+<TableColumn fx:id="jobWorkflow" editable="false" maxWidth="1000.0" prefWidth="85.0" text="Workflow" />
+<TableColumn fx:id="jobState" editable="false" maxWidth="90.0" prefWidth="65.0" resizable="false" text="State" />
+<TableColumn fx:id="jobWarnings" editable="false" maxWidth="35.0" prefWidth="30.0" resizable="false" text="W" />
+<TableColumn fx:id="jobErrors" editable="false" maxWidth="35.0" prefWidth="30.0" resizable="false" text="E" />
+<TableColumn fx:id="jobServerInstance" editable="false" maxWidth="1000.0" prefWidth="95.0" text="Server Instance" />
+  </columns>
+<BorderPane.margin>
+<Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+</BorderPane.margin>
+<columnResizePolicy>
+<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+</columnResizePolicy>
+</TableView>
+</center>
+<bottom><FlowPane alignment="CENTER_RIGHT" columnHalignment="RIGHT" hgap="5.0" BorderPane.alignment="CENTER">
+<children><Button fx:id="abortAll" mnemonicParsing="false" text="Abort All" /><Button fx:id="openResults" mnemonicParsing="false" text="Open Results" /><Button fx:id="clearFailedJobs" mnemonicParsing="false" text="Clear Failed Jobs" /><Button fx:id="clearFinishedJobs" mnemonicParsing="false" text="Clear Finished Jobs" /><Button fx:id="openLogMessages" mnemonicParsing="false" text="Open Log Messages" />
+</children>
+<BorderPane.margin>
+<Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+</BorderPane.margin></FlowPane>
+</bottom>
+<padding>
+<Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+</padding></fx:root>

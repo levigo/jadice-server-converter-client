@@ -1,0 +1,46 @@
+.label-top {
+	-fx-text-fill: #464646;
+	-fx-font-size: 200%;
+}
+
+.button-navigation {
+	-fx-font-size: 150%;
+    -fx-background-radius: 0;
+    -fx-base: #353535;
+    -fx-text-fill: white;
+    -fx-opacity: 1;
+}
+
+.home {
+    -fx-background-radius: 100%;
+    -fx-base: #464646;
+    -fx-background-insets: 0, 2;
+    -fx-background-color: 
+        #464646,
+        #464646,
+        #EEEEEE;
+}
+
+.home > .awesome {
+	-fx-text-fill: #464646 !important;
+}
+
+.button-navigation-small {
+	-fx-base: BLACK;
+	-fx-background-radius: 100%;
+	-fx-background-insets: 0, 2.5;
+    -fx-background-color: 
+        white,
+        white,
+        black;
+}
+
+.bg-black {
+	-fx-background-color: BLACK;
+}
+
+.awesome{
+    -fx-font-family:  FontAwesome;
+    -fx-font-size: 160px;
+    -fx-text-fill: white !important;
+}

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="493.0" prefWidth="775.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<top>
+<VBox>
+<children><FlowPane styleClass="label-top">
+<children><Button fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="home" text="home">
+<FlowPane.margin>
+<Insets right="10.0" />
+</FlowPane.margin></Button><Label styleClass="label-top" text="Server Log" />
+</children>
+<VBox.margin>
+<Insets />
+</VBox.margin>
+<padding>
+<Insets left="10.0" top="5.0" />
+</padding></FlowPane>
+<FlowPane hgap="5.0" BorderPane.alignment="CENTER">
+<children><ComboBox fx:id="servers" editable="true" prefWidth="350.0" /><Button fx:id="subscribe" mnemonicParsing="false" text="Subscribe" /><Button fx:id="clear" mnemonicParsing="false" text="Clear" /><CheckBox fx:id="scrollLock" mnemonicParsing="false" text="Scoll Lock" />
+</children>
+<BorderPane.margin>
+<Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+</BorderPane.margin></FlowPane>
+</children></VBox>
+</top>
+<center><TableView fx:id="logMessages" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
+  <columns>
+    <TableColumn fx:id="timestamp" editable="false" prefWidth="95.0" text="Timestamp" />
+    <TableColumn fx:id="level" prefWidth="79.0" text="Level" /><TableColumn fx:id="ndc" prefWidth="99.0" text="Nested Diagnostic Context" /><TableColumn fx:id="logger" minWidth="0.0" prefWidth="79.0" text="Logger" /><TableColumn fx:id="message" prefWidth="187.0" text="Message" /><TableColumn fx:id="stacktrace" prefWidth="94.0" text="Stacktrace" />
+  </columns>
+</TableView>
+</center></fx:root>

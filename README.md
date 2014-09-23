@@ -1,6 +1,6 @@
 This program show a possible adapter for how to use [_levigo®_](http://www.levigo.com) [_jadice server 5_](http://www.levigo.com/document-management/products/jadice-server/).
 
-It is provided "as is", siehe [LICENSE.md](https://github.com/levigo/jadice-server-converter-client/blob/master/LICENSE.md)
+It is provided "as is", see [LICENSE.md](https://github.com/levigo/jadice-server-converter-client/blob/master/LICENSE.md)
 
 ----
 

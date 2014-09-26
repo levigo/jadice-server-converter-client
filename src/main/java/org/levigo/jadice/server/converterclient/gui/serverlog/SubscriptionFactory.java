@@ -31,6 +31,11 @@ public class SubscriptionFactory {
   }
 
   public Subscription createSubscription(String serverLocation, MessageListener listener) throws JMSException {
+    if (!Preferences.recentServersProperty().contains(serverLocation)) {
+      // Store server URL in history
+      Preferences.recentServersProperty().add(serverLocation);
+    }
+    
     ActiveMQConnectionFactory connFactory = new ActiveMQConnectionFactory(serverLocation);
     connFactory.setUserName(Preferences.jmsUsernameProperty().getValue());
     connFactory.setPassword(Preferences.jmsPasswordProperty().getValue());

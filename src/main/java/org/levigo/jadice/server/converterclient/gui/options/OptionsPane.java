@@ -93,6 +93,7 @@ public class OptionsPane extends BorderPane {
     
     clearServerHistory.setOnAction(event -> {
       Preferences.recentServersProperty().clear();
+      Preferences.recentJmxUrlsProperty().clear();
     });
     
     changeResultsFolder.setOnAction(event -> {

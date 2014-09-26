@@ -21,6 +21,7 @@ import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
 import org.apache.log4j.Logger;
+import org.levigo.jadice.server.converterclient.Preferences;
 
 public class JMXHandler implements NotificationListener {
   
@@ -106,6 +107,11 @@ public class JMXHandler implements NotificationListener {
   }
 
   public void openConnection(String url) {
+    if (!Preferences.recentJmxUrlsProperty().contains(url)) {
+      // Store JMX URL in history
+      Preferences.recentJmxUrlsProperty().add(url);
+    }
+
     new Thread(() -> {
     try {
       status.set(ConnectionStatus.CONNECTING);

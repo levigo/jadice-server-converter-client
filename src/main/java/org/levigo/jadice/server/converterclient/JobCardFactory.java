@@ -110,7 +110,11 @@ public class JobCardFactory {
 
   public JobCard createAndSubmitJobCard(List<File> files, String serverLocation, WorkflowConfiguration config)
       throws Exception {
-
+    if (!Preferences.recentServersProperty().contains(serverLocation)) {
+      // Store server URL in history
+      Preferences.recentServersProperty().add(serverLocation);
+    }
+    
     JMSJobFactory jobFactory = getCachedJobFactory(serverLocation);
     // Configure Workflow
     Job job = config.configureWorkflow(jobFactory);

@@ -21,7 +21,7 @@
 <Insets left="10.0" top="5.0" />
 </padding></FlowPane>
 <FlowPane hgap="5.0" BorderPane.alignment="CENTER">
-<children><ComboBox fx:id="servers" editable="true" prefWidth="350.0" /><Button fx:id="subscribe" mnemonicParsing="false" text="Subscribe" /><Button fx:id="clear" mnemonicParsing="false" text="Clear" /><CheckBox fx:id="scrollLock" mnemonicParsing="false" text="Scoll Lock" />
+<children><ComboBox fx:id="servers" editable="true" prefWidth="350.0" promptText="Server URL" /><Button fx:id="subscribe" defaultButton="true" mnemonicParsing="false" text="Subscribe" /><Button fx:id="clear" mnemonicParsing="false" text="Clear" /><CheckBox fx:id="scrollLock" mnemonicParsing="false" text="Scoll Lock" />
 </children>
 <BorderPane.margin>
 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

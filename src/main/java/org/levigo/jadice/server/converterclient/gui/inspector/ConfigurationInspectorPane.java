@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.layout.BorderPane;
 import javafx.util.StringConverter;
@@ -26,7 +25,6 @@ import org.levigo.jadice.server.converterclient.JobCard;
 import org.levigo.jadice.server.converterclient.JobCardFactory;
 import org.levigo.jadice.server.converterclient.configurations.WorkflowConfiguration;
 import org.levigo.jadice.server.converterclient.gui.ComponentWrapper;
-import org.levigo.jadice.server.converterclient.gui.ConverterClientApplication;
 import org.levigo.jadice.server.converterclient.gui.inspector.WorkflowLayout.Type;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
@@ -34,9 +32,6 @@ import com.levigo.jadice.server.Job;
 import com.levigo.jadice.server.Node;
 import com.levigo.jadice.server.client.JobFactory;
 import com.levigo.jadice.server.client.jms.JMSJobFactory;
-
-import de.jensd.fx.fontawesome.AwesomeDude;
-import de.jensd.fx.fontawesome.AwesomeIcon;
 
 public class ConfigurationInspectorPane extends BorderPane implements NodeSelectionListener {
 

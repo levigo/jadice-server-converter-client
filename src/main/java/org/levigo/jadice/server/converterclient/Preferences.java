@@ -18,6 +18,7 @@ import javafx.collections.ListChangeListener;
 
 import org.apache.log4j.Logger;
 import org.levigo.jadice.server.converterclient.util.FilenameGenerator;
+import org.levigo.jadice.server.converterclient.util.PasswordObfuscator;
 
 import com.levigo.jadice.server.client.jms.JMSJobFactory;
 
@@ -210,10 +211,20 @@ public class Preferences {
 	
 	public static StringProperty jmsPasswordProperty() {
 	  if (jmsPasswordProperty == null) {
-	    jmsPasswordProperty = new SimpleStringProperty(PREF.get(Keys.JMS_PASSWORD, Defaults.JMS_PASSWORD));
+	    String password = Defaults.JMS_PASSWORD;
+      try {
+        password = PasswordObfuscator.deobfuscate(PREF.get(Keys.JMS_PASSWORD, Defaults.JMS_PASSWORD));
+      } catch (Exception e) {
+        LOGGER.error("Could not deobfuscate JMS password", e);
+      }
+      jmsPasswordProperty = new SimpleStringProperty(password);
 	    jmsPasswordProperty.addListener((observable, oldValue, newValue) ->
       {
-        putNullSafe(Keys.JMS_PASSWORD, newValue);
+        try {
+          putNullSafe(Keys.JMS_PASSWORD, PasswordObfuscator.obfuscate(newValue));
+        } catch (Exception e) {
+          LOGGER.error("Could not obfuscate JMS password", e);
+        }
       });
 	  }
 	  return jmsPasswordProperty;

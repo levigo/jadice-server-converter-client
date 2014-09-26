@@ -108,7 +108,6 @@ public class LogMessagesWindow {
             
             if (!empty && item != null) {
               customStyleClass = item.name();
-              System.out.println("Style class: " + customStyleClass);
               if (!getStyleClass().contains(customStyleClass)) {
                 getStyleClass().add(customStyleClass);
               }

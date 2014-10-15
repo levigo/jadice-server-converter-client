@@ -1,6 +1,8 @@
 package org.levigo.jadice.server.converterclient.gui.jmx;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -116,7 +118,16 @@ public class JMXHandler implements NotificationListener {
     try {
       status.set(ConnectionStatus.CONNECTING);
       JMXServiceURL jmxUrl = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://" + url + "/jmxrmi");
-      connector = JMXConnectorFactory.connect(jmxUrl, null);
+      final Map<String, Object> env = new HashMap<>();
+      if (Preferences.jmxUsernameProperty().isNotEmpty().get()) {
+        // See https://blogs.oracle.com/lmalventosa/entry/jmx_authentication_authorization
+        String[] creds = {
+            Preferences.jmxUsernameProperty().get(),
+            Preferences.jmxPasswordProperty().get()
+        };
+        env.put(JMXConnector.CREDENTIALS, creds);
+      }
+      connector = JMXConnectorFactory.connect(jmxUrl, env);
       MBeanServerConnection mbsc = connector.getMBeanServerConnection();
       if (validateConnection(mbsc)) {
         status.set(ConnectionStatus.CONNECTED);

@@ -40,6 +40,9 @@ public class Preferences {
 	  final String JMS_PASSWORD = null;
 	  final boolean JMS_JOBFACTORY_CACHING = true;
     final int JMS_JOB_PRIORITY = JMSJobFactory.DEFAULT_PRIORITY; 
+    
+    final String JMX_USER_NAME = null;
+    final String JMX_PASSWORD = null;
 	}
 	
 	private static interface Keys {
@@ -57,6 +60,8 @@ public class Preferences {
     final String JMS_JOBFACTORY_CACHING = "jms.enableJobfactoryCaching";
     final String JMS_JOB_PRIORITY = "jms.jobPriority";
     
+    final String JMX_USER_NAME = "jmx.username";
+    final String JMX_PASSWORD = "jmx.password";
 	}
 
   private static java.util.prefs.Preferences PREF = java.util.prefs.Preferences.userNodeForPackage(Preferences.class);
@@ -78,6 +83,9 @@ public class Preferences {
 	private static BooleanProperty cacheJmsJobFactoryProperty;
 	private static IntegerProperty jmsJobPriority;
 	private static IntegerProperty concurrentJobsProperty;
+	
+	private static StringProperty jmxUsernameProperty;
+	private static StringProperty jmxPasswordProperty;
 
 	
   public static ListProperty<String> recentServersProperty() {
@@ -252,6 +260,39 @@ public class Preferences {
     return jmsJobPriority;
   }
   
+  public static StringProperty jmxUsernameProperty() {
+    if (jmxUsernameProperty == null) {
+      jmxUsernameProperty = new SimpleStringProperty(PREF.get(Keys.JMX_USER_NAME, Defaults.JMX_USER_NAME));
+      jmxUsernameProperty.addListener((observable, oldValue, newValue) ->
+      {
+        putNullSafe(Keys.JMX_USER_NAME, newValue);
+      });
+    }
+    return jmxUsernameProperty;
+  }
+  
+  public static StringProperty jmxPasswordProperty() {
+    if (jmxPasswordProperty == null) {
+      String password = Defaults.JMX_PASSWORD;
+      try {
+        password = PasswordObfuscator.deobfuscate(PREF.get(Keys.JMX_PASSWORD, Defaults.JMX_PASSWORD));
+      } catch (Exception e) {
+        LOGGER.error("Could not deobfuscate JMX password", e);
+      }
+      jmxPasswordProperty = new SimpleStringProperty(password);
+      jmxPasswordProperty.addListener((observable, oldValue, newValue) ->
+      {
+        try {
+          putNullSafe(Keys.JMX_PASSWORD, PasswordObfuscator.obfuscate(newValue));
+        } catch (Exception e) {
+          LOGGER.error("Could not obfuscate JMX password", e);
+        }
+      });
+    }
+    return jmxPasswordProperty;
+  }
+
+  
   public static void restoreDefaults() {
     recentServersProperty().setAll(Defaults.RECENT_SERVERS);
     recentJmxUrlsProperty().setAll(Defaults.RECENT_JMX_URLS);
@@ -264,7 +305,8 @@ public class Preferences {
     jmsRequestQueueNameProperty().set(Defaults.JMS_REQUEST_QUEUE_NAME);
     jmsLogTopicNameProperty().set(Defaults.JMS_LOG_TOPIC_NAME);
     cacheJmsJobFactoryProperty().set(Defaults.JMS_JOBFACTORY_CACHING);
-    
+    jmxUsernameProperty.set(Defaults.JMX_USER_NAME);
+    jmxPasswordProperty.set(Defaults.JMX_PASSWORD);
   }
 
   private static void putNullSafe(String key, String value) {

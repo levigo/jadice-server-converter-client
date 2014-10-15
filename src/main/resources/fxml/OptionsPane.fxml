@@ -10,8 +10,7 @@
 <top>
 	<FlowPane styleClass="label-top">
 		<children>
-			<Button fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
-				prefHeight="30.0" prefWidth="30.0" styleClass="home" text="home">
+			<Button fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="home" text="home">
 				<FlowPane.margin>
 					<Insets right="10.0" />
 				</FlowPane.margin>
@@ -23,36 +22,76 @@
 		</padding>
 	</FlowPane>
 </top>
-<center><GridPane hgap="5.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" vgap="5.0" BorderPane.alignment="TOP_LEFT">
+<bottom><FlowPane alignment="BOTTOM_RIGHT" columnHalignment="RIGHT" rowValignment="BOTTOM" BorderPane.alignment="CENTER">
+<children><Button fx:id="restoreDefaults" mnemonicParsing="false" text="restore defaults" />
+</children>
+<BorderPane.margin>
+<Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+</BorderPane.margin></FlowPane>
+</bottom>
+<center><Accordion BorderPane.alignment="CENTER">
+  <panes>
+    <TitledPane text="JMS Settings">
+<content>
+<AnchorPane>
+<children><GridPane hgap="5.0" maxHeight="-Infinity" vgap="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="TOP_LEFT">
   <columnConstraints>
-    <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="NEVER" minWidth="10.0" />
-    <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+    <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="NEVER" minWidth="10.0" prefWidth="130.0" />
+    <ColumnConstraints hgrow="ALWAYS" />
   </columnConstraints>
   <rowConstraints>
-<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
-<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+<RowConstraints minHeight="10.0" vgrow="NEVER" />
 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
   </rowConstraints>
-<children><Label text="JMS Settings" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT">
-<font>
-<Font name="System Bold" size="18.0" />
-</font></Label><Label text="username" GridPane.rowIndex="1" /><TextField fx:id="jmsUsername" GridPane.columnIndex="1" GridPane.rowIndex="1" /><Label text="password" GridPane.rowIndex="2" /><PasswordField fx:id="jmsPassword" GridPane.columnIndex="1" GridPane.rowIndex="2" /><Label text="request queue" GridPane.rowIndex="3" /><TextField fx:id="jmsRequestQueue" GridPane.columnIndex="1" GridPane.rowIndex="3" /><Label text="log topic" GridPane.rowIndex="4" /><TextField fx:id="jmsLogTopic" GridPane.columnIndex="1" GridPane.rowIndex="4" /><Label text="job factory" GridPane.rowIndex="6" /><CheckBox fx:id="cacheJobFactory" mnemonicParsing="false" text="Cache JMS Job Factory?" GridPane.columnIndex="1" GridPane.rowIndex="6" /><Label text="Folders" GridPane.columnSpan="2147483647" GridPane.halignment="LEFT" GridPane.rowIndex="7">
-<font>
-<Font name="System Bold" size="18.0" />
-</font></Label><Label text="results" GridPane.rowIndex="8" />
-<GridPane maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.vgrow="ALWAYS">
+<children><Label text="username" /><TextField fx:id="jmsUsername" GridPane.columnIndex="1" /><Label text="password" GridPane.rowIndex="1" /><PasswordField fx:id="jmsPassword" GridPane.columnIndex="1" GridPane.rowIndex="1" /><Label text="request queue" GridPane.rowIndex="2" /><TextField fx:id="jmsRequestQueue" GridPane.columnIndex="1" GridPane.rowIndex="2" /><Label text="log topic" GridPane.rowIndex="3" /><TextField fx:id="jmsLogTopic" GridPane.columnIndex="1" GridPane.rowIndex="3" /><Label text="job factory" GridPane.rowIndex="5" /><CheckBox fx:id="cacheJobFactory" mnemonicParsing="false" text="Cache JMS Job Factory?" GridPane.columnIndex="1" GridPane.rowIndex="5" /><Label text="job priority" GridPane.rowIndex="4" /><Slider fx:id="jmsJobPriority" blockIncrement="1.0" majorTickUnit="1.0" max="9.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="4.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+</children>
+<padding>
+<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+</padding>
+</GridPane>
+</children>
+</AnchorPane>
+</content></TitledPane>
+    <TitledPane text="JMX Settings">
+<content>
+<AnchorPane>
+<children><GridPane hgap="5.0" maxHeight="-Infinity" vgap="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<children>
+<Label text="username" />
+<TextField fx:id="jmxUsername" GridPane.columnIndex="1" />
+<Label text="password" GridPane.rowIndex="1" />
+<PasswordField fx:id="jmxPassword" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+</children>
+<columnConstraints>
+<ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="NEVER" minWidth="10.0" prefWidth="130.0" />
+<ColumnConstraints hgrow="ALWAYS" />
+</columnConstraints>
+<padding>
+<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+</padding>
+<rowConstraints>
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+</rowConstraints>
+</GridPane>
+</children>
+</AnchorPane>
+</content></TitledPane>
+<TitledPane text="Misc.">
+<content>
+<AnchorPane>
+<children><GridPane hgap="5.0" maxHeight="-Infinity" vgap="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<children>
+<Label text="results folder" GridPane.rowIndex="1" />
+<GridPane maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+<children>
+<TextField fx:id="resultFolder" disable="true" prefHeight="31.0" prefWidth="190.0" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
+<Button fx:id="changeResultsFolder" mnemonicParsing="false" text="…" GridPane.columnIndex="1" />
+</children>
 <columnConstraints>
 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
 <ColumnConstraints hgrow="NEVER" />
@@ -60,28 +99,37 @@
 <rowConstraints>
 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
 </rowConstraints>
-<children><TextField fx:id="resultFolder" disable="true" prefHeight="31.0" prefWidth="190.0" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" /><Button fx:id="changeResultsFolder" mnemonicParsing="false" text="…" GridPane.columnIndex="1" />
+</GridPane>
+<Label text="concurrent jobs" />
+<Slider fx:id="concurrentJobs" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" />
+<Label text="default ext." GridPane.rowIndex="2" />
+<TextField fx:id="defaultExtension" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+<Label text="result filename" GridPane.rowIndex="3" />
+<TextField fx:id="resultFilename" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+<Text fx:id="patternExplanation" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;pattern explanation&gt;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+<Label text="server history" GridPane.rowIndex="5" />
+<Button fx:id="clearServerHistory" mnemonicParsing="false" text="Clear" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 </children>
-</GridPane><Label text="Misc." GridPane.halignment="LEFT" GridPane.rowIndex="9">
-<font>
-<Font name="System Bold" size="18.0" />
-</font></Label><Label text="concurrent jobs" GridPane.rowIndex="10" /><Slider fx:id="concurrentJobs" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
-<GridPane.margin>
-<Insets top="8.0" />
-</GridPane.margin></Slider><Label text="default ext." GridPane.rowIndex="11" /><TextField fx:id="defaultExtension" GridPane.columnIndex="1" GridPane.rowIndex="11" /><Label text="result filename" GridPane.rowIndex="12" /><TextField fx:id="resultFilename" GridPane.columnIndex="1" GridPane.rowIndex="12" /><Text fx:id="patternExplanation" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;pattern explanation&gt;" GridPane.columnIndex="1" GridPane.rowIndex="13" /><Label text="server history" GridPane.rowIndex="14" /><Button fx:id="clearServerHistory" mnemonicParsing="false" text="Clear" GridPane.columnIndex="1" GridPane.rowIndex="14" /><Label text="job priority" GridPane.rowIndex="5" /><Slider fx:id="jmsJobPriority" blockIncrement="1.0" majorTickUnit="1.0" max="9.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="4.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-<GridPane.margin>
-<Insets top="8.0" />
-</GridPane.margin></Slider>
-</children>
+<columnConstraints>
+<ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="NEVER" minWidth="10.0" prefWidth="130.0" />
+<ColumnConstraints hgrow="ALWAYS" />
+</columnConstraints>
 <padding>
 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 </padding>
+<rowConstraints>
+<RowConstraints minHeight="10.0" vgrow="NEVER" />
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+</rowConstraints>
 </GridPane>
-</center>
-<bottom><FlowPane alignment="BOTTOM_RIGHT" columnHalignment="RIGHT" rowValignment="BOTTOM" BorderPane.alignment="CENTER">
-<children><Button fx:id="restoreDefaults" mnemonicParsing="false" text="restore defaults" />
 </children>
-<BorderPane.margin>
-<Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-</BorderPane.margin></FlowPane>
-</bottom></fx:root>
+</AnchorPane>
+</content>
+</TitledPane>
+  </panes>
+</Accordion>
+</center></fx:root>

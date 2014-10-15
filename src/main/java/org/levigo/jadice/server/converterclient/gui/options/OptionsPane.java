@@ -50,6 +50,12 @@ public class OptionsPane extends BorderPane {
   @FXML
   private Slider concurrentJobs; 
   
+  @FXML
+  private TextField jmxUsername;
+  
+  @FXML
+  private TextField jmxPassword;
+  
   
   @FXML
   private TextField defaultExtension;
@@ -107,26 +113,28 @@ public class OptionsPane extends BorderPane {
         Preferences.resultFolderProperty().setValue(selectedDirectory);
       }
     });
-    
   }
 
   private void initValueBindings() {
+    // JMS Properties
     jmsUsername.textProperty().bindBidirectional(Preferences.jmsUsernameProperty());
     jmsPassword.textProperty().bindBidirectional(Preferences.jmsPasswordProperty());
     jmsRequestQueue.textProperty().bindBidirectional(Preferences.jmsRequestQueueNameProperty());
     jmsLogTopic.textProperty().bindBidirectional(Preferences.jmsLogTopicNameProperty());
     jmsJobPriority.valueProperty().bindBidirectional(Preferences.jmsJobPriority());
     cacheJobFactory.selectedProperty().bindBidirectional(Preferences.cacheJmsJobFactoryProperty());
+
+    // JMX Settings
+    jmxUsername.textProperty().bindBidirectional(Preferences.jmxUsernameProperty());
+    jmxPassword.textProperty().bindBidirectional(Preferences.jmxPasswordProperty());
     
+    // Misc.
+    concurrentJobs.valueProperty().bindBidirectional(Preferences.concurrentJobsProperty());
     // Read-only, so uni-directional binding is ok
     resultFolder.textProperty().bind(Bindings.convert(Preferences.resultFolderProperty()));
-    
-    concurrentJobs.valueProperty().bindBidirectional(Preferences.concurrentJobsProperty());
     defaultExtension.textProperty().bindBidirectional(Preferences.defaultExtensionProperty());
     resultFilename.textProperty().bindBidirectional(Preferences.resultFilenamePatternProperty());
-    
     patternExplanation.textProperty().setValue(FilenameGenerator.buildExplanationText(" / "));
-    
   }
 
 } 

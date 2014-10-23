@@ -25,6 +25,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <!-- Dependency versions -->
     <jadice.server.version>5.1.1.0</jadice.server.version>
     <levigo.utils.version>2.4.15</levigo.utils.version>
     <filetype.analyzer.version>5.0.2.2</filetype.analyzer.version>
@@ -33,8 +35,10 @@
     <jfreechart.version>1.0.19</jfreechart.version>
     <activemq.version>5.10.0</activemq.version>
     <prefuse.version>beta-20130106</prefuse.version>
+    <controlsfx.version>8.20.8</controlsfx.version>
     <enzo.version>0.1.5</enzo.version>
     <fontawesomefx.version>8.0.10</fontawesomefx.version>
+    <junit.version>4.11</junit.version>
     
     <!-- Spring version as it is also managed by jadice server -->
     <spring-context.version>3.0.5.RELEASE</spring-context.version>
@@ -172,7 +176,7 @@
     <dependency>
     	<groupId>junit</groupId>
     	<artifactId>junit</artifactId>
-    	<version>4.11</version>
+    	<version>${junit.version}</version>
     	<scope>test</scope>
     </dependency>
     
@@ -211,7 +215,7 @@
     <dependency>
       <groupId>org.controlsfx</groupId>
       <artifactId>controlsfx</artifactId>
-      <version>8.0.6</version>
+      <version>${controlsfx.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jfree</groupId>

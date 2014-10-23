@@ -11,7 +11,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
 
-import org.controlsfx.dialog.DialogStyle;
+import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 import org.levigo.jadice.server.converterclient.Preferences;
 import org.levigo.jadice.server.converterclient.gui.jmx.JMXHandler.CallbackHandler;
@@ -54,7 +54,7 @@ public class JmxPane extends BorderPane {
       Platform.runLater(() -> {
         gauges.connectionFailed();
         Dialogs.create()
-          .style(DialogStyle.NATIVE)
+          .styleClass(Dialog.STYLE_CLASS_NATIVE)
           .title("Error")
           .message("Could not connect to JMX")
           .showException(reason);

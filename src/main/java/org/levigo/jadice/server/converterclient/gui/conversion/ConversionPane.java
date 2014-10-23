@@ -37,7 +37,7 @@ import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 
 import org.apache.log4j.Logger;
-import org.controlsfx.dialog.DialogStyle;
+import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 import org.levigo.jadice.server.converterclient.JobCard;
 import org.levigo.jadice.server.converterclient.JobCardFactory;
@@ -536,7 +536,7 @@ public class ConversionPane extends BorderPane {
         } catch (IOException e) {
           LOGGER.error("Could not save " + resultFile.getName(), e);
           Dialogs.create()
-            .style(DialogStyle.NATIVE)
+            .styleClass(Dialog.STYLE_CLASS_NATIVE)
             .title("Error")
             .message("Could not save file as " + resultFile.getAbsolutePath())
             .showException(e);

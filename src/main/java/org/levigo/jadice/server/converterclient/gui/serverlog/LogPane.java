@@ -28,8 +28,9 @@ import javax.jms.ObjectMessage;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
-import org.controlsfx.dialog.DialogStyle;
+import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
+import org.controlsfx.dialog.ExceptionDialog;
 import org.levigo.jadice.server.converterclient.Preferences;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
@@ -124,7 +125,7 @@ public class LogPane extends BorderPane implements MessageListener {
           LOGGER.error("Connection Error", e);
           Dialogs.create()
             .owner(LogPane.this)
-            .style(DialogStyle.NATIVE)
+            .styleClass(Dialog.STYLE_CLASS_NATIVE)
             .title("Connection Error")
             .message("Cannot subscribe to server log")
             .showException(e);

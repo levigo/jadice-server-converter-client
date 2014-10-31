@@ -131,11 +131,9 @@ public class GithubUpdateCheck {
     final String currentVersion = getCurrentVersionNumber();
     final String latestVersion = getLatestVersionNumber();
     if (currentVersion == null) {
-      // TODO: Better exception
-      throw new UpdateCheckException(null);
+      throw new UpdateCheckException(new IllegalArgumentException("Could not determine current version"));
     } else if (latestVersion == null) {
-      // TODO: Better exception
-      throw new UpdateCheckException(null);
+      throw new UpdateCheckException(new IllegalArgumentException("Could not determine latest version"));
     }
     LOGGER.info(String.format("Comparing version current version %s vs. remote version %s", currentVersion, latestVersion));
     final int[] currentSplitted = splitVersionNumber(currentVersion);

@@ -18,7 +18,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.levigo.jadice.server.util.Util;
 
-public class GithubUpdateCheck {
+class GithubUpdateCheck implements UpdateCheckResult {
 
   private static final Logger LOGGER = Logger.getLogger(GithubUpdateCheck.class);
 
@@ -70,23 +70,32 @@ public class GithubUpdateCheck {
     }
   }
 
-  public String getLatestVersionNumber() throws UpdateCheckException {
-    checkForUpdates();
+  public String getLatestVersionNumber() {
+    if (releases == null) {
+      throw new IllegalStateException("checkForUpdates() must be called first");
+    }
     return extractVersionNumber(releases.get(0).name);
   }
 
-  public String getLatestReleaseNotes() throws UpdateCheckException {
-    checkForUpdates();
+  public String getLatestReleaseNotes() {
+    if (releases == null) {
+      throw new IllegalStateException("checkForUpdates() must be called first");
+    }
     return releases.get(0).body;
   }
 
-  public URL getLatestDownloadURL() throws UpdateCheckException {
-    checkForUpdates();
+  public URL getLatestDownloadURL() {
+    if (releases == null) {
+      throw new IllegalStateException("checkForUpdates() must be called first");
+    }
     return releases.get(0).assets.get(0).browserDownloadUrl;
   }
 
-  public URL getLatestReleaseURL() throws UpdateCheckException {
-    checkForUpdates();
+  @Override
+  public URL getLatestReleaseURL() {
+    if (releases == null) {
+      throw new IllegalStateException("checkForUpdates() must be called first");
+    }
     return releases.get(0).htmlUrl;
   }
 
@@ -127,13 +136,13 @@ public class GithubUpdateCheck {
     return result;
   }
 
-  public boolean isNewerVersionAvailable() throws UpdateCheckException {
+  public boolean isNewerVersionAvailable() {
     final String currentVersion = getCurrentVersionNumber();
     final String latestVersion = getLatestVersionNumber();
     if (currentVersion == null) {
-      throw new UpdateCheckException(new IllegalArgumentException("Could not determine current version"));
+      throw new IllegalArgumentException("Could not determine current version");
     } else if (latestVersion == null) {
-      throw new UpdateCheckException(new IllegalArgumentException("Could not determine latest version"));
+      throw new IllegalArgumentException("Could not determine latest version");
     }
     LOGGER.info(String.format("Comparing version current version %s vs. remote version %s", currentVersion, latestVersion));
     final int[] currentSplitted = splitVersionNumber(currentVersion);

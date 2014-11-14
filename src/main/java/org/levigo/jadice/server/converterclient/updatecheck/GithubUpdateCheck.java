@@ -66,6 +66,7 @@ class GithubUpdateCheck implements UpdateCheckResult {
         LOGGER.info(String.format("Found information about %d release(s)", releases.size()));
       }
     } catch (Exception e) {
+      LOGGER.error("Could not perform github update check", e);
       throw new UpdateCheckException(e);
     }
   }

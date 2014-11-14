@@ -35,6 +35,13 @@
         black;
 }
 
+.no-border {
+    -fx-background-color: 
+        black,
+        black,
+        black;
+}
+
 .bg-black {
 	-fx-background-color: BLACK;
 }

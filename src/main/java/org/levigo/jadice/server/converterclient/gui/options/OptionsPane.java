@@ -1,14 +1,9 @@
 package org.levigo.jadice.server.converterclient.gui.options;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.function.Consumer;
 
 import javafx.beans.binding.Bindings;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -18,18 +13,14 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.effect.Effect;
-import javafx.scene.effect.SepiaTone;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.DialogAction;
-import org.controlsfx.dialog.Dialogs;
 import org.levigo.jadice.server.converterclient.Preferences;
 import org.levigo.jadice.server.converterclient.Preferences.UpdatePolicy;
 import org.levigo.jadice.server.converterclient.updatecheck.UpdateCheckResult;
+import org.levigo.jadice.server.converterclient.updatecheck.UpdateDialogs;
 import org.levigo.jadice.server.converterclient.updatecheck.UpdateService;
 import org.levigo.jadice.server.converterclient.util.FilenameGenerator;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
@@ -146,35 +137,13 @@ public class OptionsPane extends BorderPane {
       updateService.setOnSucceeded(evt -> {
         final UpdateCheckResult result = updateService.getValue();
         if (result.isNewerVersionAvailable()) {
-          Dialogs.create()
-          .styleClass(Dialog.STYLE_CLASS_NATIVE)
-          .title("Update Check")
-          .masthead("New version available")
-          .message(String.format("New version available: %s\nYour are working with version %s",
-              result.getLatestVersionNumber(), result.getCurrentVersionNumber()))
-          .backgroundEffect(new SepiaTone())
-          .actions(new DialogAction("Go to download page", evt2 -> {
-            try {
-              Desktop.getDesktop().browse(result.getLatestReleaseURL().toURI());
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-          }))
-          .showInformation();
+          UpdateDialogs.showUpdateAvailableDialog(result);
         } else {
-          Dialogs.create()
-          .styleClass(Dialog.STYLE_CLASS_NATIVE)
-          .title("Update Check")
-          .message("Your software is up to date")
-          .showInformation();
+          UpdateDialogs.showNoUpdateAvailableDialog();
         }
       });
       updateService.setOnFailed(evt -> {
-        Dialogs.create()
-        .styleClass(Dialog.STYLE_CLASS_NATIVE)
-        .title("Update Check")
-        .message("Could not perform update check")
-        .showException(updateService.getException());
+        UpdateDialogs.showUpdateErrorDialog(updateService.getException());
       });
       updateService.restart();
     });

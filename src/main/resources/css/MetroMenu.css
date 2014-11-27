@@ -35,6 +35,20 @@
         black;
 }
 
+#updateButton {
+	-fx-base: rgba(0,0,0,0.05);
+	-fx-background-radius: 100%;
+	-fx-background-insets: 0, 2.5;
+    -fx-background-color: 
+        transparent,
+        rgba(0,0,0,0.05),
+        rgba(0,0,0,0.05);
+}
+
+#updateButton > .awesome {
+	-fx-text-fill: BLACK  !important;
+}
+
 .bg-black {
 	-fx-background-color: BLACK;
 }

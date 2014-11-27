@@ -9,13 +9,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 
 import org.levigo.jadice.server.converterclient.Preferences;
+import org.levigo.jadice.server.converterclient.Preferences.UpdatePolicy;
+import org.levigo.jadice.server.converterclient.updatecheck.UpdateCheckResult;
+import org.levigo.jadice.server.converterclient.updatecheck.UpdateDialogs;
+import org.levigo.jadice.server.converterclient.updatecheck.UpdateService;
 import org.levigo.jadice.server.converterclient.util.FilenameGenerator;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
@@ -74,6 +80,18 @@ public class OptionsPane extends BorderPane {
   private Button clearServerHistory;
   
   @FXML
+  private RadioButton checkUpdatesOnStart;
+  
+  @FXML
+  private RadioButton neverCheckUpdates;
+  
+  @FXML
+  private Button checkUpdatesNow;
+  
+  @FXML
+  private ToggleGroup updateCheckGroup;
+  
+  @FXML
   private Button restoreDefaults;
   
   public OptionsPane() {
@@ -113,6 +131,22 @@ public class OptionsPane extends BorderPane {
         Preferences.resultFolderProperty().setValue(selectedDirectory);
       }
     });
+    
+    checkUpdatesNow.setOnAction(event -> {
+      final UpdateService updateService = UpdateService.getInstance();
+      updateService.setOnSucceeded(evt -> {
+        final UpdateCheckResult result = updateService.getValue();
+        if (result.isNewerVersionAvailable()) {
+          UpdateDialogs.showUpdateAvailableDialog(result);
+        } else {
+          UpdateDialogs.showNoUpdateAvailableDialog();
+        }
+      });
+      updateService.setOnFailed(evt -> {
+        UpdateDialogs.showUpdateErrorDialog(updateService.getException());
+      });
+      updateService.restart();
+    });
   }
 
   private void initValueBindings() {
@@ -135,6 +169,31 @@ public class OptionsPane extends BorderPane {
     defaultExtension.textProperty().bindBidirectional(Preferences.defaultExtensionProperty());
     resultFilename.textProperty().bindBidirectional(Preferences.resultFilenamePatternProperty());
     patternExplanation.textProperty().setValue(FilenameGenerator.buildExplanationText(" / "));
+    
+    
+    // javaFX has no smart binding between Enumeration and RadioButtons (yet?)
+    setUpdateButtons(Preferences.updatePolicyProperty().getValue());
+    Preferences.updatePolicyProperty().addListener((bean, oldValue, newValue) -> {
+      if (oldValue == newValue) {
+        return;
+      }
+      setUpdateButtons(newValue);
+    });
+    updateCheckGroup.selectedToggleProperty().addListener((bean, oldValue, newValue) -> {
+      UpdatePolicy newPolicy = null;
+      if (checkUpdatesOnStart.isSelected()) {
+        newPolicy = UpdatePolicy.ON_EVERY_START;
+      } else if (neverCheckUpdates.isSelected()) {
+        newPolicy = UpdatePolicy.NEVER;
+      }
+      
+      Preferences.updatePolicyProperty().setValue(newPolicy);
+    });
+  }
+
+  private void setUpdateButtons(UpdatePolicy policy) {
+    checkUpdatesOnStart.setSelected(policy == UpdatePolicy.ON_EVERY_START);
+    neverCheckUpdates.setSelected(policy == UpdatePolicy.NEVER);
   }
 
 } 

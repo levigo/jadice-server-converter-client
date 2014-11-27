@@ -38,6 +38,7 @@
     <controlsfx.version>8.20.8</controlsfx.version>
     <enzo.version>0.1.5</enzo.version>
     <fontawesomefx.version>8.0.10</fontawesomefx.version>
+    <jackson.version>2.4.3</jackson.version>
     <junit.version>4.11</junit.version>
     
     <!-- Spring version as it is also managed by jadice server -->
@@ -247,6 +248,11 @@
       <groupId>de.jensd</groupId>
       <artifactId>fontawesomefx</artifactId>
       <version>${fontawesomefx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${jackson.version}</version>
     </dependency>
   </dependencies>
 </project>

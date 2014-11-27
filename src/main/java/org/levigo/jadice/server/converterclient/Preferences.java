@@ -7,6 +7,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -25,6 +26,11 @@ import com.levigo.jadice.server.client.jms.JMSJobFactory;
 public class Preferences {
   
   private static final Logger LOGGER = Logger.getLogger(Preferences.class);
+  
+  public enum UpdatePolicy {
+    ON_EVERY_START,
+    NEVER
+  }
 	
 	public static interface Defaults {
 	  final String RECENT_SERVERS = "tcp://localhost:61616";
@@ -43,6 +49,8 @@ public class Preferences {
     
     final String JMX_USER_NAME = null;
     final String JMX_PASSWORD = null;
+    
+    final UpdatePolicy UPDATE_POLICY = UpdatePolicy.ON_EVERY_START;
 	}
 	
 	private static interface Keys {
@@ -62,6 +70,8 @@ public class Preferences {
     
     final String JMX_USER_NAME = "jmx.username";
     final String JMX_PASSWORD = "jmx.password";
+    
+    final String UPDATE_POLICY = "updates";
 	}
 
   private static java.util.prefs.Preferences PREF = java.util.prefs.Preferences.userNodeForPackage(Preferences.class);
@@ -86,6 +96,8 @@ public class Preferences {
 	
 	private static StringProperty jmxUsernameProperty;
 	private static StringProperty jmxPasswordProperty;
+
+  private static SimpleObjectProperty<UpdatePolicy> updatePolicyProperty;
 
 	
   public static ListProperty<String> recentServersProperty() {
@@ -291,6 +303,25 @@ public class Preferences {
     }
     return jmxPasswordProperty;
   }
+  
+  public static Property<UpdatePolicy> updatePolicyProperty() {
+    if (updatePolicyProperty == null) {
+      UpdatePolicy policy = Defaults.UPDATE_POLICY;
+      try {
+        final String raw = PREF.get(Keys.UPDATE_POLICY, Defaults.UPDATE_POLICY.name());
+        policy = UpdatePolicy.valueOf(raw);
+      } catch (IllegalArgumentException e) {
+        LOGGER.error("Cannot read update update policy", e);
+      }
+      updatePolicyProperty =  new SimpleObjectProperty<>(policy);
+      updatePolicyProperty.addListener((observable, oldValue, newValue) ->
+      {
+        putNullSafe(Keys.UPDATE_POLICY, newValue.name());
+      });
+    }
+    return updatePolicyProperty;
+  }
+
 
   
   public static void restoreDefaults() {
@@ -305,8 +336,10 @@ public class Preferences {
     jmsRequestQueueNameProperty().set(Defaults.JMS_REQUEST_QUEUE_NAME);
     jmsLogTopicNameProperty().set(Defaults.JMS_LOG_TOPIC_NAME);
     cacheJmsJobFactoryProperty().set(Defaults.JMS_JOBFACTORY_CACHING);
-    jmxUsernameProperty.set(Defaults.JMX_USER_NAME);
-    jmxPasswordProperty.set(Defaults.JMX_PASSWORD);
+    jmxUsernameProperty().set(Defaults.JMX_USER_NAME);
+    jmxPasswordProperty().set(Defaults.JMX_PASSWORD);
+    updatePolicyProperty().setValue(Defaults.UPDATE_POLICY);
+    
   }
 
   private static void putNullSafe(String key, String value) {

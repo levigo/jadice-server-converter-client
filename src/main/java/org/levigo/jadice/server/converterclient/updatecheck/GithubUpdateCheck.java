@@ -75,21 +75,21 @@ class GithubUpdateCheck implements UpdateCheckResult {
     if (releases == null) {
       throw new IllegalStateException("checkForUpdates() must be called first");
     }
-    return extractVersionNumber(releases.get(0).name);
+    return extractVersionNumber(releases.get(releases.size() - 1).name);
   }
 
   public String getLatestReleaseNotes() {
     if (releases == null) {
       throw new IllegalStateException("checkForUpdates() must be called first");
     }
-    return releases.get(0).body;
+    return releases.get(releases.size() - 1).body;
   }
 
   public URL getLatestDownloadURL() {
     if (releases == null) {
       throw new IllegalStateException("checkForUpdates() must be called first");
     }
-    return releases.get(0).assets.get(0).browserDownloadUrl;
+    return releases.get(releases.size() - 1).assets.get(0).browserDownloadUrl;
   }
 
   @Override
@@ -97,7 +97,7 @@ class GithubUpdateCheck implements UpdateCheckResult {
     if (releases == null) {
       throw new IllegalStateException("checkForUpdates() must be called first");
     }
-    return releases.get(0).htmlUrl;
+    return releases.get(releases.size() - 1).htmlUrl;
   }
 
   public String getCurrentVersionNumber() {
@@ -166,6 +166,7 @@ class GithubUpdateCheck implements UpdateCheckResult {
 
   public static void main(String[] args) throws Exception {
     final GithubUpdateCheck check = new GithubUpdateCheck();
+    check.checkForUpdates();
     LOGGER.info("Aktuelle Versionummer: " + check.getCurrentVersionNumber());
     LOGGER.info("Letzte Versionsnummer: " + check.getLatestVersionNumber());
     LOGGER.info("Neuere Version vorhanden? " + check.isNewerVersionAvailable());

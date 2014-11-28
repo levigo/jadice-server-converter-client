@@ -9,6 +9,8 @@ import java.util.Map;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.log4j.Logger;
+
 import prefuse.Constants;
 import prefuse.Display;
 import prefuse.Visualization;
@@ -42,6 +44,8 @@ import com.levigo.jadice.server.util.NodeTraversal;
 import com.levigo.jadice.server.util.NodeVisitor;
 
 public class WorkflowDisplay extends Display { 
+  
+ private static final Logger LOGGER = Logger.getLogger(WorkflowDisplay.class);
 
 	private static class JobNodeEdge {
 	
@@ -171,7 +175,7 @@ public class WorkflowDisplay extends Display {
                 			l.selected(findJadiceNode(item));
 	                }
             	} catch (Exception e) {
-            		e.printStackTrace();
+            	  LOGGER.error("Error in workflow display", e);
             	}
                 visualization.run("draw");
             }

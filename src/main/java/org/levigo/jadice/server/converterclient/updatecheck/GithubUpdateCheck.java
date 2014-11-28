@@ -72,32 +72,28 @@ class GithubUpdateCheck implements UpdateCheckResult {
   }
 
   public String getLatestVersionNumber() {
-    if (releases == null) {
-      throw new IllegalStateException("checkForUpdates() must be called first");
-    }
-    return extractVersionNumber(releases.get(releases.size() - 1).name);
+    return extractVersionNumber(getLatestRelease().name);
   }
 
+
   public String getLatestReleaseNotes() {
-    if (releases == null) {
-      throw new IllegalStateException("checkForUpdates() must be called first");
-    }
-    return releases.get(releases.size() - 1).body;
+    return getLatestRelease().body;
   }
 
   public URL getLatestDownloadURL() {
-    if (releases == null) {
-      throw new IllegalStateException("checkForUpdates() must be called first");
-    }
-    return releases.get(releases.size() - 1).assets.get(0).browserDownloadUrl;
+    return getLatestRelease().assets.get(0).browserDownloadUrl;
   }
 
   @Override
   public URL getLatestReleaseURL() {
+    return getLatestRelease().htmlUrl;
+  }
+  
+  private Release getLatestRelease() {
     if (releases == null) {
       throw new IllegalStateException("checkForUpdates() must be called first");
     }
-    return releases.get(releases.size() - 1).htmlUrl;
+    return releases.get(releases.size() - 1);
   }
 
   public String getCurrentVersionNumber() {
@@ -163,16 +159,4 @@ class GithubUpdateCheck implements UpdateCheckResult {
     // All digits are equal -> no newer version available
     return false;
   };
-
-  public static void main(String[] args) throws Exception {
-    final GithubUpdateCheck check = new GithubUpdateCheck();
-    check.checkForUpdates();
-    LOGGER.info("Aktuelle Versionummer: " + check.getCurrentVersionNumber());
-    LOGGER.info("Letzte Versionsnummer: " + check.getLatestVersionNumber());
-    LOGGER.info("Neuere Version vorhanden? " + check.isNewerVersionAvailable());
-    LOGGER.info("Beschreibung: " + check.getLatestReleaseNotes());
-    LOGGER.info("DownloadURL: " + check.getLatestDownloadURL());
-    LOGGER.info("DescriptionURL: " + check.getLatestReleaseURL());
-  }
-
 }

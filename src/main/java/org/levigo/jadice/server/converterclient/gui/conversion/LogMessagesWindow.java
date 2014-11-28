@@ -20,12 +20,15 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import org.apache.log4j.Logger;
 import org.levigo.jadice.server.converterclient.JobCard;
 import org.levigo.jadice.server.converterclient.LogMessage;
 
 import com.levigo.jadice.server.Node;
 
 public class LogMessagesWindow {
+  
+  private static final Logger LOGGER = Logger.getLogger(LogMessagesWindow.class);
 
   private static SoftReference<LogMessagesWindow> INSTANCE;
   
@@ -152,7 +155,7 @@ public class LogMessagesWindow {
         tabPane.getTabs().add(tab);
         tabPane.getSelectionModel().select(tab);
       } catch (IOException e) {
-        e.printStackTrace();
+        LOGGER.error("Could not create Log Message Tab", e);
       }
     } else {
       tabPane.getSelectionModel().select(existingTabs.get(0));

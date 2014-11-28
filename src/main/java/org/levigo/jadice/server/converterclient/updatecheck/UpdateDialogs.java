@@ -2,11 +2,14 @@ package org.levigo.jadice.server.converterclient.updatecheck;
 
 import java.awt.Desktop;
 
+import org.apache.log4j.Logger;
 import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.DialogAction;
 import org.controlsfx.dialog.Dialogs;
 
 public final class UpdateDialogs {
+  
+  private static final Logger LOGGER = Logger.getLogger(UpdateDialogs.class);
 
   private UpdateDialogs() {
     // Utility class -> hidden constr.
@@ -24,7 +27,8 @@ public final class UpdateDialogs {
       try {
         Desktop.getDesktop().browse(result.getLatestReleaseURL().toURI());
       } catch (Exception e) {
-        e.printStackTrace();
+        LOGGER.error("Could not open download page", e);
+        showUpdateErrorDialog(e);
       }
     }))//
     .showInformation();

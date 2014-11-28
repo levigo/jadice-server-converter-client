@@ -103,8 +103,6 @@ public class JobCard implements Runnable, JobListener, StreamListener {
 
   @Override
   public void executionFailed(Job job, Node node, String messageId, String reason, Throwable cause) {
-    if (cause != null)
-      cause.printStackTrace();
     addLogMessage(new LogMessage(new Date(), Type.FATAL, node, messageId, reason, cause));
   }
 
@@ -194,7 +192,8 @@ public class JobCard implements Runnable, JobListener, StreamListener {
           LOGGER.info("Copied result to " + file.getCanonicalPath());
           results.add(file);
         } catch (Exception e) {
-          e.printStackTrace();
+          LOGGER.error("Could save conversion result", e);
+          addLogMessage(new LogMessage(new Date(), Type.ERROR, null, null, "Could not save conversion result", e));
         } finally {
           copiesInProgress.decrementAndGet();
           try {

@@ -1,5 +1,6 @@
 package org.levigo.jadice.server.converterclient.gui;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +30,22 @@ public class Icons {
   }
   
   private static Image[] loadIcons() {
-    LOGGER.debug("Loading window icons");
+    LOGGER.info("Loading window icons");
     List<Image> result = new ArrayList<>();
     for (String s : ICON_RESSOURCES) {
-      result.add(new Image(Icons.class.getResourceAsStream(s)));
-    }
+      LOGGER.debug("Loading window icon " + s);
+      final InputStream is = Icons.class.getResourceAsStream(s);
+      if (is == null) {
+        LOGGER.error("Could not load icon '" + s  + "'. Resource is not available!");
+        continue;
+      }
+      final Image image = new Image(is);
+      if (image.getWidth() == 0 || image.getHeight() == 0) {
+        LOGGER.error("Could not load icon '" + s + "'. Resource is not a valid image!");
+      }
+      LOGGER.debug("Loaded window icon successfully");
+      result.add(image);
+  }
     return result.toArray(new Image[0]);
   }
 

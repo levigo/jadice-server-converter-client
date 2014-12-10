@@ -17,7 +17,8 @@ public class Icons {
     "/icons/jadice_server_24x24.png", //
     "/icons/jadice_server_32x32.png", //
     "/icons/jadice_server_48x48.png", //
-    "/icons/jadice_server_64x64.png" //
+    "/icons/jadice_server_64x64.png", //
+    "/icons/jadice_server_256x256.png" //
   };
   
   private static Image[] icons;

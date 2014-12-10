@@ -8,7 +8,6 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
@@ -53,8 +52,6 @@ public class ConverterClientApplication extends Application {
   
   private static ConverterClientApplication instance;
 
-  private Image windowIcon = new Image(getClass().getResourceAsStream("/jadice-server.png"));
-  
   public static ConverterClientApplication getInstance() {
     return instance;
   }
@@ -75,7 +72,7 @@ public class ConverterClientApplication extends Application {
     stage.setScene(scene);
     stage.show();
     stage.setTitle(String.format(APPLICATION_TITLE, API_VERSION == null ? "" : API_VERSION));
-    stage.getIcons().add(windowIcon);
+    stage.getIcons().addAll(Icons.getAllIcons());
     
     stage.setOnCloseRequest(event -> {
       JobCardScheduler.getInstance().shutdown();

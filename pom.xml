@@ -114,7 +114,7 @@
               <headerType>gui</headerType>
               <outfile>target/${project.artifactId}-${project.version}.exe</outfile>
               <jar>target/${project.artifactId}-${project.version}-shaded.jar</jar>
-               <icon>${basedir}/src/main/resources/jadice-server.ico</icon>
+               <icon>${basedir}/src/main/resources/icons/jadice-server.ico</icon>
               <cmdLine>-gui</cmdLine>
               <customProcName>true</customProcName>
               <classPath>

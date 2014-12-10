@@ -12,7 +12,7 @@ public class Icons {
   
   private static final Logger LOGGER = Logger.getLogger(Icons.class);
   
-  private static final String[] ICON_RESSOURCES = new String[] {
+  private static final String[] ICON_RESOURCES = new String[] {
     "/icons/jadice_server_16x16.png", //
     "/icons/jadice_server_24x24.png", //
     "/icons/jadice_server_32x32.png", //
@@ -32,7 +32,7 @@ public class Icons {
   private static Image[] loadIcons() {
     LOGGER.info("Loading window icons");
     List<Image> result = new ArrayList<>();
-    for (String s : ICON_RESSOURCES) {
+    for (String s : ICON_RESOURCES) {
       LOGGER.debug("Loading window icon " + s);
       final InputStream is = Icons.class.getResourceAsStream(s);
       if (is == null) {

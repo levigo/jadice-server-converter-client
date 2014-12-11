@@ -170,7 +170,7 @@ public class JobCard implements Runnable, JobListener, StreamListener {
       @Override
       public void run() {
         try {
-          Analyzer al = Analyzer.getInstance("/magic-all.xml");
+          Analyzer al = Analyzer.getInstance("/magic.xml");
           UncloseableSeekableInputStreamWrapper usis = new UncloseableSeekableInputStreamWrapper(stream.getInputStream());
           Map<String, Object> alResults;
           try {

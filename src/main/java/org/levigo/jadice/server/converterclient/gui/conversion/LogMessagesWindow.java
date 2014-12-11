@@ -16,13 +16,13 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import org.apache.log4j.Logger;
 import org.levigo.jadice.server.converterclient.JobCard;
 import org.levigo.jadice.server.converterclient.LogMessage;
+import org.levigo.jadice.server.converterclient.gui.Icons;
 
 import com.levigo.jadice.server.Node;
 
@@ -32,8 +32,6 @@ public class LogMessagesWindow {
 
   private static SoftReference<LogMessagesWindow> INSTANCE;
   
-  private final Image windowIcon = new Image(getClass().getResourceAsStream("/jadice-server.png"));
-
   private final Stage stage;
   
   private final TabPane tabPane;
@@ -43,7 +41,7 @@ public class LogMessagesWindow {
     this.stage = new Stage();
     stage.setTitle("Log Messages");
     stage.setScene(new Scene(tabPane, 800, 600));
-    stage.getIcons().add(windowIcon);
+    stage.getIcons().addAll(Icons.getAllIcons());
     stage.getScene().getStylesheets().add("css/MessageColors.css");
 
     tabPane.getTabs().addListener((ListChangeListener<Tab>) evt -> {

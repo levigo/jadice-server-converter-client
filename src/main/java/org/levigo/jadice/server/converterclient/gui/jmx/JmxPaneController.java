@@ -1,10 +1,11 @@
 package org.levigo.jadice.server.converterclient.gui.jmx;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -19,7 +20,7 @@ import org.levigo.jadice.server.converterclient.gui.jmx.JMXHandler.ConnectionSta
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 
-public class JmxPane extends BorderPane {
+public class JmxPaneController implements Initializable {
   
   private class MyCallbackHandler implements CallbackHandler {
 
@@ -70,6 +71,9 @@ public class JmxPane extends BorderPane {
     }
 
   }
+  
+  @FXML
+  private BorderPane pane;
     
   @FXML
   private Button home;
@@ -94,20 +98,8 @@ public class JmxPane extends BorderPane {
   
   private final JMXHandler jmxHandler = new JMXHandler(new MyCallbackHandler());
   
-
-  public JmxPane() {
-    
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/JmxPane.fxml"));
-
-    fxmlLoader.setRoot(this);
-    fxmlLoader.setController(this);
-
-    try {
-      fxmlLoader.load();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
     UiUtil.configureHomeButton(home);
     initConnectionPane();
 
@@ -117,7 +109,7 @@ public class JmxPane extends BorderPane {
   private void forceEagerRendering() {
     // The JMX pane needs some time to init when rendered first,
     // so we force this eagerly
-    final Scene dummy = new Scene(this);
+    final Scene dummy = new Scene(pane);
     dummy.snapshot(null);
     dummy.setRoot(new Group());
   }
@@ -178,5 +170,4 @@ public class JmxPane extends BorderPane {
       });
     });
   }
-
 }

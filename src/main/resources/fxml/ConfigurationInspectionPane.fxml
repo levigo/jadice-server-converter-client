@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root prefHeight="493.0" prefWidth="775.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="493.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.levigo.jadice.server.converterclient.gui.inspector.ConfigurationInspectorPaneController">
 <top>
 <VBox>
 <children><FlowPane styleClass="label-top">
@@ -46,4 +46,4 @@
     <org.controlsfx.control.PropertySheet fx:id="propertySheet" modeSwitcherVisible="false" prefHeight="200.0" prefWidth="200.0" searchBoxVisible="false" />
   </detailNode>
 </org.controlsfx.control.MasterDetailPane>
-</center></fx:root>
+</center></BorderPane>

@@ -19,7 +19,7 @@ import javafx.util.Duration;
 import org.levigo.jadice.server.converterclient.JobCard;
 import org.levigo.jadice.server.converterclient.JobCardScheduler;
 import org.levigo.jadice.server.converterclient.gui.conversion.ConversionPane;
-import org.levigo.jadice.server.converterclient.gui.inspector.ConfigurationInspectorPane;
+import org.levigo.jadice.server.converterclient.gui.inspector.ConfigurationInspectorPaneController;
 import org.levigo.jadice.server.converterclient.gui.jmx.JmxPane;
 import org.levigo.jadice.server.converterclient.gui.options.OptionsPane;
 import org.levigo.jadice.server.converterclient.gui.serverlog.LogPane;
@@ -43,7 +43,9 @@ public class ConverterClientApplication extends Application {
 
   private final JmxPane jmxPane = new JmxPane();
   
-  private final ConfigurationInspectorPane inspectorPane = new ConfigurationInspectorPane();
+  private final Pane inspectorPane;
+  
+  private final ConfigurationInspectorPaneController inspectorPaneController;
   
   private final OptionsPane optionsPane = new OptionsPane();
   
@@ -60,6 +62,9 @@ public class ConverterClientApplication extends Application {
   public ConverterClientApplication() throws IOException {
     instance = this;
     aboutPane = FXMLLoader.load(getClass().getResource("/fxml/AboutPane.fxml"));
+    final FXMLLoader inspectorLoader = new FXMLLoader();
+    inspectorPane = inspectorLoader.load(getClass().getResourceAsStream("/fxml/ConfigurationInspectionPane.fxml"));
+    inspectorPaneController = inspectorLoader.getController();
   }
 
   @Override
@@ -114,7 +119,7 @@ public class ConverterClientApplication extends Application {
 
   public void openInspector(JobCard jobCard) {
     displayPanel(inspectorPane);
-    inspectorPane.showGraph(jobCard);
+    inspectorPaneController.showGraph(jobCard);
   }
   
   public void openMenu() {

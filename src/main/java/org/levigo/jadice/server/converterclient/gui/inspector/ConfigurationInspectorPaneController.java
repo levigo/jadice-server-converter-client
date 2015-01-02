@@ -1,13 +1,14 @@
 package org.levigo.jadice.server.converterclient.gui.inspector;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.ComboBoxListCell;
@@ -33,9 +34,9 @@ import com.levigo.jadice.server.Node;
 import com.levigo.jadice.server.client.JobFactory;
 import com.levigo.jadice.server.client.jms.JMSJobFactory;
 
-public class ConfigurationInspectorPane extends BorderPane implements NodeSelectionListener {
+public class ConfigurationInspectorPaneController implements NodeSelectionListener, Initializable {
 
-	private static final Logger LOGGER = Logger.getLogger(ConfigurationInspectorPane.class);
+	private static final Logger LOGGER = Logger.getLogger(ConfigurationInspectorPaneController.class);
 	
 	@FXML
 	private ComboBox<WorkflowConfiguration> configurations;
@@ -60,19 +61,11 @@ public class ConfigurationInspectorPane extends BorderPane implements NodeSelect
 	
 	private final WorkflowDisplay display = new WorkflowDisplay();
 	
-	private final JobFactory dummyJobFactory;
+	private final JobFactory dummyJobFactory = initDummyJobFactory();
 	
-	public ConfigurationInspectorPane() {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ConfigurationInspectionPane.fxml"));
-
-    fxmlLoader.setRoot(this);
-    fxmlLoader.setController(this);
-
-    try {
-      fxmlLoader.load();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+	
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
     UiUtil.configureHomeButton(home);
     initConfigurationCB();
 		
@@ -92,8 +85,6 @@ public class ConfigurationInspectorPane extends BorderPane implements NodeSelect
     });
     display.addSelectionListener(this);
 
-    dummyJobFactory = initDummyJobFactory();
-    
     displayPane.setCenter(new ComponentWrapper<>(display));
     
     masterDetailPane.showDetailNodeProperty().bind(new SimpleListProperty<>(propertySheet.getItems()).emptyProperty().not());
@@ -173,5 +164,4 @@ public class ConfigurationInspectorPane extends BorderPane implements NodeSelect
 	    propertySheet.getItems().addAll(properties);
 	  }) ; 
 	}
-
 }

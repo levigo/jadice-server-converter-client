@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleListProperty;
@@ -18,6 +20,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
@@ -53,9 +56,9 @@ import com.levigo.jadice.server.util.Util;
 import de.jensd.fx.fontawesome.AwesomeDude;
 import de.jensd.fx.fontawesome.AwesomeIcon;
 
-public class ConversionPane extends BorderPane {
+public class ConversionPaneController implements Initializable {
 
-  private static final Logger LOGGER = Logger.getLogger(ConversionPane.class);
+  private static final Logger LOGGER = Logger.getLogger(ConversionPaneController.class);
 
   private static final AwesomeIcon ABORT_ICON = AwesomeIcon.BAN;
   private static final AwesomeIcon OPEN_ICON = AwesomeIcon.FOLDER_ALTPEN;
@@ -63,6 +66,9 @@ public class ConversionPane extends BorderPane {
   private static final AwesomeIcon REMOVE_ICON = AwesomeIcon.REMOVE;
   private static final AwesomeIcon RETRY_ICON = AwesomeIcon.REPEAT;
   private static final AwesomeIcon INSPECTOR_ICON = AwesomeIcon.SEARCH;
+  
+  @FXML
+  private BorderPane pane;
 
   @FXML
   private ComboBox<String> servers;
@@ -118,18 +124,8 @@ public class ConversionPane extends BorderPane {
   // Open subsequent FileChoosers at the last location
   private File lastDir = new File(".");
 
-  public ConversionPane() {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/ConversionPane.fxml"));
-
-    fxmlLoader.setRoot(this);
-    fxmlLoader.setController(this);
-
-    try {
-      fxmlLoader.load();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
     jobTable.getStylesheets().add("css/MessageColors.css");
 
     UiUtil.configureHomeButton(home);
@@ -140,14 +136,14 @@ public class ConversionPane extends BorderPane {
   }
 
   private void initDnD() {
-    setOnDragOver(event -> {
+    pane.setOnDragOver(event -> {
       if (event.getDragboard().hasFiles() && event.getGestureSource() != jobTable) {
         event.acceptTransferModes(TransferMode.ANY);
       }
       event.consume();
     });
 
-    setOnDragDropped(event -> {
+    pane.setOnDragDropped(event -> {
       final Dragboard db = event.getDragboard();
       boolean success = false;
       if (db.hasFiles() && event.getGestureSource() != jobTable) {
@@ -208,7 +204,7 @@ public class ConversionPane extends BorderPane {
     startConversion.setOnAction(event -> {
       FileChooser chooser = new FileChooser();
       chooser.setInitialDirectory(lastDir);
-      final List<File> selected = chooser.showOpenMultipleDialog(getScene().getWindow());
+      final List<File> selected = chooser.showOpenMultipleDialog(pane.getScene().getWindow());
       if (selected != null) {
         lastDir = selected.get(0).getParentFile();
         try {
@@ -527,7 +523,7 @@ public class ConversionPane extends BorderPane {
       final FileChooser fc = new FileChooser();
       fc.setInitialDirectory(lastSaveDir);
       fc.setInitialFileName(file.getName());
-      final File resultFile = fc.showSaveDialog(getScene().getWindow());
+      final File resultFile = fc.showSaveDialog(pane.getScene().getWindow());
       if (resultFile != null) {
         lastSaveDir = resultFile.getParentFile();
         try {

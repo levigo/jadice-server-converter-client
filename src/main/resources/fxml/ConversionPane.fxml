@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root prefHeight="493.0" prefWidth="775.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="pane" prefHeight="493.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.levigo.jadice.server.converterclient.gui.conversion.ConversionPaneController">
 <top>
 <VBox>
 <children><FlowPane styleClass="label-top">
@@ -54,4 +54,4 @@
 </bottom>
 <padding>
 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-</padding></fx:root>
+</padding></BorderPane>

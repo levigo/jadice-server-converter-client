@@ -1,6 +1,7 @@
 package org.levigo.jadice.server.converterclient.gui;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -11,7 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Tooltip;
@@ -30,7 +31,10 @@ import de.jensd.fx.fontawesome.AwesomeDude;
 import de.jensd.fx.fontawesome.AwesomeIcon;
 
 
-public class MetroMenuPane extends BorderPane {
+public class MetroMenuPaneController implements Initializable {
+  
+  @FXML
+  BorderPane pane;
   
   @FXML
   Button conversion;
@@ -62,57 +66,20 @@ public class MetroMenuPane extends BorderPane {
   @FXML
   Button update;
   
-  
   private static final String ICON_SIZE = "160px";
   
   private static final String ICON_SIZE_SMALL = "20px";
   
-  public MetroMenuPane() {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/MetroMenuPane.fxml"));
-    fxmlLoader.setRoot(this);
-    fxmlLoader.setController(this);
-
-    try {
-      fxmlLoader.load();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    initIconButtons();
-  }
-  
-  protected void hideBottomBar() {
-    final TranslateTransition translateOut = new TranslateTransition(Duration.millis(80), bottomBar);
-    // Move buttons out at the bottom of the window
-    translateOut.setFromY(0);
-    translateOut.setToY(bottomBar.getHeight());
-    
-    // Caveat: the whole panel is moving concurrently from right to left, so animate in opposite direction
-    translateOut.setFromX(0);
-    translateOut.setToX(getScene().getWidth() / 2);
-    translateOut.play();
-  }
-  
-  protected void showBottomBar() {
-    final TranslateTransition translateIn = new TranslateTransition(Duration.millis(80), bottomBar);
-    translateIn.setToY(0);
-    translateIn.setFromY(bottomBar.getHeight());
-
-    // See comment in hideBottomBar!
-    translateIn.setFromX(getScene().getWidth() / 2);
-    translateIn.setToX(0);
-    
-    translateIn.play();
-  }
-  
-  private void initIconButtons() {
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
     initIconButton(conversion, AwesomeIcon.GEARS, evt -> ConverterClientApplication.getInstance().openConversion());
     initIconButton(serverLog, AwesomeIcon.TASKS, evt -> ConverterClientApplication.getInstance().openServerLog());
     initIconButton(jmx, AwesomeIcon.AREA_CHART, evt -> ConverterClientApplication.getInstance().openJMX());
     initIconButton(inspector, AwesomeIcon.SEARCH, evt -> ConverterClientApplication.getInstance().openInspector());
     initSmallIconButton(options, AwesomeIcon.SLIDERS, evt -> ConverterClientApplication.getInstance().openOptions());
     initSmallIconButton(about, AwesomeIcon.INFO, evt -> ConverterClientApplication.getInstance().openAbout());
-    initSmallIconButton(fullscreen, AwesomeIcon.EXPAND, evt -> {((Stage)getScene().getWindow()).setFullScreen(true);});
-    initSmallIconButton(exitFullscreen, AwesomeIcon.COMPRESS, evt -> {((Stage)getScene().getWindow()).setFullScreen(false);});
+    initSmallIconButton(fullscreen, AwesomeIcon.EXPAND, evt -> {((Stage)pane.getScene().getWindow()).setFullScreen(true);});
+    initSmallIconButton(exitFullscreen, AwesomeIcon.COMPRESS, evt -> {((Stage)pane.getScene().getWindow()).setFullScreen(false);});
     initSmallIconButton(update, AwesomeIcon.BULLHORN, evt -> {
       final UpdateCheckResult result = UpdateService.getInstance().getValue();
       if (result != null && result.isNewerVersionAvailable()) {
@@ -125,15 +92,39 @@ public class MetroMenuPane extends BorderPane {
     
     bindVisibility();
   }
+  
+  protected void hideBottomBar() {
+    final TranslateTransition translateOut = new TranslateTransition(Duration.millis(80), bottomBar);
+    // Move buttons out at the bottom of the window
+    translateOut.setFromY(0);
+    translateOut.setToY(bottomBar.getHeight());
+    
+    // Caveat: the whole panel is moving concurrently from right to left, so animate in opposite direction
+    translateOut.setFromX(0);
+    translateOut.setToX(pane.getScene().getWidth() / 2);
+    translateOut.play();
+  }
+  
+  protected void showBottomBar() {
+    final TranslateTransition translateIn = new TranslateTransition(Duration.millis(80), bottomBar);
+    translateIn.setToY(0);
+    translateIn.setFromY(bottomBar.getHeight());
 
+    // See comment in hideBottomBar!
+    translateIn.setFromX(pane.getScene().getWidth() / 2);
+    translateIn.setToX(0);
+    
+    translateIn.play();
+  }
+  
   private void bindVisibility() {
     Platform.runLater(() -> {
-      if (getScene() == null || getScene().getWindow() == null) {
+      if (pane.getScene() == null || pane.getScene().getWindow() == null) {
         // Re-try it later
         bindVisibility();
         return;
       }
-      final ReadOnlyBooleanProperty fullScreenProperty = ((Stage) getScene().getWindow()).fullScreenProperty();
+      final ReadOnlyBooleanProperty fullScreenProperty = ((Stage) pane.getScene().getWindow()).fullScreenProperty();
       
       fullscreen.visibleProperty().bind(fullScreenProperty.not());
       fullscreen.managedProperty().bind(fullScreenProperty.not());

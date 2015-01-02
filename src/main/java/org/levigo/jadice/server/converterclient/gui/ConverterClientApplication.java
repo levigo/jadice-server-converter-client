@@ -32,7 +32,9 @@ public class ConverterClientApplication extends Application {
       : JobFactory.class.getPackage().getImplementationVersion();
   
   
-  private final MetroMenuPane menu = new MetroMenuPane();
+  private final Pane menu;
+  
+  private final MetroMenuPaneController menuController;
   
   private final Pane conversionPane;
   
@@ -62,6 +64,10 @@ public class ConverterClientApplication extends Application {
     conversionPane = FXMLLoader.load(getClass().getResource("/fxml/ConversionPane.fxml"));
     jmxPane = FXMLLoader.load(getClass().getResource("/fxml/JmxPane.fxml"));
     serverlogPane = FXMLLoader.load(getClass().getResource("/fxml/LogPane.fxml"));
+    
+    final FXMLLoader menuLoader = new FXMLLoader();
+    menu = menuLoader.load(getClass().getResourceAsStream("/fxml/MetroMenuPane.fxml"));
+    menuController = menuLoader.getController();
 
     final FXMLLoader inspectorLoader = new FXMLLoader();
     inspectorPane = inspectorLoader.load(getClass().getResourceAsStream("/fxml/ConfigurationInspectionPane.fxml"));
@@ -169,7 +175,7 @@ public class ConverterClientApplication extends Application {
     final ParallelTransition parallelOut = new ParallelTransition(fadeOut, translateOut);
     parallelOut.play();
     if (oldPanel == menu) {
-      menu.hideBottomBar();
+      menuController.hideBottomBar();
     }
 
     parallelOut.setOnFinished(evt -> {
@@ -184,7 +190,7 @@ public class ConverterClientApplication extends Application {
       final ParallelTransition parallelIn = new ParallelTransition(fadeIn, translateIn);
       parallelIn.play();
       if (newPanel == menu) {
-        menu.showBottomBar();
+        menuController.showBottomBar();
       }
     });
     

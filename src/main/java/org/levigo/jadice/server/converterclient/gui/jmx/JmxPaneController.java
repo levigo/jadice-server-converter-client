@@ -55,6 +55,7 @@ public class JmxPaneController implements Initializable {
       Platform.runLater(() -> {
         gauges.connectionFailed();
         Dialogs.create()
+          .owner(connect)
           .styleClass(Dialog.STYLE_CLASS_NATIVE)
           .title("Error")
           .message("Could not connect to JMX")

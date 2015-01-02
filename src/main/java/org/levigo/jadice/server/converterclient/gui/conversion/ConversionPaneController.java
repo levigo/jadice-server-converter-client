@@ -532,6 +532,7 @@ public class ConversionPaneController implements Initializable {
         } catch (IOException e) {
           LOGGER.error("Could not save " + resultFile.getName(), e);
           Dialogs.create()
+            .owner(pane)
             .styleClass(Dialog.STYLE_CLASS_NATIVE)
             .title("Error")
             .message("Could not save file as " + resultFile.getAbsolutePath())

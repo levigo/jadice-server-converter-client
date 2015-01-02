@@ -1,11 +1,12 @@
 package org.levigo.jadice.server.converterclient.gui.options;
 
 import java.io.File;
-import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
@@ -13,7 +14,6 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 
@@ -26,7 +26,7 @@ import org.levigo.jadice.server.converterclient.util.FilenameGenerator;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 
-public class OptionsPane extends BorderPane {
+public class OptionsPaneController implements Initializable {
   
   @FXML
   private Button home;
@@ -94,17 +94,8 @@ public class OptionsPane extends BorderPane {
   @FXML
   private Button restoreDefaults;
   
-  public OptionsPane() {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/OptionsPane.fxml"));
-
-    fxmlLoader.setRoot(this);
-    fxmlLoader.setController(this);
-
-    try {
-      fxmlLoader.load();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
     UiUtil.configureHomeButton(home);
     initValueBindings();
     initButtonBindings();
@@ -126,7 +117,7 @@ public class OptionsPane extends BorderPane {
       if (f.exists() && f.isDirectory()) {
         dirChooser.setInitialDirectory(f);
       }
-      final File selectedDirectory = dirChooser.showDialog(getScene().getWindow());
+      final File selectedDirectory = dirChooser.showDialog(changeResultsFolder.getScene().getWindow());
       if (selectedDirectory != null) {
         Preferences.resultFolderProperty().setValue(selectedDirectory);
       }
@@ -195,5 +186,4 @@ public class OptionsPane extends BorderPane {
     checkUpdatesOnStart.setSelected(policy == UpdatePolicy.ON_EVERY_START);
     neverCheckUpdates.setSelected(policy == UpdatePolicy.NEVER);
   }
-
 } 

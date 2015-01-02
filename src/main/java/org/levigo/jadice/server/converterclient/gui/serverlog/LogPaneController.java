@@ -1,9 +1,10 @@
 package org.levigo.jadice.server.converterclient.gui.serverlog;
 
-import java.io.IOException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -12,13 +13,12 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.BorderPane;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -36,9 +36,9 @@ import org.levigo.jadice.server.converterclient.util.UiUtil;
 import com.levigo.jadice.server.util.Util;
 
 
-public class LogPane extends BorderPane implements MessageListener {
+public class LogPaneController implements MessageListener, Initializable {
   
-  private static final Logger LOGGER = Logger.getLogger(LogPane.class);
+  private static final Logger LOGGER = Logger.getLogger(LogPaneController.class);
   
   @FXML
   private Button home;
@@ -76,25 +76,12 @@ public class LogPane extends BorderPane implements MessageListener {
   @FXML
   private TableColumn<LoggingEvent, String> stacktrace;
 
-  public LogPane() {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/LogPane.fxml"));
-
-    fxmlLoader.setRoot(this);
-    fxmlLoader.setController(this);
-
-    try {
-      fxmlLoader.load();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    
-    UiUtil.configureHomeButton(home);
-    init();
-  }
-  
   ObjectProperty<Subscription> subscription = new SimpleObjectProperty<>();
 
-  private void init() {
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    UiUtil.configureHomeButton(home);
+
     logMessages.setItems(FXCollections.observableArrayList());
     timestamp.setCellValueFactory(cell -> 
       new SimpleStringProperty(new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(cell.getValue().getTimeStamp())))
@@ -123,7 +110,7 @@ public class LogPane extends BorderPane implements MessageListener {
         } catch (Exception e) {
           LOGGER.error("Connection Error", e);
           Dialogs.create()
-            .owner(LogPane.this)
+            .owner(subscribe)
             .styleClass(Dialog.STYLE_CLASS_NATIVE)
             .title("Connection Error")
             .message("Cannot subscribe to server log")

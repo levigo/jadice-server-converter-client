@@ -20,7 +20,6 @@ import org.levigo.jadice.server.converterclient.JobCard;
 import org.levigo.jadice.server.converterclient.JobCardScheduler;
 import org.levigo.jadice.server.converterclient.gui.inspector.ConfigurationInspectorPaneController;
 import org.levigo.jadice.server.converterclient.gui.options.OptionsPane;
-import org.levigo.jadice.server.converterclient.gui.serverlog.LogPane;
 
 import com.levigo.jadice.server.client.JobFactory;
 
@@ -37,7 +36,7 @@ public class ConverterClientApplication extends Application {
   
   private final Pane conversionPane;
   
-  private final LogPane serverlogPane = new LogPane();
+  private final Pane serverlogPane;
 
   private final Pane jmxPane;
   
@@ -62,7 +61,7 @@ public class ConverterClientApplication extends Application {
     aboutPane = FXMLLoader.load(getClass().getResource("/fxml/AboutPane.fxml"));
     conversionPane = FXMLLoader.load(getClass().getResource("/fxml/ConversionPane.fxml"));
     jmxPane = FXMLLoader.load(getClass().getResource("/fxml/JmxPane.fxml"));
-
+    serverlogPane = FXMLLoader.load(getClass().getResource("/fxml/LogPane.fxml"));
 
     final FXMLLoader inspectorLoader = new FXMLLoader();
     inspectorPane = inspectorLoader.load(getClass().getResourceAsStream("/fxml/ConfigurationInspectionPane.fxml"));

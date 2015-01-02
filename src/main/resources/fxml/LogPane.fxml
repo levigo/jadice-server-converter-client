@@ -5,7 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root prefHeight="493.0" prefWidth="775.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="493.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.levigo.jadice.server.converterclient.gui.serverlog.LogPaneController">
 <top>
 <VBox>
 <children><FlowPane styleClass="label-top">
@@ -34,4 +34,4 @@
     <TableColumn fx:id="level" prefWidth="79.0" text="Level" /><TableColumn fx:id="ndc" prefWidth="99.0" text="Nested Diagnostic Context" /><TableColumn fx:id="logger" minWidth="0.0" prefWidth="79.0" text="Logger" /><TableColumn fx:id="message" prefWidth="187.0" text="Message" /><TableColumn fx:id="stacktrace" prefWidth="94.0" text="Stacktrace" />
   </columns>
 </TableView>
-</center></fx:root>
+</center></BorderPane>

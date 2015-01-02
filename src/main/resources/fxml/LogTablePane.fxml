@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.levigo.jadice.server.converterclient.gui.conversion.LogMessagesWindow$Controller">
 <center><TableView fx:id="logTable" prefHeight="230.0" prefWidth="800.0" BorderPane.alignment="CENTER">
   <columns>
     <TableColumn fx:id="timestamp" minWidth="140.0" prefWidth="145.0" text="Time" />

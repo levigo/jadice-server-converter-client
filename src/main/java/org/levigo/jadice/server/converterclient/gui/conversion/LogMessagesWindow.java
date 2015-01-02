@@ -2,7 +2,9 @@ package org.levigo.jadice.server.converterclient.gui.conversion;
 
 import java.io.IOException;
 import java.lang.ref.SoftReference;
+import java.net.URL;
 import java.text.DateFormat;
+import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,6 +12,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -65,7 +68,7 @@ public class LogMessagesWindow {
     return f;
   }
   
-  private static class Controller {
+  public static class Controller implements Initializable {
     @FXML
     TableView<LogMessage> logTable;
     
@@ -87,7 +90,8 @@ public class LogMessagesWindow {
     @FXML
     TableColumn<LogMessage, Throwable> cause;
     
-    public void init() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
       timestamp.setCellValueFactory(row -> {
         return new SimpleStringProperty(DateFormat.getDateTimeInstance().format(row.getValue().timestamp));
       });
@@ -142,14 +146,12 @@ public class LogMessagesWindow {
     if (existingTabs.isEmpty()) {
       try {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/LogTablePane.fxml"));
-        final Controller controller = new Controller();
-        fxmlLoader.setController(controller);
         BorderPane root = fxmlLoader.load();
+        final Controller controller = fxmlLoader.getController();
         
         controller.logTable.setItems(jc.getLogMessages());
         final Tab tab = new Tab(jc.job.getUUID());
         tab.setContent(root);
-        controller.init();
         tabPane.getTabs().add(tab);
         tabPane.getSelectionModel().select(tab);
       } catch (IOException e) {

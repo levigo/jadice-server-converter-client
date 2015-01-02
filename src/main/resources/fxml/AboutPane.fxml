@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.*?>
 
-<fx:root prefHeight="493.0" prefWidth="775.0" type="javafx.scene.layout.BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="493.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.levigo.jadice.server.converterclient.gui.about.AboutPaneController">
 
 <top>
 	<FlowPane styleClass="label-top">
@@ -52,4 +52,4 @@
 </Tab>
   </tabs>
 </TabPane>
-</center></fx:root>
+</center></BorderPane>

@@ -1,20 +1,20 @@
 package org.levigo.jadice.server.converterclient.gui.about;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.web.WebView;
 
 import org.levigo.jadice.server.converterclient.util.Log4JForwarder;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 
-public class AboutPane extends BorderPane {
+public class AboutPaneController implements Initializable {
   
   @FXML
   private Button home;
@@ -31,18 +31,8 @@ public class AboutPane extends BorderPane {
   @FXML
   private TextArea logView;
 
-
-  public AboutPane() {
-    FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/AboutPane.fxml"));
-
-    fxmlLoader.setRoot(this);
-    fxmlLoader.setController(this);
-
-    try {
-      fxmlLoader.load();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
     UiUtil.configureHomeButton(home);
     loadLicenses();
     initLogView();

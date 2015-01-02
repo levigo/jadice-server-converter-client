@@ -1,11 +1,13 @@
 package org.levigo.jadice.server.converterclient.gui;
 
+import java.io.IOException;
 import java.util.List;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BackgroundFill;
@@ -16,7 +18,6 @@ import javafx.util.Duration;
 
 import org.levigo.jadice.server.converterclient.JobCard;
 import org.levigo.jadice.server.converterclient.JobCardScheduler;
-import org.levigo.jadice.server.converterclient.gui.about.AboutPane;
 import org.levigo.jadice.server.converterclient.gui.conversion.ConversionPane;
 import org.levigo.jadice.server.converterclient.gui.inspector.ConfigurationInspectorPane;
 import org.levigo.jadice.server.converterclient.gui.jmx.JmxPane;
@@ -46,7 +47,7 @@ public class ConverterClientApplication extends Application {
   
   private final OptionsPane optionsPane = new OptionsPane();
   
-  private final AboutPane aboutPane = new AboutPane();
+  private final Pane aboutPane;
   
   private Scene scene;
   
@@ -56,8 +57,9 @@ public class ConverterClientApplication extends Application {
     return instance;
   }
   
-  public ConverterClientApplication() {
+  public ConverterClientApplication() throws IOException {
     instance = this;
+    aboutPane = FXMLLoader.load(getClass().getResource("/fxml/AboutPane.fxml"));
   }
 
   @Override

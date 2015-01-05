@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.levigo.jadice.server.converterclient.configurations.WorkflowConfiguration;
@@ -40,7 +41,7 @@ public class CommandLineConversion {
 	
 	public List<File> runConversion() throws Exception {
 		List<File> result = new ArrayList<File>();
-		JobCard jobCard = JobCardFactory.getInstance().createAndSubmitJobCard(inFile, serverLocation, config);
+		JobCard jobCard = JobCardFactory.getInstance().createAndSubmitJobCard(inFile, serverLocation, config, Collections.emptySet());
 		
 		jobCard.job.waitForTermination(-1);
 		

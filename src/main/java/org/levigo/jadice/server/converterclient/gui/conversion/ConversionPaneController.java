@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -21,6 +22,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
@@ -36,10 +38,13 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 
 import org.apache.log4j.Logger;
+import org.controlsfx.control.PopOver;
+import org.controlsfx.control.PopOver.ArrowLocation;
 import org.controlsfx.dialog.Dialog;
 import org.controlsfx.dialog.Dialogs;
 import org.levigo.jadice.server.converterclient.JobCard;
@@ -51,10 +56,12 @@ import org.levigo.jadice.server.converterclient.gui.OSHelper;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 import com.levigo.jadice.server.Job.State;
+import com.levigo.jadice.server.Limit;
 import com.levigo.jadice.server.util.Util;
 
 import de.jensd.fx.fontawesome.AwesomeDude;
 import de.jensd.fx.fontawesome.AwesomeIcon;
+
 
 public class ConversionPaneController implements Initializable {
 
@@ -78,6 +85,9 @@ public class ConversionPaneController implements Initializable {
 
   @FXML
   private Button startConversion;
+  
+  @FXML
+  private Button applyLimits;
 
   @FXML
   private TableView<JobCard> jobTable;
@@ -120,6 +130,8 @@ public class ConversionPaneController implements Initializable {
 
   @FXML
   private Button openLogMessages;
+  
+  private ApplyLimitsPaneController applyLimitsController;
 
   // Open subsequent FileChoosers at the last location
   private File lastDir = new File(".");
@@ -130,6 +142,7 @@ public class ConversionPaneController implements Initializable {
 
     UiUtil.configureHomeButton(home);
     initJobStartPanel();
+    initApplyLimitsButton();
     initTable();
     initResultButtons();
     initDnD();
@@ -212,6 +225,34 @@ public class ConversionPaneController implements Initializable {
         } catch (Exception e) {
           LOGGER.error("Could not submit job", e);
         }
+      }
+    });
+  }
+
+  private void initApplyLimitsButton() {
+    // TODO: ApplyLimitsPane sauber einbinden
+    Node limits = null;
+    try {
+      final FXMLLoader loader = new FXMLLoader();
+      limits = loader.load(getClass().getResourceAsStream("/fxml/ApplyLimitsPane.fxml"));
+      applyLimitsController = loader.getController();
+    } catch (IOException e) {
+      LOGGER.error("Could not load limits pane", e);
+      ((FlowPane) applyLimits.getParent()).getChildren().remove(applyLimits);
+    }
+    
+    final PopOver p = new PopOver(limits);
+    p.setHideOnEscape(true);
+    p.setAutoHide(true);
+    p.setDetachable(false);
+    p.setArrowLocation(ArrowLocation.TOP_RIGHT);
+
+    AwesomeDude.setIcon(applyLimits, AwesomeIcon.FILTER);
+    applyLimits.setOnAction(event -> {
+      if (p.isShowing()) {
+        p.hide();
+      } else {
+        p.show(applyLimits);
       }
     });
   }
@@ -333,7 +374,7 @@ public class ConversionPaneController implements Initializable {
       AwesomeDude.setIcon(retryItem, RETRY_ICON);
       retryItem.setOnAction(event -> {
         try {
-          JobCardFactory.getInstance().cloneAndSubmitJob(row.getItem(), servers.getValue());
+          JobCardFactory.getInstance().cloneAndSubmitJob(row.getItem(), servers.getValue(), buildJobLimits());
         } catch (Exception e) {
           LOGGER.error("Could not re-submit job", e);
         }
@@ -378,7 +419,7 @@ public class ConversionPaneController implements Initializable {
           // Retry
           for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
             try {
-              JobCardFactory.getInstance().cloneAndSubmitJob(jc, servers.getValue());
+              JobCardFactory.getInstance().cloneAndSubmitJob(jc, servers.getValue(), buildJobLimits());
             } catch (Exception e) {
               LOGGER.error("Could not re-submit job", e);
             }
@@ -499,7 +540,7 @@ public class ConversionPaneController implements Initializable {
 
   public void submitJob(File file) throws Exception {
     if (file.isFile() && file.canRead()) {
-      JobCardFactory.getInstance().createAndSubmitJobCard(file, servers.getValue(), configurations.getValue());
+      JobCardFactory.getInstance().createAndSubmitJobCard(file, servers.getValue(), configurations.getValue(), buildJobLimits());
     } else if (file.isDirectory()) {
       final File[] files = file.listFiles();
       if (files == null || files.length == 0) {
@@ -507,6 +548,10 @@ public class ConversionPaneController implements Initializable {
       }
       submitJob(Arrays.asList(files));
     }
+  }
+
+  private Collection<Limit> buildJobLimits() {
+    return applyLimitsController == null ? Collections.emptySet() : applyLimitsController.buildLimits();
   }
 
 

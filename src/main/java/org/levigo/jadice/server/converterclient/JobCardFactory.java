@@ -25,6 +25,7 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.core.type.filter.AssignableTypeFilter;
 
 import com.levigo.jadice.server.Job;
+import com.levigo.jadice.server.Limit;
 import com.levigo.jadice.server.Node;
 import com.levigo.jadice.server.client.jms.JMSJobFactory;
 import com.levigo.jadice.server.nodes.StreamInputNode;
@@ -102,13 +103,11 @@ public class JobCardFactory {
 
   }
 
-  public JobCard createAndSubmitJobCard(File file, String serverLocation, WorkflowConfiguration config)
-      throws Exception {
-    return createAndSubmitJobCard(Collections.singletonList(file), serverLocation, config);
+  public JobCard createAndSubmitJobCard(File file, String serverLocation, WorkflowConfiguration config, Collection<Limit> jobLimits) throws Exception {
+    return createAndSubmitJobCard(Collections.singletonList(file), serverLocation, config, jobLimits);
   }
 
-
-  public JobCard createAndSubmitJobCard(List<File> files, String serverLocation, WorkflowConfiguration config)
+  public JobCard createAndSubmitJobCard(List<File> files, String serverLocation, WorkflowConfiguration config, Collection<Limit> jobLimits)
       throws Exception {
     if (!Preferences.recentServersProperty().contains(serverLocation)) {
       // Store server URL in history
@@ -119,6 +118,12 @@ public class JobCardFactory {
     // Configure Workflow
     Job job = config.configureWorkflow(jobFactory);
     job.setType(config.getID());
+    
+    if (jobLimits != null) {
+      for (Limit limit : jobLimits) {
+        job.apply(limit);
+      }
+    }
 
     // Sanity check
     Collection<StreamInputNode> inputNodes = findNodes(job, StreamInputNode.class);
@@ -178,8 +183,8 @@ public class JobCardFactory {
     return jobFactory;
   }
 
-  public JobCard cloneAndSubmitJob(JobCard oldJob, String serverLocation) throws Exception {
-    return createAndSubmitJobCard(oldJob.files, serverLocation, oldJob.config);
+  public JobCard cloneAndSubmitJob(JobCard oldJob, String serverLocation, Collection<Limit> jobLimits) throws Exception {
+    return createAndSubmitJobCard(oldJob.files, serverLocation, oldJob.config, jobLimits);
 
   }
 

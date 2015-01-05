@@ -20,7 +20,16 @@
 <padding>
 <Insets left="10.0" top="5.0" />
 </padding></FlowPane><FlowPane alignment="CENTER_LEFT" hgap="5.0">
-<children><ComboBox fx:id="servers" editable="true" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="230.0" promptText="Server URL" /><ComboBox fx:id="configurations" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="350.0" promptText="Workflow" /><Button fx:id="startConversion" defaultButton="true" mnemonicParsing="false" text="Start" />
+<children><ComboBox fx:id="servers" editable="true" maxWidth="Infinity" prefHeight="31.0" prefWidth="230.0" promptText="Server URL" /><ComboBox fx:id="configurations" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="350.0" promptText="Workflow" />
+<Button fx:id="applyLimits">
+    <tooltip>
+        <Tooltip text="Apply Job Limits" />
+    </tooltip>
+</Button>
+<Button fx:id="startConversion" defaultButton="true" mnemonicParsing="false" text="Start">
+<FlowPane.margin>
+<Insets left="10.0" />
+</FlowPane.margin></Button>
 </children>
 <BorderPane.margin>
 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

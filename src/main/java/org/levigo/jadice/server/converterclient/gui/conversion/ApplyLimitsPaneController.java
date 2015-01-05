@@ -100,23 +100,23 @@ public class ApplyLimitsPaneController implements Initializable {
     
     List<Limit> result = new ArrayList<>();
     if (timeLimitCB.isSelected()) {
-      LOGGER.info("Time Limit" + timeLimitValue.getText() + " " + timeLimitUnit.getValue());
+      LOGGER.debug("Apply Time Limit: " + timeLimitValue.getText() + " " + timeLimitUnit.getValue());
       result.add(new TimeLimit(parseLong(timeLimitValue.getText()), timeLimitUnit.getValue()));
     }
     if (streamSizeLimitCB.isSelected()) {
-      LOGGER.info("Stream Size Limit " + streamSizeLimitValue.getText());
+      LOGGER.debug("Apply Stream Size Limit: " + streamSizeLimitValue.getText());
       result.add(new StreamSizeLimit(parseLong(streamSizeLimitValue.getText())));
     }
     if (streamCountLimitCB.isSelected()) {
-      LOGGER.info("Stream Count Limit" + streamCountLimitValue.getText());
+      LOGGER.debug("Apply Stream Count Limit: " + streamCountLimitValue.getText());
       result.add(new StreamCountLimit(parseInt(streamCountLimitValue.getText())));
     }
     if (nodeCountLimitCB.isSelected()) {
-      LOGGER.info("Node Count Limit " + nodeCountLimitValue.getText());
+      LOGGER.debug("Apply Node Count Limit: " + nodeCountLimitValue.getText());
       result.add(new NodeCountLimit(parseInt(nodeCountLimitValue.getText())));
     }
     if (pageCountLimitCB.isSelected()) {
-      LOGGER.info("Page Count Limit " + pageCountLimitValue.getText());
+      LOGGER.debug("Apply Page Count Limit: " + pageCountLimitValue.getText());
       result.add(new PageCountLimit(parseInt(pageCountLimitValue.getText())));
     }
     return result;

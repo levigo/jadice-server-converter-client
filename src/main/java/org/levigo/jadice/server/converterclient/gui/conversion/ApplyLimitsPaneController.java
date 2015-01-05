@@ -105,7 +105,7 @@ public class ApplyLimitsPaneController implements Initializable {
     }
     if (streamSizeLimitCB.isSelected()) {
       LOGGER.info("Stream Size Limit " + streamSizeLimitValue.getText());
-      result.add(new StreamSizeLimit(parseLong(timeLimitValue.getText())));
+      result.add(new StreamSizeLimit(parseLong(streamSizeLimitValue.getText())));
     }
     if (streamCountLimitCB.isSelected()) {
       LOGGER.info("Stream Count Limit" + streamCountLimitValue.getText());

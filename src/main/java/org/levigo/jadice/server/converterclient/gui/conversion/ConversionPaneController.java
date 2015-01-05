@@ -374,7 +374,7 @@ public class ConversionPaneController implements Initializable {
       AwesomeDude.setIcon(retryItem, RETRY_ICON);
       retryItem.setOnAction(event -> {
         try {
-          JobCardFactory.getInstance().cloneAndSubmitJob(row.getItem(), servers.getValue());
+          JobCardFactory.getInstance().cloneAndSubmitJob(row.getItem(), servers.getValue(), buildJobLimits());
         } catch (Exception e) {
           LOGGER.error("Could not re-submit job", e);
         }
@@ -419,7 +419,7 @@ public class ConversionPaneController implements Initializable {
           // Retry
           for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
             try {
-              JobCardFactory.getInstance().cloneAndSubmitJob(jc, servers.getValue());
+              JobCardFactory.getInstance().cloneAndSubmitJob(jc, servers.getValue(), buildJobLimits());
             } catch (Exception e) {
               LOGGER.error("Could not re-submit job", e);
             }
@@ -540,8 +540,7 @@ public class ConversionPaneController implements Initializable {
 
   public void submitJob(File file) throws Exception {
     if (file.isFile() && file.canRead()) {
-      final Collection<Limit> limits = applyLimitsController == null ? Collections.emptySet() : applyLimitsController.buildLimits();
-      JobCardFactory.getInstance().createAndSubmitJobCard(file, servers.getValue(), configurations.getValue()); // TODO, limits);
+      JobCardFactory.getInstance().createAndSubmitJobCard(file, servers.getValue(), configurations.getValue(), buildJobLimits());
     } else if (file.isDirectory()) {
       final File[] files = file.listFiles();
       if (files == null || files.length == 0) {
@@ -549,6 +548,10 @@ public class ConversionPaneController implements Initializable {
       }
       submitJob(Arrays.asList(files));
     }
+  }
+
+  private Collection<Limit> buildJobLimits() {
+    return applyLimitsController == null ? Collections.emptySet() : applyLimitsController.buildLimits();
   }
 
 

@@ -53,8 +53,8 @@
 	-fx-background-color: BLACK;
 }
 
-.awesome{
-    -fx-font-family:  FontAwesome;
+.metro-menu .awesome {
+    -fx-font-family: FontAwesome;
     -fx-font-size: 160px;
-    -fx-text-fill: white !important;
+    -fx-text-fill: WHITE !important;
 }

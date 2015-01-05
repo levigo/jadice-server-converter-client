@@ -5,6 +5,8 @@ import static java.lang.Long.parseLong;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
@@ -30,37 +32,37 @@ public class ApplyLimitsPaneController implements Initializable {
   private static final Logger LOGGER = Logger.getLogger(ApplyLimitsPaneController.class);
   
   @FXML
-  CheckBox timeLimitCB;
+  private CheckBox timeLimitCB;
   
   @FXML
-  TextField timeLimitValue;
+  private TextField timeLimitValue;
   
   @FXML
-  ChoiceBox<TimeUnit> timeLimitUnit;
+  private ChoiceBox<TimeUnit> timeLimitUnit;
   
   @FXML
-  CheckBox streamSizeLimitCB;
+  private CheckBox streamSizeLimitCB;
   
   @FXML
-  TextField streamSizeLimitValue;
+  private TextField streamSizeLimitValue;
   
   @FXML
-  CheckBox streamCountLimitCB;
+  private CheckBox streamCountLimitCB;
   
   @FXML
-  TextField streamCountLimitValue;
+  private TextField streamCountLimitValue;
   
   @FXML
-  CheckBox nodeCountLimitCB;
+  private CheckBox nodeCountLimitCB;
   
   @FXML
-  TextField nodeCountLimitValue;
+  private TextField nodeCountLimitValue;
   
   @FXML
-  CheckBox pageCountLimitCB;
+  private CheckBox pageCountLimitCB;
 
   @FXML
-  TextField pageCountLimitValue;
+  private TextField pageCountLimitValue;
   
   private final ValidationSupport validationSupport = new ValidationSupport();
 
@@ -90,7 +92,12 @@ public class ApplyLimitsPaneController implements Initializable {
     validationSupport.registerValidator(field, cb.isSelected(), validator);
   }
   
-  public List<Limit> buildLimits() {
+  public Collection<Limit> buildLimits() {
+    if (validationSupport.isInvalid()) {
+      LOGGER.warn("User Input is not valid. Do not apply limits at all");
+      return Collections.emptySet();
+    }
+    
     List<Limit> result = new ArrayList<>();
     if (timeLimitCB.isSelected()) {
       LOGGER.info("Time Limit" + timeLimitValue.getText() + " " + timeLimitUnit.getValue());

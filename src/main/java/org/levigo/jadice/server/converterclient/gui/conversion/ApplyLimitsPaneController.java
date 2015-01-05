@@ -16,6 +16,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 
 import org.apache.log4j.Logger;
 import org.controlsfx.validation.ValidationSupport;
@@ -70,6 +71,17 @@ public class ApplyLimitsPaneController implements Initializable {
   public void initialize(URL location, ResourceBundle resources) {
     timeLimitUnit.itemsProperty().getValue().addAll(TimeUnit.values());
     timeLimitUnit.setValue(TimeUnit.SECONDS);
+    timeLimitUnit.setConverter(new StringConverter<TimeUnit>() {
+      @Override
+      public String toString(TimeUnit object) {
+        return object.toString().toLowerCase();
+      }
+      
+      @Override
+      public TimeUnit fromString(String string) {
+        return TimeUnit.valueOf(string.toUpperCase());
+      }
+    });
     
     validationSupport.setErrorDecorationEnabled(true);
     registerValidator(timeLimitValue, timeLimitCB, new LongValidator());

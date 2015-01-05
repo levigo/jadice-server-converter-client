@@ -2,11 +2,15 @@ package org.levigo.jadice.server.converterclient.gui.conversion;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
@@ -69,8 +73,8 @@ public class ApplyLimitsPaneController implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    timeLimitUnit.itemsProperty().getValue().addAll(TimeUnit.values());
-    timeLimitUnit.setValue(TimeUnit.SECONDS);
+    timeLimitUnit.itemsProperty().getValue().addAll(EnumSet.of(MILLISECONDS, SECONDS, MINUTES));
+    timeLimitUnit.setValue(SECONDS);
     timeLimitUnit.setConverter(new StringConverter<TimeUnit>() {
       @Override
       public String toString(TimeUnit object) {

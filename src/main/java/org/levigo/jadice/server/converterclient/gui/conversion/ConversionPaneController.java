@@ -253,12 +253,6 @@ public class ConversionPaneController implements Initializable {
     p.setDetachable(false);
     p.setArrowLocation(ArrowLocation.TOP_RIGHT);
 
-    // FIXME: rebuild shall be triggered automatically
-    p.showingProperty().addListener(evt -> {
-      System.out.println("Rebuild Limits");
-      applyLimitsController.getLimits();
-    });
-
     applyLimits.setOnAction(event -> {
       if (p.isShowing()) {
         p.hide();

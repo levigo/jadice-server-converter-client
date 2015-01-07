@@ -1,7 +1,7 @@
 package org.levigo.jadice.server.converterclient.gui.conversion;
 
 
-public class LongValidator extends DisableableNumberValidator<String> {
+public class LongValidator extends NumberValidator<String> {
   
   public boolean isNumber(String value) {
     try {

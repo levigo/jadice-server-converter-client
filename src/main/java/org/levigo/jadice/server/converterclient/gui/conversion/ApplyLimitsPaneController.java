@@ -133,6 +133,9 @@ public class ApplyLimitsPaneController implements Initializable {
           buildLimit();
         });
       });
+      timeLimitUnit.valueProperty().addListener((observable, oldValue, newValue) -> {
+        buildLimit();
+      });
     }
 
     private void buildLimit() {

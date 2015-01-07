@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.When;
+import javafx.beans.property.ReadOnlyBooleanProperty;
+import javafx.beans.property.ReadOnlyListWrapper;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -26,6 +29,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SeparatorMenuItem;
@@ -73,6 +77,8 @@ public class ConversionPaneController implements Initializable {
   private static final AwesomeIcon REMOVE_ICON = AwesomeIcon.REMOVE;
   private static final AwesomeIcon RETRY_ICON = AwesomeIcon.REPEAT;
   private static final AwesomeIcon INSPECTOR_ICON = AwesomeIcon.SEARCH;
+  private static final AwesomeIcon LIMITS_ENABLED_ICON = AwesomeIcon.BELL_ALT;
+  private static final AwesomeIcon LIMITS_DISABLED_ICON = AwesomeIcon.BELL_SLASH_ALT;
   
   @FXML
   private BorderPane pane;
@@ -230,7 +236,6 @@ public class ConversionPaneController implements Initializable {
   }
 
   private void initApplyLimitsButton() {
-    // TODO: ApplyLimitsPane sauber einbinden
     Node limits = null;
     try {
       final FXMLLoader loader = new FXMLLoader();
@@ -239,6 +244,7 @@ public class ConversionPaneController implements Initializable {
     } catch (IOException e) {
       LOGGER.error("Could not load limits pane", e);
       ((FlowPane) applyLimits.getParent()).getChildren().remove(applyLimits);
+      return;
     }
     
     final PopOver p = new PopOver(limits);
@@ -247,7 +253,12 @@ public class ConversionPaneController implements Initializable {
     p.setDetachable(false);
     p.setArrowLocation(ArrowLocation.TOP_RIGHT);
 
-    AwesomeDude.setIcon(applyLimits, AwesomeIcon.FILTER);
+    // FIXME: rebuild shall be triggered automatically
+    p.showingProperty().addListener(evt -> {
+      System.out.println("Rebuild Limits");
+      applyLimitsController.getLimits();
+    });
+
     applyLimits.setOnAction(event -> {
       if (p.isShowing()) {
         p.hide();
@@ -255,6 +266,11 @@ public class ConversionPaneController implements Initializable {
         p.show(applyLimits);
       }
     });
+
+    final Label enabledIcon = AwesomeDude.createIconLabel(LIMITS_ENABLED_ICON);
+    final Label disabledIcon = AwesomeDude.createIconLabel(LIMITS_DISABLED_ICON);
+    final ReadOnlyBooleanProperty emptyLimitsProperty = new ReadOnlyListWrapper<Limit>(applyLimitsController.getLimits()).emptyProperty();
+    applyLimits.graphicProperty().bind(new When(emptyLimitsProperty).then(disabledIcon).otherwise(enabledIcon));
   }
 
   private void initTable() {
@@ -551,7 +567,7 @@ public class ConversionPaneController implements Initializable {
   }
 
   private Collection<Limit> buildJobLimits() {
-    return applyLimitsController == null ? Collections.emptySet() : applyLimitsController.buildLimits();
+    return applyLimitsController == null ? Collections.emptySet() : applyLimitsController.getLimits();
   }
 
 

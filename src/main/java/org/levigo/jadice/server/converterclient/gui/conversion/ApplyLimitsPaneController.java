@@ -7,14 +7,12 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
@@ -23,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.util.StringConverter;
 
 import org.apache.log4j.Logger;
+import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.ValidationSupport;
 
 import com.levigo.jadice.server.Limit;
@@ -69,6 +68,8 @@ public class ApplyLimitsPaneController implements Initializable {
   @FXML
   private TextField pageCountLimitValue;
   
+  private final ObservableList<Limit> effectiveLimits = FXCollections.observableArrayList();
+  
   private final ValidationSupport validationSupport = new ValidationSupport();
 
   @Override
@@ -108,33 +109,38 @@ public class ApplyLimitsPaneController implements Initializable {
     validationSupport.registerValidator(field, cb.isSelected(), validator);
   }
   
-  public Collection<Limit> buildLimits() {
-    if (validationSupport.isInvalid()) {
+  public ObservableList<Limit> getLimits() {
+    buildLimits();
+    return effectiveLimits;
+  }
+  
+  private void buildLimits() {
+    effectiveLimits.clear();
+    final ValidationResult result = validationSupport.getValidationResult();
+    if (validationSupport.isInvalid() || (result != null && !result.getWarnings().isEmpty())) {
       LOGGER.warn("User Input is not valid. Do not apply limits at all");
-      return Collections.emptySet();
+      return;
     }
     
-    List<Limit> result = new ArrayList<>();
     if (timeLimitCB.isSelected()) {
       LOGGER.debug("Apply Time Limit: " + timeLimitValue.getText() + " " + timeLimitUnit.getValue());
-      result.add(new TimeLimit(parseLong(timeLimitValue.getText()), timeLimitUnit.getValue()));
+      effectiveLimits.add(new TimeLimit(parseLong(timeLimitValue.getText()), timeLimitUnit.getValue()));
     }
     if (streamSizeLimitCB.isSelected()) {
       LOGGER.debug("Apply Stream Size Limit: " + streamSizeLimitValue.getText());
-      result.add(new StreamSizeLimit(parseLong(streamSizeLimitValue.getText())));
+      effectiveLimits.add(new StreamSizeLimit(parseLong(streamSizeLimitValue.getText())));
     }
     if (streamCountLimitCB.isSelected()) {
       LOGGER.debug("Apply Stream Count Limit: " + streamCountLimitValue.getText());
-      result.add(new StreamCountLimit(parseInt(streamCountLimitValue.getText())));
+      effectiveLimits.add(new StreamCountLimit(parseInt(streamCountLimitValue.getText())));
     }
     if (nodeCountLimitCB.isSelected()) {
       LOGGER.debug("Apply Node Count Limit: " + nodeCountLimitValue.getText());
-      result.add(new NodeCountLimit(parseInt(nodeCountLimitValue.getText())));
+      effectiveLimits.add(new NodeCountLimit(parseInt(nodeCountLimitValue.getText())));
     }
     if (pageCountLimitCB.isSelected()) {
       LOGGER.debug("Apply Page Count Limit: " + pageCountLimitValue.getText());
-      result.add(new PageCountLimit(parseInt(pageCountLimitValue.getText())));
+      effectiveLimits.add(new PageCountLimit(parseInt(pageCountLimitValue.getText())));
     }
-    return result;
   }
 }

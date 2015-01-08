@@ -83,10 +83,10 @@ public class MetroMenuPaneController implements Initializable {
     initSmallIconButton(update, AwesomeIcon.BULLHORN, evt -> {
       final UpdateCheckResult result = UpdateService.getInstance().getValue();
       if (result != null && result.isNewerVersionAvailable()) {
-        UpdateDialogs.showUpdateAvailableDialog(result);
+        UpdateDialogs.showUpdateAvailableDialog(result, update);
       } else {
         // Should not happen!
-        UpdateDialogs.showNoUpdateAvailableDialog();
+        UpdateDialogs.showNoUpdateAvailableDialog(update);
       }
     });
     

@@ -128,13 +128,13 @@ public class OptionsPaneController implements Initializable {
       updateService.setOnSucceeded(evt -> {
         final UpdateCheckResult result = updateService.getValue();
         if (result.isNewerVersionAvailable()) {
-          UpdateDialogs.showUpdateAvailableDialog(result);
+          UpdateDialogs.showUpdateAvailableDialog(result, checkUpdatesNow);
         } else {
-          UpdateDialogs.showNoUpdateAvailableDialog();
+          UpdateDialogs.showNoUpdateAvailableDialog(checkUpdatesNow);
         }
       });
       updateService.setOnFailed(evt -> {
-        UpdateDialogs.showUpdateErrorDialog(updateService.getException());
+        UpdateDialogs.showUpdateErrorDialog(updateService.getException(), checkUpdatesNow);
       });
       updateService.restart();
     });

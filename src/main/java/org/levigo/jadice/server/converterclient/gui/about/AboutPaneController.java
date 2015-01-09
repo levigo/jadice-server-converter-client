@@ -1,11 +1,7 @@
 package org.levigo.jadice.server.converterclient.gui.about;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.web.WebView;
@@ -14,7 +10,7 @@ import org.levigo.jadice.server.converterclient.util.Log4JForwarder;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 
-public class AboutPaneController implements Initializable {
+public class AboutPaneController {
   
   @FXML
   private Button home;
@@ -31,8 +27,8 @@ public class AboutPaneController implements Initializable {
   @FXML
   private TextArea logView;
 
-  @Override
-  public void initialize(URL location, ResourceBundle resources) {
+  @FXML
+  protected void initialize() {
     UiUtil.configureHomeButton(home);
     loadLicenses();
     initLogView();

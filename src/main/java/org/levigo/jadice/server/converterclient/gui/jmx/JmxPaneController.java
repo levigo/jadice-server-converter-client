@@ -1,11 +1,7 @@
 package org.levigo.jadice.server.converterclient.gui.jmx;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,7 +16,7 @@ import org.levigo.jadice.server.converterclient.gui.jmx.JMXHandler.ConnectionSta
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 
-public class JmxPaneController implements Initializable {
+public class JmxPaneController {
   
   private class MyCallbackHandler implements CallbackHandler {
 
@@ -99,8 +95,8 @@ public class JmxPaneController implements Initializable {
   
   private final JMXHandler jmxHandler = new JMXHandler(new MyCallbackHandler());
   
-  @Override
-  public void initialize(URL location, ResourceBundle resources) {
+  @FXML
+  protected void initialize() {
     UiUtil.configureHomeButton(home);
     initConnectionPane();
 

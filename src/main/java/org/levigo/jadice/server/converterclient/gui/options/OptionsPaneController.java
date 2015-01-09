@@ -1,12 +1,9 @@
 package org.levigo.jadice.server.converterclient.gui.options;
 
 import java.io.File;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
@@ -26,7 +23,7 @@ import org.levigo.jadice.server.converterclient.util.FilenameGenerator;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 
-public class OptionsPaneController implements Initializable {
+public class OptionsPaneController {
   
   @FXML
   private Button home;
@@ -94,8 +91,8 @@ public class OptionsPaneController implements Initializable {
   @FXML
   private Button restoreDefaults;
   
-  @Override
-  public void initialize(URL location, ResourceBundle resources) {
+  @FXML
+  protected void initialize() {
     UiUtil.configureHomeButton(home);
     initValueBindings();
     initButtonBindings();

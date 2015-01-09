@@ -4,13 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.When;
@@ -24,7 +22,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -67,7 +64,7 @@ import de.jensd.fx.fontawesome.AwesomeDude;
 import de.jensd.fx.fontawesome.AwesomeIcon;
 
 
-public class ConversionPaneController implements Initializable {
+public class ConversionPaneController {
 
   private static final Logger LOGGER = Logger.getLogger(ConversionPaneController.class);
 
@@ -142,8 +139,8 @@ public class ConversionPaneController implements Initializable {
   // Open subsequent FileChoosers at the last location
   private File lastDir = new File(".");
 
-  @Override
-  public void initialize(URL location, ResourceBundle resources) {
+  @FXML
+  protected void initialize() {
     jobTable.getStylesheets().add("css/MessageColors.css");
 
     UiUtil.configureHomeButton(home);

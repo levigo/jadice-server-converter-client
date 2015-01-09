@@ -4,9 +4,7 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
-import java.net.URL;
 import java.util.EnumSet;
-import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
 import javafx.application.Platform;
@@ -16,7 +14,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
@@ -33,7 +30,7 @@ import com.levigo.jadice.server.StreamCountLimit;
 import com.levigo.jadice.server.StreamSizeLimit;
 import com.levigo.jadice.server.TimeLimit;
 
-public class ApplyLimitsPaneController implements Initializable {
+public class ApplyLimitsPaneController {
   
   private static final Logger LOGGER = Logger.getLogger(ApplyLimitsPaneController.class);
   
@@ -72,8 +69,8 @@ public class ApplyLimitsPaneController implements Initializable {
   
   private final ObservableList<Limit> effectiveLimits = FXCollections.observableArrayList();
   
-  @Override
-  public void initialize(URL location, ResourceBundle resources) {
+  @FXML
+  protected void initialize() {
     timeLimitUnit.itemsProperty().getValue().addAll(EnumSet.of(MILLISECONDS, SECONDS, MINUTES));
     timeLimitUnit.setValue(SECONDS);
     timeLimitUnit.setConverter(new StringConverter<TimeUnit>() {

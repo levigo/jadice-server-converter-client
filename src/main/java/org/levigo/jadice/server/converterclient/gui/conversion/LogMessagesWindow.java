@@ -2,9 +2,7 @@ package org.levigo.jadice.server.converterclient.gui.conversion;
 
 import java.io.IOException;
 import java.lang.ref.SoftReference;
-import java.net.URL;
 import java.text.DateFormat;
-import java.util.ResourceBundle;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,7 +10,6 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -68,7 +65,7 @@ public class LogMessagesWindow {
     return f;
   }
   
-  public static class Controller implements Initializable {
+  public static class Controller {
     @FXML
     TableView<LogMessage> logTable;
     
@@ -90,8 +87,8 @@ public class LogMessagesWindow {
     @FXML
     TableColumn<LogMessage, Throwable> cause;
     
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    @FXML
+    protected void initialize() {
       timestamp.setCellValueFactory(row -> {
         return new SimpleStringProperty(DateFormat.getDateTimeInstance().format(row.getValue().timestamp));
       });

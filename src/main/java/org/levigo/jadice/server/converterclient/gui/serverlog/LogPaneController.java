@@ -1,10 +1,8 @@
 package org.levigo.jadice.server.converterclient.gui.serverlog;
 
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -13,7 +11,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -36,7 +33,7 @@ import org.levigo.jadice.server.converterclient.util.UiUtil;
 import com.levigo.jadice.server.util.Util;
 
 
-public class LogPaneController implements MessageListener, Initializable {
+public class LogPaneController implements MessageListener {
   
   private static final Logger LOGGER = Logger.getLogger(LogPaneController.class);
   
@@ -78,8 +75,8 @@ public class LogPaneController implements MessageListener, Initializable {
 
   ObjectProperty<Subscription> subscription = new SimpleObjectProperty<>();
 
-  @Override
-  public void initialize(URL location, ResourceBundle resources) {
+  @FXML
+  protected void initialize() {
     UiUtil.configureHomeButton(home);
 
     logMessages.setItems(FXCollections.observableArrayList());

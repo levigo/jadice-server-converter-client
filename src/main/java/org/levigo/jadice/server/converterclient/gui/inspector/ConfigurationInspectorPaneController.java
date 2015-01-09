@@ -1,14 +1,10 @@
 package org.levigo.jadice.server.converterclient.gui.inspector;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.cell.ComboBoxListCell;
@@ -34,7 +30,7 @@ import com.levigo.jadice.server.Node;
 import com.levigo.jadice.server.client.JobFactory;
 import com.levigo.jadice.server.client.jms.JMSJobFactory;
 
-public class ConfigurationInspectorPaneController implements NodeSelectionListener, Initializable {
+public class ConfigurationInspectorPaneController implements NodeSelectionListener {
 
 	private static final Logger LOGGER = Logger.getLogger(ConfigurationInspectorPaneController.class);
 	
@@ -64,8 +60,8 @@ public class ConfigurationInspectorPaneController implements NodeSelectionListen
 	private final JobFactory dummyJobFactory = initDummyJobFactory();
 	
 	
-  @Override
-  public void initialize(URL location, ResourceBundle resources) {
+  @FXML
+  protected void initialize() {
     UiUtil.configureHomeButton(home);
     initConfigurationCB();
 		

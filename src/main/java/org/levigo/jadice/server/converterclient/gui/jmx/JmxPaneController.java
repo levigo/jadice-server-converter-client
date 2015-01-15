@@ -98,49 +98,8 @@ public class JmxPaneController {
   @FXML
   protected void initialize() {
     UiUtil.configureHomeButton(home);
-    initConnectionPane();
-
-    forceEagerRendering();
-  }
-
-  private void forceEagerRendering() {
-    // The JMX pane needs some time to init when rendered first,
-    // so we force this eagerly
-    final Scene dummy = new Scene(pane);
-    dummy.snapshot(null);
-    dummy.setRoot(new Group());
-  }
-
-  private void initConnectionPane() {
     servers.itemsProperty().bind(Preferences.recentJmxUrlsProperty());
     servers.setValue(servers.getItems().get(0));
-    
-    connect.setOnAction(event -> {
-      ConnectionStatus status = jmxHandler.getConnectionStatusProperty().get();
-      switch (status) {
-        case DISCONNECTED:
-          final String url = servers.getValue();
-          jmxHandler.openConnection(url);
-          break;
-
-        case CONNECTED:
-          jmxHandler.closeConnection();
-          break;
-
-        case CONNECTING:
-          // Do nothing
-          break;
-          
-        default:
-          throw new IllegalArgumentException("Unsuported status " + status);
-      }
-    });
-    
-    clearView.setOnAction(event -> {
-      performance.clear();
-      durationDistribution.clear();
-      gauges.clear();
-    });
     
     jmxHandler.getConnectionStatusProperty().addListener(event -> {
       ConnectionStatus status = jmxHandler.getConnectionStatusProperty().get();
@@ -155,16 +114,55 @@ public class JmxPaneController {
             connect.setDisable(false);
             connect.setText("Disconnect");
             break;
-  
+    
           case DISCONNECTED:
             connect.setDisable(false);
             connect.setText("Connect");
             break;
-
+    
           default:
             throw new IllegalArgumentException("Unsuported status " + status);
         }
       });
     });
+
+    forceEagerRendering();
+  }
+  
+  @FXML
+  protected void connect() {
+    ConnectionStatus status = jmxHandler.getConnectionStatusProperty().get();
+    switch (status) {
+      case DISCONNECTED:
+        final String url = servers.getValue();
+        jmxHandler.openConnection(url);
+        break;
+        
+      case CONNECTED:
+        jmxHandler.closeConnection();
+        break;
+        
+      case CONNECTING:
+        // Do nothing
+        break;
+        
+      default:
+        throw new IllegalArgumentException("Unsuported status " + status);
+    }
+  }
+  
+  @FXML
+  protected void clearView() {
+    performance.clear();
+    durationDistribution.clear();
+    gauges.clear();
+  }
+
+  private void forceEagerRendering() {
+    // The JMX pane needs some time to init when rendered first,
+    // so we force this eagerly
+    final Scene dummy = new Scene(pane);
+    dummy.snapshot(null);
+    dummy.setRoot(new Group());
   }
 }

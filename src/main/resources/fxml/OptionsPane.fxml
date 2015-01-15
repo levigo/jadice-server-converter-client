@@ -23,7 +23,7 @@
 	</FlowPane>
 </top>
 <bottom><FlowPane alignment="BOTTOM_RIGHT" columnHalignment="RIGHT" rowValignment="BOTTOM" BorderPane.alignment="CENTER">
-<children><Button fx:id="restoreDefaults" mnemonicParsing="false" text="restore defaults" />
+<children><Button fx:id="restoreDefaults" mnemonicParsing="false" text="restore defaults" onAction="#restoreDefaults" />
 </children>
 <BorderPane.margin>
 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -90,7 +90,7 @@
 <GridPane maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
 <children>
 <TextField fx:id="resultFolder" disable="true" prefHeight="31.0" prefWidth="190.0" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
-<Button fx:id="changeResultsFolder" mnemonicParsing="false" text="…" GridPane.columnIndex="1" />
+<Button fx:id="changeResultsFolder" mnemonicParsing="false" text="…" onAction="#changeResultsFolder" GridPane.columnIndex="1" />
 </children>
 <columnConstraints>
 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
@@ -108,14 +108,14 @@
 <TextField fx:id="resultFilename" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 <Text fx:id="patternExplanation" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;pattern explanation&gt;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 <Label text="server history" GridPane.rowIndex="6" />
-<Button fx:id="clearServerHistory" mnemonicParsing="false" text="Clear" GridPane.columnIndex="1" GridPane.rowIndex="6" /><Label text="check for updates" GridPane.rowIndex="5" /><FlowPane hgap="15.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+<Button fx:id="clearServerHistory" mnemonicParsing="false" text="Clear" onAction="#clearServerHistory" GridPane.columnIndex="1" GridPane.rowIndex="6" /><Label text="check for updates" GridPane.rowIndex="5" /><FlowPane hgap="15.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
 <children><RadioButton fx:id="checkUpdatesOnStart" mnemonicParsing="false" text="on every start">
 <toggleGroup>
 <ToggleGroup fx:id="updateCheckGroup" />
 </toggleGroup>
 <FlowPane.margin>
 <Insets />
-</FlowPane.margin></RadioButton><RadioButton fx:id="neverCheckUpdates" mnemonicParsing="false" text="never" toggleGroup="$updateCheckGroup" /><Button fx:id="checkUpdatesNow" mnemonicParsing="false" text="check now" />
+</FlowPane.margin></RadioButton><RadioButton fx:id="neverCheckUpdates" mnemonicParsing="false" text="never" toggleGroup="$updateCheckGroup" /><Button fx:id="checkUpdatesNow" mnemonicParsing="false" text="check now" onAction="#checkUpdatesNow" />
 </children></FlowPane>
 </children>
 <columnConstraints>

@@ -134,6 +134,8 @@ public class ConversionPaneController {
   @FXML
   private Button openLogMessages;
   
+  private PopOver applyLimitsPopover;
+  
   private ApplyLimitsPaneController applyLimitsController;
 
   // Open subsequent FileChoosers at the last location
@@ -147,8 +149,81 @@ public class ConversionPaneController {
     initJobStartPanel();
     initApplyLimitsButton();
     initTable();
-    initResultButtons();
     initDnD();
+  }
+  
+  @FXML
+  protected void startConversion() {
+    FileChooser chooser = new FileChooser();
+    chooser.setInitialDirectory(lastDir);
+    final List<File> selected = chooser.showOpenMultipleDialog(pane.getScene().getWindow());
+    if (selected != null) {
+      lastDir = selected.get(0).getParentFile();
+      try {
+        submitJob(selected);
+      } catch (Exception e) {
+        LOGGER.error("Could not submit job", e);
+      }
+    }
+  }
+  
+  @FXML
+  protected void showApplyLimitsPopover() {
+    if (applyLimitsPopover == null) {
+      return;
+    }
+    if (applyLimitsPopover.isShowing()) {
+      applyLimitsPopover.hide();
+    } else {
+      applyLimitsPopover.show(applyLimits);
+    }
+  }
+  
+  @FXML
+  protected void abortAllJobs() {
+    // TODO: Don't run on UI Thread
+    for (JobCard jobCard : jobTable.getItems()) {
+      jobCard.abortJob();
+    }
+  }
+  
+  @FXML
+  protected void openResults() {
+    for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
+      openResults(jc);
+    }
+  }
+  
+  @FXML
+  protected void clearFailedJobs() {
+    // TODO: Don't run on UI Thread
+    final FilteredList<JobCard> toRemove = jobTable.getItems().filtered(jobCard -> jobCard.job.getState() == State.ABORTED || jobCard.job.getState() == State.FAILED);
+    toRemove.forEach(it -> {
+      final int idx = jobTable.getItems().indexOf(it);
+      jobTable.getSelectionModel().clearSelection(idx);
+    });
+    // Clone list to avoid that we modify the list we are deleting...
+    jobTable.getItems().removeAll(toRemove.toArray(new JobCard[0]));
+  }
+   
+  @FXML
+  protected void clearFinishedJobs() {
+    // TODO: Don't run on UI Thread
+    final FilteredList<JobCard> toRemove = jobTable.getItems().filtered(jobCard -> jobCard.job.getState() == State.FINISHED);
+    toRemove.forEach(it -> {
+      final int idx = jobTable.getItems().indexOf(it);
+      jobTable.getSelectionModel().clearSelection(idx);
+    });
+
+    // Clone list to avoid that we modify the list we are deleting...
+    jobTable.getItems().removeAll(toRemove.toArray(new JobCard[0]));
+  }
+  
+  @FXML
+  protected void openLogMessages() {
+    for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
+      LogMessagesWindow.getInstance().showLogmessages(jc);
+    }
   }
 
   private void initDnD() {
@@ -216,20 +291,6 @@ public class ConversionPaneController {
     configurations.setCellFactory(ComboBoxListCell.forListView(sc, configurations.getItems()));
     configurations.setButtonCell(new ComboBoxListCell<>(sc, configurations.getItems()));
     configurations.setValue(configurations.getItems().get(0));
-
-    startConversion.setOnAction(event -> {
-      FileChooser chooser = new FileChooser();
-      chooser.setInitialDirectory(lastDir);
-      final List<File> selected = chooser.showOpenMultipleDialog(pane.getScene().getWindow());
-      if (selected != null) {
-        lastDir = selected.get(0).getParentFile();
-        try {
-          submitJob(selected);
-        } catch (Exception e) {
-          LOGGER.error("Could not submit job", e);
-        }
-      }
-    });
   }
 
   private void initApplyLimitsButton() {
@@ -244,19 +305,11 @@ public class ConversionPaneController {
       return;
     }
     
-    final PopOver p = new PopOver(limits);
-    p.setHideOnEscape(true);
-    p.setAutoHide(true);
-    p.setDetachable(false);
-    p.setArrowLocation(ArrowLocation.TOP_RIGHT);
-
-    applyLimits.setOnAction(event -> {
-      if (p.isShowing()) {
-        p.hide();
-      } else {
-        p.show(applyLimits);
-      }
-    });
+    applyLimitsPopover = new PopOver(limits);
+    applyLimitsPopover.setHideOnEscape(true);
+    applyLimitsPopover.setAutoHide(true);
+    applyLimitsPopover.setDetachable(false);
+    applyLimitsPopover.setArrowLocation(ArrowLocation.TOP_RIGHT);
 
     final Label enabledIcon = AwesomeDude.createIconLabel(LIMITS_ENABLED_ICON);
     final Label disabledIcon = AwesomeDude.createIconLabel(LIMITS_DISABLED_ICON);
@@ -479,49 +532,6 @@ public class ConversionPaneController {
         event.consume();
       }
     });
-
-  }
-
-  private void initResultButtons() {
-    abortAll.setOnAction(event -> {
-      for (JobCard jobCard : jobTable.getItems()) {
-        jobCard.abortJob();
-      }
-    });
-
-    clearFinishedJobs.setOnAction(event -> {
-      final FilteredList<JobCard> toRemove = jobTable.getItems().filtered(jobCard -> jobCard.job.getState() == State.FINISHED);
-      toRemove.forEach(it -> {
-        final int idx = jobTable.getItems().indexOf(it);
-        jobTable.getSelectionModel().clearSelection(idx);
-      });
-
-      // Clone list to avoid that we modify the list we are deleting...
-      jobTable.getItems().removeAll(toRemove.toArray(new JobCard[0]));
-    });
-
-    clearFailedJobs.setOnAction(event -> {
-      final FilteredList<JobCard> toRemove = jobTable.getItems().filtered(jobCard -> jobCard.job.getState() == State.ABORTED || jobCard.job.getState() == State.FAILED);
-      toRemove.forEach(it -> {
-        final int idx = jobTable.getItems().indexOf(it);
-        jobTable.getSelectionModel().clearSelection(idx);
-      });
-      // Clone list to avoid that we modify the list we are deleting...
-      jobTable.getItems().removeAll(toRemove.toArray(new JobCard[0]));
-    });
-
-    openResults.setOnAction(event -> {
-      for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
-        openResults(jc);
-      }
-    });
-
-    openLogMessages.setOnAction(event -> {
-      for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
-        LogMessagesWindow.getInstance().showLogmessages(jc);
-      }
-    });
-
 
   }
 

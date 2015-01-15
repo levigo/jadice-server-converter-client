@@ -21,12 +21,12 @@
 <Insets left="10.0" top="5.0" />
 </padding></FlowPane><FlowPane alignment="CENTER_LEFT" hgap="5.0">
 <children><ComboBox fx:id="servers" editable="true" maxWidth="Infinity" prefHeight="31.0" prefWidth="230.0" promptText="Server URL" /><ComboBox fx:id="configurations" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="350.0" promptText="Workflow" />
-<Button fx:id="applyLimits">
+<Button fx:id="applyLimits" onAction="#showApplyLimitsPopover">
     <tooltip>
         <Tooltip text="Apply Job Limits" />
     </tooltip>
 </Button>
-<Button fx:id="startConversion" defaultButton="true" mnemonicParsing="false" text="Start">
+<Button fx:id="startConversion" defaultButton="true" mnemonicParsing="false" text="Start" onAction="#startConversion">
 <FlowPane.margin>
 <Insets left="10.0" />
 </FlowPane.margin></Button>
@@ -55,7 +55,12 @@
 </TableView>
 </center>
 <bottom><FlowPane alignment="CENTER_RIGHT" columnHalignment="RIGHT" hgap="5.0" BorderPane.alignment="CENTER">
-<children><Button fx:id="abortAll" mnemonicParsing="false" text="Abort All" /><Button fx:id="openResults" mnemonicParsing="false" text="Open Results" /><Button fx:id="clearFailedJobs" mnemonicParsing="false" text="Clear Failed Jobs" /><Button fx:id="clearFinishedJobs" mnemonicParsing="false" text="Clear Finished Jobs" /><Button fx:id="openLogMessages" mnemonicParsing="false" text="Open Log Messages" />
+<children>
+	<Button fx:id="abortAll" mnemonicParsing="false" text="Abort All" onAction="#abortAllJobs" />
+	<Button fx:id="openResults" mnemonicParsing="false" text="Open Results" onAction="#openResults" />
+	<Button fx:id="clearFailedJobs" mnemonicParsing="false" text="Clear Failed Jobs" onAction="#clearFailedJobs" />
+	<Button fx:id="clearFinishedJobs" mnemonicParsing="false" text="Clear Finished Jobs" onAction="#clearFinishedJobs" />
+	<Button fx:id="openLogMessages" mnemonicParsing="false" text="Open Log Messages" onAction="#openLogMessages" />
 </children>
 <BorderPane.margin>
 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

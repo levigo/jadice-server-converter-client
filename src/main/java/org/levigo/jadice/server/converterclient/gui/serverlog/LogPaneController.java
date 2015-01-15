@@ -100,34 +100,38 @@ public class LogPaneController implements MessageListener {
     servers.itemsProperty().bind(Preferences.recentServersProperty());
     servers.setValue(servers.getItems().get(0));
     
-    subscribe.setOnAction(evt -> {
-      if (subscription.get() == null) {
-        try {
-          subscription.set(SubscriptionFactory.getInstance().createSubscription(servers.getValue(), this));
-        } catch (Exception e) {
-          LOGGER.error("Connection Error", e);
-          Dialogs.create()
-            .owner(subscribe)
-            .styleClass(Dialog.STYLE_CLASS_NATIVE)
-            .title("Connection Error")
-            .message("Cannot subscribe to server log")
-            .showException(e);
-        }
-      } else {
-        try {
-          subscription.get().close();
-        } catch (Exception e) {
-          LOGGER.error("Disconnecting Error", e);
-        } finally {
-          subscription.set(null);
-        }
-      }
-    });
     subscribe.textProperty().bind(Bindings.when(subscription.isNull()).then("Subscribe").otherwise("Unsubscribe"));
-    
-    clear.setOnAction(evt -> {
-      logMessages.getItems().clear();
-    });
+  }
+  
+  @FXML
+  protected void clearLogMessages() {
+    logMessages.getItems().clear();
+  }
+
+  @FXML
+  protected void toggleSubscription() {
+    if (subscription.get() == null) {
+      try {
+        subscription.set(SubscriptionFactory.getInstance().createSubscription(servers.getValue(), this));
+      } catch (Exception e) {
+        LOGGER.error("Connection Error", e);
+        Dialogs.create()
+          .owner(subscribe)
+          .styleClass(Dialog.STYLE_CLASS_NATIVE)
+          .title("Connection Error")
+          .message("Cannot subscribe to server log")
+          .showException(e);
+      }
+    } else {
+      try {
+        subscription.get().close();
+      } catch (Exception e) {
+        LOGGER.error("Disconnecting Error", e);
+      } finally {
+        subscription.set(null);
+      }
+    }
+
   }
 
   @Override

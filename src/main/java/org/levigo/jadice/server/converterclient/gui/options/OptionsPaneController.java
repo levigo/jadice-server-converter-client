@@ -95,48 +95,49 @@ public class OptionsPaneController {
   protected void initialize() {
     UiUtil.configureHomeButton(home);
     initValueBindings();
-    initButtonBindings();
   }
   
-  private void initButtonBindings() {
-    restoreDefaults.setOnAction(event -> {
-      Preferences.restoreDefaults();
-    });
-    
-    clearServerHistory.setOnAction(event -> {
-      Preferences.recentServersProperty().clear();
-      Preferences.recentJmxUrlsProperty().clear();
-    });
-    
-    changeResultsFolder.setOnAction(event -> {
-      final DirectoryChooser dirChooser = new DirectoryChooser();
-      File f = new File(resultFolder.textProperty().getValue());
-      if (f.exists() && f.isDirectory()) {
-        dirChooser.setInitialDirectory(f);
-      }
-      final File selectedDirectory = dirChooser.showDialog(changeResultsFolder.getScene().getWindow());
-      if (selectedDirectory != null) {
-        Preferences.resultFolderProperty().setValue(selectedDirectory);
-      }
-    });
-    
-    checkUpdatesNow.setOnAction(event -> {
-      final UpdateService updateService = UpdateService.getInstance();
-      updateService.setOnSucceeded(evt -> {
-        final UpdateCheckResult result = updateService.getValue();
-        if (result.isNewerVersionAvailable()) {
-          UpdateDialogs.showUpdateAvailableDialog(result, checkUpdatesNow);
-        } else {
-          UpdateDialogs.showNoUpdateAvailableDialog(checkUpdatesNow);
-        }
-      });
-      updateService.setOnFailed(evt -> {
-        UpdateDialogs.showUpdateErrorDialog(updateService.getException(), checkUpdatesNow);
-      });
-      updateService.restart();
-    });
+  @FXML
+  protected void restoreDefaults() {
+    Preferences.restoreDefaults();
   }
-
+  
+  @FXML
+  protected void clearServerHistory() {
+    Preferences.recentServersProperty().clear();
+    Preferences.recentJmxUrlsProperty().clear();
+  }
+  
+  @FXML
+  protected void changeResultsFolder() {
+    final DirectoryChooser dirChooser = new DirectoryChooser();
+    File f = new File(resultFolder.textProperty().getValue());
+    if (f.exists() && f.isDirectory()) {
+      dirChooser.setInitialDirectory(f);
+    }
+    final File selectedDirectory = dirChooser.showDialog(changeResultsFolder.getScene().getWindow());
+    if (selectedDirectory != null) {
+      Preferences.resultFolderProperty().setValue(selectedDirectory);
+    }
+  }
+  
+  @FXML
+  protected void checkUpdatesNow() {
+    final UpdateService updateService = UpdateService.getInstance();
+    updateService.setOnSucceeded(evt -> {
+      final UpdateCheckResult result = updateService.getValue();
+      if (result.isNewerVersionAvailable()) {
+        UpdateDialogs.showUpdateAvailableDialog(result, checkUpdatesNow);
+      } else {
+        UpdateDialogs.showNoUpdateAvailableDialog(checkUpdatesNow);
+      }
+    });
+    updateService.setOnFailed(evt -> {
+      UpdateDialogs.showUpdateErrorDialog(updateService.getException(), checkUpdatesNow);
+    });
+    updateService.restart();
+  }
+  
   private void initValueBindings() {
     // JMS Properties
     jmsUsername.textProperty().bindBidirectional(Preferences.jmsUsernameProperty());

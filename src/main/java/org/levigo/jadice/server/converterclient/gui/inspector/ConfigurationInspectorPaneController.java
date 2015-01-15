@@ -75,16 +75,18 @@ public class ConfigurationInspectorPaneController implements NodeSelectionListen
 		});
 		layouts.setValue(layouts.getItems().get(0));
 
-    exportJava.setOnAction(evt -> {
-      final String java = CodeGenerator.exportJavaImplementation(display.getJob());
-      LOGGER.info("Created java code:\n" + java);
-    });
     display.addSelectionListener(this);
 
     displayPane.setCenter(new ComponentWrapper<>(display));
     
     masterDetailPane.showDetailNodeProperty().bind(new SimpleListProperty<>(propertySheet.getItems()).emptyProperty().not());
 	}
+  
+  @FXML
+  protected void exportJava() {
+    final String java = CodeGenerator.exportJavaImplementation(display.getJob());
+    LOGGER.info("Created java code:\n" + java);
+  }
 
   private JobFactory initDummyJobFactory() {
     return new JMSJobFactory(new DummyQueueConnectionFactory(), "DUMMY");

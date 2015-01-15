@@ -26,7 +26,7 @@
 </opaqueInsets>
 <FlowPane.margin>
 <Insets right="5.0" />
-</FlowPane.margin></ComboBox><Label text="Layout" /><ComboBox fx:id="layouts" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="150.0" promptText="Layouts" /><Button fx:id="exportJava" mnemonicParsing="false" text="Export Java" visible="false" />
+</FlowPane.margin></ComboBox><Label text="Layout" /><ComboBox fx:id="layouts" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="150.0" promptText="Layouts" /><Button fx:id="exportJava" mnemonicParsing="false" text="Export Java" visible="false"  onAction="#exportJava"/>
 </children>
 <BorderPane.margin>
 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

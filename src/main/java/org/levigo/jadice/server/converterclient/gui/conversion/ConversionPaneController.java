@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.binding.When;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyListWrapper;
@@ -27,12 +26,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
-import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ComboBoxListCell;
 import javafx.scene.input.ClipboardContent;
@@ -68,13 +64,8 @@ public class ConversionPaneController {
 
   private static final Logger LOGGER = Logger.getLogger(ConversionPaneController.class);
 
-  private static final AwesomeIcon ABORT_ICON = AwesomeIcon.BAN;
-  private static final AwesomeIcon OPEN_ICON = AwesomeIcon.FOLDER_ALTPEN;
-  private static final AwesomeIcon SAVE_ICON = AwesomeIcon.DOWNLOAD;
-  private static final AwesomeIcon REMOVE_ICON = AwesomeIcon.REMOVE;
-  private static final AwesomeIcon RETRY_ICON = AwesomeIcon.REPEAT;
-  private static final AwesomeIcon INSPECTOR_ICON = AwesomeIcon.SEARCH;
   private static final AwesomeIcon LIMITS_ENABLED_ICON = AwesomeIcon.BELL_ALT;
+
   private static final AwesomeIcon LIMITS_DISABLED_ICON = AwesomeIcon.BELL_SLASH_ALT;
   
   @FXML
@@ -134,6 +125,9 @@ public class ConversionPaneController {
   @FXML
   private Button openLogMessages;
   
+  @FXML
+  private ContextMenu tableContextMenu;
+  
   private PopOver applyLimitsPopover;
   
   private ApplyLimitsPaneController applyLimitsController;
@@ -188,7 +182,7 @@ public class ConversionPaneController {
   }
   
   @FXML
-  protected void openResults() {
+  protected void openSelectedResults() {
     for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
       openResults(jc);
     }
@@ -221,9 +215,62 @@ public class ConversionPaneController {
   
   @FXML
   protected void openLogMessages() {
-    for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
-      LogMessagesWindow.getInstance().showLogmessages(jc);
+    jobTable.getSelectionModel().getSelectedItems().forEach(jobCard -> {
+      LogMessagesWindow.getInstance().showLogmessages(jobCard);
+    });
+  }
+  
+  @FXML
+  protected void abortSelectedJobs() {
+    jobTable.getSelectionModel().getSelectedItems().filtered(jobCard -> !jobCard.job.getState().isTerminalState()).forEach(jobCard -> {
+      jobCard.abortJob();
+    });
+  }
+  
+  @FXML
+  protected void saveSelectedResults() {
+    jobTable.getSelectionModel().getSelectedItems().forEach(jobCard -> {
+      saveResult(jobCard);
+    });
+  }
+  
+  @FXML
+  protected void openSelectedOriginalFiles() {
+    jobTable.getSelectionModel().getSelectedItems().forEach(jobCard -> {
+      openOriginal(jobCard);
+    });
+  }
+  
+  @FXML
+  protected void retrySelectedJobs() {
+    jobTable.getSelectionModel().getSelectedItems().forEach(jobCard -> {
+    try {
+      JobCardFactory.getInstance().cloneAndSubmitJob(jobCard, servers.getValue(), buildJobLimits());
+    } catch (Exception e) {
+      LOGGER.error("Could not re-submit job", e);
     }
+    });
+  }
+  
+  @FXML
+  protected void inspectSelectedWorkflow() {
+    final JobCard jobCard = jobTable.getSelectionModel().getSelectedItem();
+    if (jobCard != null) {
+      ConverterClientApplication.getInstance().openInspector(jobCard);
+    }
+  }
+  
+  @FXML
+  protected void removeSelectedJobs() {
+    // TODO: Don't run on UI Thread
+    final FilteredList<JobCard> toRemove = jobTable.getSelectionModel().getSelectedItems().filtered(jobCard -> jobCard.job.getState().isTerminalState());
+    toRemove.forEach(it -> {
+      final int idx = jobTable.getItems().indexOf(it);
+      jobTable.getSelectionModel().clearSelection(idx);
+    });
+    
+    // Clone list to avoid that we modify the list we are deleting...
+    jobTable.getItems().removeAll(toRemove.toArray(new JobCard[0]));
   }
 
   private void initDnD() {
@@ -391,79 +438,9 @@ public class ConversionPaneController {
 
     jobServerInstance.setCellValueFactory(cell -> cell.getValue().serverInstanceNameProperty);
 
-    jobTable.setRowFactory((TableView<JobCard> tableView) -> {
-      final TableRow<JobCard> row = new TableRow<>();
-      final ContextMenu rowMenu = new ContextMenu();
-      final MenuItem openResultItem = new MenuItem("Open Result");
-      AwesomeDude.setIcon(openResultItem, OPEN_ICON);
-      openResultItem.setOnAction(event -> {
-        row.getItem().getResults().forEach(file -> {
-          try {
-            OSHelper.open(file);
-          } catch (IOException e) {
-            LOGGER.error("Could not open result file", e);
-          }
-        });
-      });
-      final MenuItem saveResultItem = new MenuItem("Save Result");
-      AwesomeDude.setIcon(saveResultItem, SAVE_ICON);
-      saveResultItem.setOnAction(event -> {
-        saveResult(row.getItem());
-      });
-      final MenuItem openOriginalFileItem = new MenuItem("Open Original File");
-      openOriginalFileItem.setOnAction(event -> {
-        row.getItem().files.stream().forEach(file -> {
-          try {
-            OSHelper.open(file);
-          } catch (IOException e) {
-            LOGGER.error("Could not open file", e);
-          }
-        });
-      });
-
-      final MenuItem showLogItem = new MenuItem("Show Log");
-      showLogItem.setOnAction(event -> {
-        LogMessagesWindow.getInstance().showLogmessages(row.getItem());
-      });
-      final MenuItem abortItem = new MenuItem("Abort");
-      AwesomeDude.setIcon(abortItem, ABORT_ICON);
-      abortItem.setOnAction(event -> {
-        row.getItem().abortJob();
-      });
-      final MenuItem retryItem = new MenuItem("Retry");
-      AwesomeDude.setIcon(retryItem, RETRY_ICON);
-      retryItem.setOnAction(event -> {
-        try {
-          JobCardFactory.getInstance().cloneAndSubmitJob(row.getItem(), servers.getValue(), buildJobLimits());
-        } catch (Exception e) {
-          LOGGER.error("Could not re-submit job", e);
-        }
-      });
-      final MenuItem inspectItem = new MenuItem("Inspect Workflow");
-      AwesomeDude.setIcon(inspectItem, INSPECTOR_ICON);
-      inspectItem.setOnAction(event -> {
-        ConverterClientApplication.getInstance().openInspector(row.getItem());
-
-      });
-      final MenuItem removeItem = new MenuItem("Remove (Finished / Aborted only)");
-      AwesomeDude.setIcon(removeItem, REMOVE_ICON);
-      removeItem.setOnAction(event -> {
-        JobCard item = row.getItem();
-        if (item.job.getState().isTerminalState()) {
-          final int idx = jobTable.getItems().indexOf(item);
-          jobTable.getSelectionModel().clearSelection(idx);
-          jobTable.getItems().remove(item);
-        }
-      });
-
-      rowMenu.getItems().addAll(openResultItem, saveResultItem, openOriginalFileItem, showLogItem,
-          new SeparatorMenuItem(), abortItem, retryItem, inspectItem, removeItem);
-
-      // only display context menu for non-null items:
-      row.contextMenuProperty().bind(
-          Bindings.when(Bindings.isNotNull(row.itemProperty())).then(rowMenu).otherwise((ContextMenu) null));
-      return row;
-    });
+    // only display context menu for non-null items:
+    final ReadOnlyBooleanProperty emptyLimitsProperty = new ReadOnlyListWrapper<JobCard>(jobTable.getSelectionModel().getSelectedItems()).emptyProperty();
+    jobTable.contextMenuProperty().bind(new When(emptyLimitsProperty.not()).then(tableContextMenu).otherwise((ContextMenu) null));
     
     jobTable.setOnKeyPressed(event -> {
       switch (event.getCode()) {
@@ -517,18 +494,10 @@ public class ConversionPaneController {
       }
       
     });
-    
+
     jobTable.setOnMouseClicked(event -> {
       if (event.getClickCount() == 2) {
-        for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
-          jc.getResults().stream().forEach(file -> {
-            try {
-              OSHelper.open(file);
-            } catch (IOException e) {
-              LOGGER.error("Could not open result file", e);
-            }
-          });
-        }
+        openSelectedResults();
         event.consume();
       }
     });

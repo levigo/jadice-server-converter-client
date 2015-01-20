@@ -38,7 +38,7 @@
     <controlsfx.version>8.20.8</controlsfx.version>
     <enzo.version>0.1.9</enzo.version>
     <fontawesomefx.version>8.0.10</fontawesomefx.version>
-    <jackson.version>2.4.4</jackson.version>
+    <jackson.version>2.4.5</jackson.version>
     <junit.version>4.12</junit.version>
     
     <!-- Spring version as it is also managed by jadice server -->

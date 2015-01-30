@@ -61,25 +61,25 @@
 						<de.jensd.fx.fontawesome.Icon  awesomeIcon="DOWNLOAD" size="16px" />
 					</graphic>
 				</MenuItem>
-				<MenuItem mnemonicParsing="false" text="conversion.table.context.open-original" onAction="#openSelectedOriginalFiles" />
-				<MenuItem mnemonicParsing="false" text="conversion.table.context.show-log" onAction="#openLogMessages" />
+				<MenuItem mnemonicParsing="false" text="%conversion.table.context.open-original" onAction="#openSelectedOriginalFiles" />
+				<MenuItem mnemonicParsing="false" text="%conversion.table.context.show-log" onAction="#openLogMessages" />
 				<SeparatorMenuItem />
-				<MenuItem mnemonicParsing="false" text="conversion.table.context.abort" onAction="#abortSelectedJobs">
+				<MenuItem mnemonicParsing="false" text="%conversion.table.context.abort" onAction="#abortSelectedJobs">
 					<graphic>
 						<de.jensd.fx.fontawesome.Icon  awesomeIcon="BAN" size="16px" />
 					</graphic>
 				</MenuItem>
-				<MenuItem mnemonicParsing="false" text="conversion.table.context.retry" onAction="#retrySelectedJobs">
+				<MenuItem mnemonicParsing="false" text="%conversion.table.context.retry" onAction="#retrySelectedJobs">
 					<graphic>
 						<de.jensd.fx.fontawesome.Icon  awesomeIcon="REPEAT" size="16px" />
 					</graphic>
 				</MenuItem>
-				<MenuItem mnemonicParsing="false" text="conversion.table.context.inspect-workflow" onAction="#inspectSelectedWorkflow">
+				<MenuItem mnemonicParsing="false" text="%conversion.table.context.inspect-workflow" onAction="#inspectSelectedWorkflow">
 					<graphic>
 						<de.jensd.fx.fontawesome.Icon  awesomeIcon="SEARCH" size="16px" />
 					</graphic>
 				</MenuItem>
-				<MenuItem mnemonicParsing="false" text="conversion.table.context.remove" onAction="#removeSelectedJobs">
+				<MenuItem mnemonicParsing="false" text="%conversion.table.context.remove" onAction="#removeSelectedJobs">
 					<graphic>
 						<de.jensd.fx.fontawesome.Icon  awesomeIcon="REMOVE" size="16px" />
 					</graphic>

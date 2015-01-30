@@ -3,6 +3,7 @@ package org.levigo.jadice.server.converterclient.gui.serverlog;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -72,6 +73,9 @@ public class LogPaneController implements MessageListener {
   
   @FXML
   private TableColumn<LoggingEvent, String> stacktrace;
+  
+  @FXML
+  private ResourceBundle resources;
 
   ObjectProperty<Subscription> subscription = new SimpleObjectProperty<>();
 
@@ -81,7 +85,8 @@ public class LogPaneController implements MessageListener {
 
     logMessages.setItems(FXCollections.observableArrayList());
     timestamp.setCellValueFactory(cell -> 
-      new SimpleStringProperty(new SimpleDateFormat("HH:mm:ss.SSS").format(new Date(cell.getValue().getTimeStamp())))
+      new SimpleStringProperty(new SimpleDateFormat(resources.getString("server-log.table.timestamp-format")) //
+        .format(new Date(cell.getValue().getTimeStamp())))
     );
     
     // TODO: Set text color according to the level
@@ -100,7 +105,9 @@ public class LogPaneController implements MessageListener {
     servers.itemsProperty().bind(Preferences.recentServersProperty());
     servers.setValue(servers.getItems().get(0));
     
-    subscribe.textProperty().bind(Bindings.when(subscription.isNull()).then("Subscribe").otherwise("Unsubscribe"));
+    subscribe.textProperty().bind(Bindings.when(subscription.isNull()) //
+        .then(resources.getString("server-log.subscribe")) //
+        .otherwise(resources.getString("server-log.unsubscribe")));
   }
   
   @FXML

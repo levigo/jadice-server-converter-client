@@ -2,7 +2,7 @@ package org.levigo.jadice.server.converterclient.gui.conversion;
 
 import java.io.IOException;
 import java.lang.ref.SoftReference;
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.levigo.jadice.server.converterclient.JobCard;
 import org.levigo.jadice.server.converterclient.LogMessage;
 import org.levigo.jadice.server.converterclient.gui.Icons;
+import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 import com.levigo.jadice.server.Node;
 
@@ -39,7 +40,7 @@ public class LogMessagesWindow {
   private LogMessagesWindow() {
     this.tabPane = new TabPane();
     this.stage = new Stage();
-    stage.setTitle("Log Messages");
+    stage.setTitle(UiUtil.getUiResources().getString("job-log.title"));
     stage.setScene(new Scene(tabPane, 800, 600));
     stage.getIcons().addAll(Icons.getAllIcons());
     stage.getScene().getStylesheets().add("css/MessageColors.css");
@@ -90,7 +91,7 @@ public class LogMessagesWindow {
     @FXML
     protected void initialize() {
       timestamp.setCellValueFactory(row -> {
-        return new SimpleStringProperty(DateFormat.getDateTimeInstance().format(row.getValue().timestamp));
+        return new SimpleStringProperty(new SimpleDateFormat(UiUtil.getUiResources().getString("job-log.table.timestamp.format")).format(row.getValue().timestamp));
       });
       type.setCellValueFactory(row -> {
         return new SimpleObjectProperty<>(row.getValue().type);
@@ -142,7 +143,7 @@ public class LogMessagesWindow {
     final FilteredList<Tab> existingTabs = tabPane.getTabs().filtered(tab -> tab.getText().equals(jc.job.getUUID()));
     if (existingTabs.isEmpty()) {
       try {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/LogTablePane.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/LogTablePane.fxml"), UiUtil.getUiResources());
         BorderPane root = fxmlLoader.load();
         final Controller controller = fxmlLoader.getController();
         

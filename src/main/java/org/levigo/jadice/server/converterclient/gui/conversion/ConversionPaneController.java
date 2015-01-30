@@ -348,7 +348,9 @@ public class ConversionPaneController {
     Node limits = null;
     try {
       final FXMLLoader loader = new FXMLLoader();
-      limits = loader.load(getClass().getResourceAsStream("/fxml/ApplyLimitsPane.fxml"));
+      loader.setLocation(getClass().getResource("/fxml/ApplyLimitsPane.fxml"));
+      loader.setResources(resources);
+      limits = loader.load();
       applyLimitsController = loader.getController();
     } catch (IOException e) {
       LOGGER.error("Could not load limits pane", e);

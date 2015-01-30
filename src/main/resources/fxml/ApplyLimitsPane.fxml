@@ -18,7 +18,22 @@
 <RowConstraints minHeight="-Infinity" vgrow="NEVER" />
 <RowConstraints minHeight="-Infinity" vgrow="NEVER" />
   </rowConstraints>
-<children><CheckBox fx:id="timeLimitCB" mnemonicParsing="false" text="Time Limit" /><CheckBox fx:id="streamSizeLimitCB" mnemonicParsing="false" text="Stream Size Limit" GridPane.rowIndex="1" /><CheckBox fx:id="streamCountLimitCB" mnemonicParsing="false" text="Stream Count Limit" GridPane.rowIndex="2" /><CheckBox fx:id="nodeCountLimitCB" mnemonicParsing="false" text="Node Count Limit" GridPane.rowIndex="3" /><CheckBox fx:id="pageCountLimitCB" mnemonicParsing="false" text="Page Count Limit" GridPane.rowIndex="4" /><TextField fx:id="timeLimitValue" GridPane.columnIndex="1" /><TextField fx:id="streamSizeLimitValue" GridPane.columnIndex="1" GridPane.rowIndex="1" /><TextField fx:id="streamCountLimitValue" GridPane.columnIndex="1" GridPane.rowIndex="2" /><TextField fx:id="nodeCountLimitValue" GridPane.columnIndex="1" GridPane.rowIndex="3" /><TextField fx:id="pageCountLimitValue" GridPane.columnIndex="1" GridPane.rowIndex="4" /><Label text="Bytes per Stream" GridPane.columnIndex="2" GridPane.rowIndex="1" /><Label text="Streams per Node" GridPane.columnIndex="2" GridPane.rowIndex="2" /><Label text="Nodes" GridPane.columnIndex="2" GridPane.rowIndex="3" /><Label text="Pages (if applicable)" GridPane.columnIndex="2" GridPane.rowIndex="4" /><ChoiceBox fx:id="timeLimitUnit" prefWidth="150.0" GridPane.columnIndex="2" />
+<children>
+	<CheckBox fx:id="timeLimitCB" mnemonicParsing="false" text="%conversion.limits.time-limit" />
+	<CheckBox fx:id="streamSizeLimitCB" mnemonicParsing="false" text="%conversion.limits.stream-size-limit" GridPane.rowIndex="1" />
+	<CheckBox fx:id="streamCountLimitCB" mnemonicParsing="false" text="%conversion.limits.stream-count-limit" GridPane.rowIndex="2" />
+	<CheckBox fx:id="nodeCountLimitCB" mnemonicParsing="false" text="%conversion.limits.node-count-limit" GridPane.rowIndex="3" />
+	<CheckBox fx:id="pageCountLimitCB" mnemonicParsing="false" text="%conversion.limits.page-count-limit" GridPane.rowIndex="4" />
+	<TextField fx:id="timeLimitValue" GridPane.columnIndex="1" />
+	<TextField fx:id="streamSizeLimitValue" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+	<TextField fx:id="streamCountLimitValue" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+	<TextField fx:id="nodeCountLimitValue" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+	<TextField fx:id="pageCountLimitValue" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+	<Label text="%conversion.limits.bytes-per-stream" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+	<Label text="%conversion.limits.stream-per-node" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+	<Label text="%conversion.limits.nodes" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+	<Label text="%conversion.limits.pages" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+	<ChoiceBox fx:id="timeLimitUnit" prefWidth="150.0" GridPane.columnIndex="2" />
 </children>
 <padding>
 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

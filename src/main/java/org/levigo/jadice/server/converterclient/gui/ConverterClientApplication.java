@@ -2,7 +2,6 @@ package org.levigo.jadice.server.converterclient.gui;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javafx.animation.FadeTransition;
@@ -69,12 +68,15 @@ public class ConverterClientApplication extends Application {
     optionsPane = FXMLLoader.load(getClass().getResource("/fxml/OptionsPane.fxml"), uiStrings);
 
     final FXMLLoader menuLoader = new FXMLLoader();
-    menu = menuLoader.load(getClass().getResourceAsStream("/fxml/MetroMenuPane.fxml"));
+    menuLoader.setResources(uiStrings);
+    menuLoader.setLocation(getClass().getResource("/fxml/MetroMenuPane.fxml"));
+    menu = menuLoader.load();
     menuController = menuLoader.getController();
 
     final FXMLLoader inspectorLoader = new FXMLLoader();
     inspectorLoader.setResources(uiStrings);
-    inspectorPane = inspectorLoader.load(getClass().getResourceAsStream("/fxml/ConfigurationInspectionPane.fxml"));
+    inspectorLoader.setLocation(getClass().getResource("/fxml/ConfigurationInspectionPane.fxml"));
+    inspectorPane = inspectorLoader.load();
     inspectorPaneController = inspectorLoader.getController();
   }
 

@@ -25,7 +25,9 @@ import com.levigo.jadice.server.client.JobFactory;
 
 public class ConverterClientApplication extends Application {
   
-  private final static String APPLICATION_TITLE = "jadice server %s :: Converter Client";
+  private final static ResourceBundle UI_STRINGS = ResourceBundle.getBundle("i18n/ui-strings");
+
+  private final static String APPLICATION_TITLE = UI_STRINGS.getString("app.title");
   
   private final static String API_VERSION = JobFactory.class.getPackage() == null
       ? null
@@ -60,21 +62,21 @@ public class ConverterClientApplication extends Application {
   
   public ConverterClientApplication() throws IOException {
     instance = this;
-    final ResourceBundle uiStrings = ResourceBundle.getBundle("i18n/ui-strings");
-    aboutPane = FXMLLoader.load(getClass().getResource("/fxml/AboutPane.fxml"), uiStrings);
-    conversionPane = FXMLLoader.load(getClass().getResource("/fxml/ConversionPane.fxml"), uiStrings);
-    jmxPane = FXMLLoader.load(getClass().getResource("/fxml/JmxPane.fxml"), uiStrings);
-    serverlogPane = FXMLLoader.load(getClass().getResource("/fxml/LogPane.fxml"), uiStrings);
-    optionsPane = FXMLLoader.load(getClass().getResource("/fxml/OptionsPane.fxml"), uiStrings);
+    
+    aboutPane = FXMLLoader.load(getClass().getResource("/fxml/AboutPane.fxml"), UI_STRINGS);
+    conversionPane = FXMLLoader.load(getClass().getResource("/fxml/ConversionPane.fxml"), UI_STRINGS);
+    jmxPane = FXMLLoader.load(getClass().getResource("/fxml/JmxPane.fxml"), UI_STRINGS);
+    serverlogPane = FXMLLoader.load(getClass().getResource("/fxml/LogPane.fxml"), UI_STRINGS);
+    optionsPane = FXMLLoader.load(getClass().getResource("/fxml/OptionsPane.fxml"), UI_STRINGS);
 
     final FXMLLoader menuLoader = new FXMLLoader();
-    menuLoader.setResources(uiStrings);
+    menuLoader.setResources(UI_STRINGS);
     menuLoader.setLocation(getClass().getResource("/fxml/MetroMenuPane.fxml"));
     menu = menuLoader.load();
     menuController = menuLoader.getController();
 
     final FXMLLoader inspectorLoader = new FXMLLoader();
-    inspectorLoader.setResources(uiStrings);
+    inspectorLoader.setResources(UI_STRINGS);
     inspectorLoader.setLocation(getClass().getResource("/fxml/ConfigurationInspectionPane.fxml"));
     inspectorPane = inspectorLoader.load();
     inspectorPaneController = inspectorLoader.getController();

@@ -6,7 +6,7 @@ public class Objects {
     // hidden constr.
   }
   
-  
+  @Deprecated
   public static boolean equals(Object a, Object b) {
     if (a == b) {
       return true;

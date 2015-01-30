@@ -15,7 +15,7 @@
 					<children>
 						<Button fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity"
 							minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
-							prefHeight="30.0" prefWidth="30.0" styleClass="home" text="%home">
+							prefHeight="30.0" prefWidth="30.0" styleClass="home" text="%app.home">
 							<FlowPane.margin>
 								<Insets right="10.0" />
 							</FlowPane.margin>

@@ -33,7 +33,7 @@
 					<children>
 						<ComboBox fx:id="servers" editable="true"
 							maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="230.0"
-							promptText="jmx.url" />
+							promptText="%jmx.url" />
 						<Button fx:id="connect" defaultButton="true" mnemonicParsing="false" text="%jmx.status.connect" onAction="#connect" />
 						<Button fx:id="clearView" mnemonicParsing="false" text="%jmx.clear" onAction="#clearView" />
 					</children>

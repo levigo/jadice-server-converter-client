@@ -114,13 +114,14 @@
 </GridPane>
 <Label text="%options.misc.concurrent-jobs" />
 <Slider fx:id="concurrentJobs" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" />
-<Label text="options.misc.default-extension" GridPane.rowIndex="2" />
+<Label text="%options.misc.default-extension" GridPane.rowIndex="2" />
 <TextField fx:id="defaultExtension" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 <Label text="%options.misc.result-filename-pattern" GridPane.rowIndex="3" />
 <TextField fx:id="resultFilename" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 <Text fx:id="patternExplanation" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;pattern explanation&gt;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 <Label text="%options.misc.server-history" GridPane.rowIndex="6" />
-<Button fx:id="clearServerHistory" mnemonicParsing="false" text="%options.misc.clear-server-history" onAction="#clearServerHistory" GridPane.columnIndex="1" GridPane.rowIndex="6" /><Label text="check for updates" GridPane.rowIndex="5" /><FlowPane hgap="15.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+<Button fx:id="clearServerHistory" mnemonicParsing="false" text="%options.misc.clear-server-history" onAction="#clearServerHistory" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+<Label text="%options.misc.updates.title" GridPane.rowIndex="5" /><FlowPane hgap="15.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
 <children><RadioButton fx:id="checkUpdatesOnStart" mnemonicParsing="false" text="%options.misc.updates.check-on-start">
 <toggleGroup>
 <ToggleGroup fx:id="updateCheckGroup" />

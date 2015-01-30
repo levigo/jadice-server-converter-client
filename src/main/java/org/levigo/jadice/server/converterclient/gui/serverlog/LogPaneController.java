@@ -125,8 +125,8 @@ public class LogPaneController implements MessageListener {
         Dialogs.create()
           .owner(subscribe)
           .styleClass(Dialog.STYLE_CLASS_NATIVE)
-          .title("Connection Error")
-          .message("Cannot subscribe to server log")
+          .title(resources.getString("dialogs.server-log.connection-error.title"))
+          .message(resources.getString("dialogs.server-log.connection-error.message"))
           .showException(e);
       }
     } else {

@@ -55,8 +55,8 @@ public class JmxPaneController {
         Dialogs.create()
           .owner(connect)
           .styleClass(Dialog.STYLE_CLASS_NATIVE)
-          .title("Error")
-          .message("Could not connect to JMX")
+          .title(resources.getString("dialogs.jmx.connection-error.title"))
+          .message(resources.getString("dialogs.jmx.connection-error.message"))
           .showException(reason);
       });
     }

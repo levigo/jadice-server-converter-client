@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javafx.beans.binding.When;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -127,6 +128,9 @@ public class ConversionPaneController {
   
   @FXML
   private ContextMenu tableContextMenu;
+  
+  @FXML
+  private ResourceBundle resources;
   
   private PopOver applyLimitsPopover;
   
@@ -562,11 +566,12 @@ public class ConversionPaneController {
           Util.copyAndClose(new FileInputStream(file), new FileOutputStream(resultFile));
         } catch (IOException e) {
           LOGGER.error("Could not save " + resultFile.getName(), e);
-          Dialogs.create()
-            .owner(pane)
-            .styleClass(Dialog.STYLE_CLASS_NATIVE)
-            .title("Error")
-            .message("Could not save file as " + resultFile.getAbsolutePath())
+          Dialogs.create() //
+            .owner(pane) //
+            .styleClass(Dialog.STYLE_CLASS_NATIVE) //
+            .title(resources.getString("dialogs.conversion.save-error.title")) //
+            .masthead(resources.getString("dialogs.conversion.save-error.masthead")) //
+            .message(String.format(resources.getString("dialogs.conversion.save-error.message"), resultFile.getAbsolutePath())) //
             .showException(e);
         }
       }

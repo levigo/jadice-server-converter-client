@@ -60,6 +60,10 @@ public class ConverterClientApplication extends Application {
     return instance;
   }
   
+  public static ResourceBundle getI18nResources() {
+    return UI_STRINGS;
+  }
+  
   public ConverterClientApplication() throws IOException {
     instance = this;
     

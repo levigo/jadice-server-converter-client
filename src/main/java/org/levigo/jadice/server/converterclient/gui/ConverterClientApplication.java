@@ -73,6 +73,7 @@ public class ConverterClientApplication extends Application {
     menuController = menuLoader.getController();
 
     final FXMLLoader inspectorLoader = new FXMLLoader();
+    inspectorLoader.setResources(uiStrings);
     inspectorPane = inspectorLoader.load(getClass().getResourceAsStream("/fxml/ConfigurationInspectionPane.fxml"));
     inspectorPaneController = inspectorLoader.getController();
   }

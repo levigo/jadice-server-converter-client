@@ -66,7 +66,7 @@ public class ConverterClientApplication extends Application {
     conversionPane = FXMLLoader.load(getClass().getResource("/fxml/ConversionPane.fxml"), uiStrings);
     jmxPane = FXMLLoader.load(getClass().getResource("/fxml/JmxPane.fxml"), uiStrings);
     serverlogPane = FXMLLoader.load(getClass().getResource("/fxml/LogPane.fxml"), uiStrings);
-    optionsPane = FXMLLoader.load(getClass().getResource("/fxml/OptionsPane.fxml"));
+    optionsPane = FXMLLoader.load(getClass().getResource("/fxml/OptionsPane.fxml"), uiStrings);
 
     final FXMLLoader menuLoader = new FXMLLoader();
     menu = menuLoader.load(getClass().getResourceAsStream("/fxml/MetroMenuPane.fxml"));

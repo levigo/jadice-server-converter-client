@@ -64,7 +64,7 @@ public class ConverterClientApplication extends Application {
     final ResourceBundle uiStrings = ResourceBundle.getBundle("i18n/ui-strings");
     aboutPane = FXMLLoader.load(getClass().getResource("/fxml/AboutPane.fxml"), uiStrings);
     conversionPane = FXMLLoader.load(getClass().getResource("/fxml/ConversionPane.fxml"), uiStrings);
-    jmxPane = FXMLLoader.load(getClass().getResource("/fxml/JmxPane.fxml"));
+    jmxPane = FXMLLoader.load(getClass().getResource("/fxml/JmxPane.fxml"), uiStrings);
     serverlogPane = FXMLLoader.load(getClass().getResource("/fxml/LogPane.fxml"));
     optionsPane = FXMLLoader.load(getClass().getResource("/fxml/OptionsPane.fxml"));
 

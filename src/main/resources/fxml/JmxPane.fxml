@@ -15,12 +15,12 @@
 					<children>
 						<Button fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity"
 							minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
-							prefHeight="30.0" prefWidth="30.0" styleClass="home" text="home">
+							prefHeight="30.0" prefWidth="30.0" styleClass="home" text="%home">
 							<FlowPane.margin>
 								<Insets right="10.0" />
 							</FlowPane.margin>
 						</Button>
-						<Label styleClass="label-top" text="JMX" />
+						<Label styleClass="label-top" text="%jmx.title" />
 					</children>
 					<VBox.margin>
 						<Insets />
@@ -33,9 +33,9 @@
 					<children>
 						<ComboBox fx:id="servers" editable="true"
 							maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="230.0"
-							promptText="JMX URL" />
-						<Button fx:id="connect" defaultButton="true" mnemonicParsing="false" text="Connect" onAction="#connect" />
-						<Button fx:id="clearView" mnemonicParsing="false" text="Clear View" onAction="#clearView" />
+							promptText="jmx.url" />
+						<Button fx:id="connect" defaultButton="true" mnemonicParsing="false" text="%jmx.status.connect" onAction="#connect" />
+						<Button fx:id="clearView" mnemonicParsing="false" text="%jmx.clear" onAction="#clearView" />
 					</children>
 					<BorderPane.margin>
 						<Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

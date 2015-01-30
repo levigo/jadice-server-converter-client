@@ -1,5 +1,7 @@
 package org.levigo.jadice.server.converterclient.gui.jmx;
 
+import java.util.ResourceBundle;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
@@ -93,6 +95,10 @@ public class JmxPaneController {
   @FXML
   private GaugesRatesPane gauges;
   
+  @FXML  
+  private ResourceBundle resources;
+  
+  
   private final JMXHandler jmxHandler = new JMXHandler(new MyCallbackHandler());
   
   @FXML
@@ -107,17 +113,17 @@ public class JmxPaneController {
         switch (status) {
           case CONNECTING:
             connect.setDisable(true);
-            connect.setText("Connecting...");
+            connect.setText(resources.getString("jmx.status.connecting"));
             break;
             
           case CONNECTED:
             connect.setDisable(false);
-            connect.setText("Disconnect");
+            connect.setText(resources.getString("jmx.status.disconnect"));
             break;
     
           case DISCONNECTED:
             connect.setDisable(false);
-            connect.setText("Connect");
+            connect.setText(resources.getString("jmx.status.connect"));
             break;
     
           default:

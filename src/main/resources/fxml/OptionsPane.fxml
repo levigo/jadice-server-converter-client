@@ -10,12 +10,12 @@
 <top>
 	<FlowPane styleClass="label-top">
 		<children>
-			<Button fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="home" text="home">
+			<Button fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="home" text="%app.home">
 				<FlowPane.margin>
 					<Insets right="10.0" />
 				</FlowPane.margin>
 			</Button>
-			<Label styleClass="label-top" text="Options" />
+			<Label styleClass="label-top" text="%options.title" />
 		</children>
 		<padding>
 			<Insets left="10.0" top="5.0" />
@@ -23,7 +23,7 @@
 	</FlowPane>
 </top>
 <bottom><FlowPane alignment="BOTTOM_RIGHT" columnHalignment="RIGHT" rowValignment="BOTTOM" BorderPane.alignment="CENTER">
-<children><Button fx:id="restoreDefaults" mnemonicParsing="false" text="restore defaults" onAction="#restoreDefaults" />
+<children><Button fx:id="restoreDefaults" mnemonicParsing="false" text="%options.restore-defaults" onAction="#restoreDefaults" />
 </children>
 <BorderPane.margin>
 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -31,7 +31,7 @@
 </bottom>
 <center><Accordion BorderPane.alignment="CENTER">
   <panes>
-    <TitledPane text="JMS Settings">
+    <TitledPane text="%options.jms.title">
 <content>
 <AnchorPane>
 <children><GridPane hgap="5.0" maxHeight="-Infinity" vgap="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" BorderPane.alignment="TOP_LEFT">
@@ -47,7 +47,19 @@
 <RowConstraints minHeight="10.0" vgrow="NEVER" />
 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
   </rowConstraints>
-<children><Label text="username" /><TextField fx:id="jmsUsername" GridPane.columnIndex="1" /><Label text="password" GridPane.rowIndex="1" /><PasswordField fx:id="jmsPassword" GridPane.columnIndex="1" GridPane.rowIndex="1" /><Label text="request queue" GridPane.rowIndex="2" /><TextField fx:id="jmsRequestQueue" GridPane.columnIndex="1" GridPane.rowIndex="2" /><Label text="log topic" GridPane.rowIndex="3" /><TextField fx:id="jmsLogTopic" GridPane.columnIndex="1" GridPane.rowIndex="3" /><Label text="job factory" GridPane.rowIndex="5" /><CheckBox fx:id="cacheJobFactory" mnemonicParsing="false" text="Cache JMS Job Factory?" GridPane.columnIndex="1" GridPane.rowIndex="5" /><Label text="job priority" GridPane.rowIndex="4" /><Slider fx:id="jmsJobPriority" blockIncrement="1.0" majorTickUnit="1.0" max="9.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="4.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+<children>
+	<Label text="%options.jms.username" />
+	<TextField fx:id="jmsUsername" GridPane.columnIndex="1" />
+	<Label text="%options.jms.password" GridPane.rowIndex="1" />
+	<PasswordField fx:id="jmsPassword" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+	<Label text="%options.jms.request-queue" GridPane.rowIndex="2" />
+	<TextField fx:id="jmsRequestQueue" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+	<Label text="%options.jms.log-topic" GridPane.rowIndex="3" />
+	<TextField fx:id="jmsLogTopic" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+	<Label text="%options.jms.job-factory" GridPane.rowIndex="5" />
+	<CheckBox fx:id="cacheJobFactory" mnemonicParsing="false" text="%options.jms.cache-job-factory" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+	<Label text="%options.jms.job-priority" GridPane.rowIndex="4" />
+	<Slider fx:id="jmsJobPriority" blockIncrement="1.0" majorTickUnit="1.0" max="9.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="4.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 </children>
 <padding>
 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -56,14 +68,14 @@
 </children>
 </AnchorPane>
 </content></TitledPane>
-    <TitledPane text="JMX Settings">
+    <TitledPane text="%options.jmx.title">
 <content>
 <AnchorPane>
 <children><GridPane hgap="5.0" maxHeight="-Infinity" vgap="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 <children>
-<Label text="username" />
+<Label text="%options.jmx.username" />
 <TextField fx:id="jmxUsername" GridPane.columnIndex="1" />
-<Label text="password" GridPane.rowIndex="1" />
+<Label text="%options.jmx.password" GridPane.rowIndex="1" />
 <PasswordField fx:id="jmxPassword" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 </children>
 <columnConstraints>
@@ -81,16 +93,16 @@
 </children>
 </AnchorPane>
 </content></TitledPane>
-<TitledPane text="Misc.">
+<TitledPane text="%options.misc.title">
 <content>
 <AnchorPane>
 <children><GridPane hgap="5.0" maxHeight="-Infinity" vgap="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 <children>
-<Label text="results folder" GridPane.rowIndex="1" />
+<Label text="%options.misc.results-folder" GridPane.rowIndex="1" />
 <GridPane maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
 <children>
 <TextField fx:id="resultFolder" disable="true" prefHeight="31.0" prefWidth="190.0" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
-<Button fx:id="changeResultsFolder" mnemonicParsing="false" text="…" onAction="#changeResultsFolder" GridPane.columnIndex="1" />
+<Button fx:id="changeResultsFolder" mnemonicParsing="false" text="%options.misc.change-results-folder" onAction="#changeResultsFolder" GridPane.columnIndex="1" />
 </children>
 <columnConstraints>
 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
@@ -100,22 +112,23 @@
 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
 </rowConstraints>
 </GridPane>
-<Label text="concurrent jobs" />
+<Label text="%options.misc.concurrent-jobs" />
 <Slider fx:id="concurrentJobs" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" />
-<Label text="default ext." GridPane.rowIndex="2" />
+<Label text="%options.misc.default-extension" GridPane.rowIndex="2" />
 <TextField fx:id="defaultExtension" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-<Label text="result filename" GridPane.rowIndex="3" />
+<Label text="%options.misc.result-filename-pattern" GridPane.rowIndex="3" />
 <TextField fx:id="resultFilename" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 <Text fx:id="patternExplanation" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;pattern explanation&gt;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-<Label text="server history" GridPane.rowIndex="6" />
-<Button fx:id="clearServerHistory" mnemonicParsing="false" text="Clear" onAction="#clearServerHistory" GridPane.columnIndex="1" GridPane.rowIndex="6" /><Label text="check for updates" GridPane.rowIndex="5" /><FlowPane hgap="15.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
-<children><RadioButton fx:id="checkUpdatesOnStart" mnemonicParsing="false" text="on every start">
+<Label text="%options.misc.server-history" GridPane.rowIndex="6" />
+<Button fx:id="clearServerHistory" mnemonicParsing="false" text="%options.misc.clear-server-history" onAction="#clearServerHistory" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+<Label text="%options.misc.updates.title" GridPane.rowIndex="5" /><FlowPane hgap="15.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+<children><RadioButton fx:id="checkUpdatesOnStart" mnemonicParsing="false" text="%options.misc.updates.check-on-start">
 <toggleGroup>
 <ToggleGroup fx:id="updateCheckGroup" />
 </toggleGroup>
 <FlowPane.margin>
 <Insets />
-</FlowPane.margin></RadioButton><RadioButton fx:id="neverCheckUpdates" mnemonicParsing="false" text="never" toggleGroup="$updateCheckGroup" /><Button fx:id="checkUpdatesNow" mnemonicParsing="false" text="check now" onAction="#checkUpdatesNow" />
+</FlowPane.margin></RadioButton><RadioButton fx:id="neverCheckUpdates" mnemonicParsing="false" text="%options.misc.updates.check-never" toggleGroup="$updateCheckGroup" /><Button fx:id="checkUpdatesNow" mnemonicParsing="false" text="%options.misc.updates.check-now" onAction="#checkUpdatesNow" />
 </children></FlowPane>
 </children>
 <columnConstraints>

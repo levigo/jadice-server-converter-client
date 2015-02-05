@@ -9,10 +9,10 @@
 <top>
 <VBox>
 <children><FlowPane styleClass="label-top">
-<children><Button fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="home" text="home">
+<children><Button fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="30.0" prefWidth="30.0" styleClass="home" text="%app.home">
 <FlowPane.margin>
 <Insets right="10.0" />
-</FlowPane.margin></Button><Label styleClass="label-top" text="Inspector" />
+</FlowPane.margin></Button><Label styleClass="label-top" text="%inspector.title" />
 </children>
 <VBox.margin>
 <Insets />
@@ -20,13 +20,13 @@
 <padding>
 <Insets left="10.0" top="5.0" />
 </padding></FlowPane><FlowPane alignment="CENTER_LEFT" hgap="5.0">
-<children><Label text="Configuration:" /><ComboBox fx:id="configurations" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="350.0" promptText="Workflow">
+<children><Label text="%inspector.configuration" /><ComboBox fx:id="configurations" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="350.0" promptText="%inspector.workflow">
 <opaqueInsets>
 <Insets />
 </opaqueInsets>
 <FlowPane.margin>
 <Insets right="5.0" />
-</FlowPane.margin></ComboBox><Label text="Layout" /><ComboBox fx:id="layouts" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="150.0" promptText="Layouts" /><Button fx:id="exportJava" mnemonicParsing="false" text="Export Java" visible="false"  onAction="#exportJava"/>
+</FlowPane.margin></ComboBox><Label text="%inspector.layout" /><ComboBox fx:id="layouts" maxWidth="1.7976931348623157E308" prefHeight="31.0" prefWidth="150.0" promptText="%inspector.layouts" /><Button fx:id="exportJava" mnemonicParsing="false" text="%inspector.export-java" visible="false"  onAction="#exportJava"/>
 </children>
 <BorderPane.margin>
 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

@@ -157,7 +157,7 @@ public class OptionsPaneController {
     resultFolder.textProperty().bind(Bindings.convert(Preferences.resultFolderProperty()));
     defaultExtension.textProperty().bindBidirectional(Preferences.defaultExtensionProperty());
     resultFilename.textProperty().bindBidirectional(Preferences.resultFilenamePatternProperty());
-    patternExplanation.textProperty().setValue(FilenameGenerator.buildExplanationText(" / "));
+    patternExplanation.setText(FilenameGenerator.buildExplanationText(" / "));
     
     
     // javaFX has no smart binding between Enumeration and RadioButtons (yet?)

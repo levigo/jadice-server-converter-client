@@ -1,5 +1,6 @@
 package org.levigo.jadice.server.converterclient.gui.conversion;
 
+import static org.levigo.jadice.server.converterclient.util.UiUtil.getUiResources;
 import javafx.scene.control.Control;
 
 import org.controlsfx.validation.ValidationResult;
@@ -9,22 +10,16 @@ public abstract class NumberValidator<T> implements Validator<T> {
   
   private static final ValidationResult OK = new ValidationResult();
   
-  private static final String NULL_VALUE_MESSAGE = "value must not be empty";
-  
-  private static final String NOT_NUMERIC_MESSAGE = "value must be numeric";
-  
-  private static final String NOT_POSITIVE_MESSAGE = "value must be positive";
-
   @Override
   public ValidationResult apply(Control control, T value) {
     if (value == null || value.toString().isEmpty()) {
-      return ValidationResult.fromWarning(control, NULL_VALUE_MESSAGE);
+      return ValidationResult.fromWarning(control, getUiResources().getString("validator.null-value.message"));
     }
     if (!isNumber(value)) {
-      return ValidationResult.fromError(control, NOT_NUMERIC_MESSAGE);
+      return ValidationResult.fromError(control, getUiResources().getString("validator.not-numeric.message"));
     }
     if (!isPositive(value)) {
-      return ValidationResult.fromWarning(control, NOT_POSITIVE_MESSAGE);
+      return ValidationResult.fromWarning(control, getUiResources().getString("validator.not-positive.message"));
     }
     
     return OK;

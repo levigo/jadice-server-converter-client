@@ -1,7 +1,10 @@
 package org.levigo.jadice.server.converterclient.gui;
 
+import static org.levigo.jadice.server.converterclient.util.UiUtil.getUiResources;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -19,12 +22,13 @@ import javafx.util.Duration;
 import org.levigo.jadice.server.converterclient.JobCard;
 import org.levigo.jadice.server.converterclient.JobCardScheduler;
 import org.levigo.jadice.server.converterclient.gui.inspector.ConfigurationInspectorPaneController;
+import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 import com.levigo.jadice.server.client.JobFactory;
 
 public class ConverterClientApplication extends Application {
   
-  private final static String APPLICATION_TITLE = "jadice server %s :: Converter Client";
+  private final static String APPLICATION_TITLE = getUiResources().getString("app.title");
   
   private final static String API_VERSION = JobFactory.class.getPackage() == null
       ? null
@@ -59,18 +63,23 @@ public class ConverterClientApplication extends Application {
   
   public ConverterClientApplication() throws IOException {
     instance = this;
-    aboutPane = FXMLLoader.load(getClass().getResource("/fxml/AboutPane.fxml"));
-    conversionPane = FXMLLoader.load(getClass().getResource("/fxml/ConversionPane.fxml"));
-    jmxPane = FXMLLoader.load(getClass().getResource("/fxml/JmxPane.fxml"));
-    serverlogPane = FXMLLoader.load(getClass().getResource("/fxml/LogPane.fxml"));
-    optionsPane = FXMLLoader.load(getClass().getResource("/fxml/OptionsPane.fxml"));
+    
+    aboutPane = FXMLLoader.load(getClass().getResource("/fxml/AboutPane.fxml"), getUiResources());
+    conversionPane = FXMLLoader.load(getClass().getResource("/fxml/ConversionPane.fxml"), getUiResources());
+    jmxPane = FXMLLoader.load(getClass().getResource("/fxml/JmxPane.fxml"), getUiResources());
+    serverlogPane = FXMLLoader.load(getClass().getResource("/fxml/LogPane.fxml"), getUiResources());
+    optionsPane = FXMLLoader.load(getClass().getResource("/fxml/OptionsPane.fxml"), getUiResources());
 
     final FXMLLoader menuLoader = new FXMLLoader();
-    menu = menuLoader.load(getClass().getResourceAsStream("/fxml/MetroMenuPane.fxml"));
+    menuLoader.setResources(getUiResources());
+    menuLoader.setLocation(getClass().getResource("/fxml/MetroMenuPane.fxml"));
+    menu = menuLoader.load();
     menuController = menuLoader.getController();
 
     final FXMLLoader inspectorLoader = new FXMLLoader();
-    inspectorPane = inspectorLoader.load(getClass().getResourceAsStream("/fxml/ConfigurationInspectionPane.fxml"));
+    inspectorLoader.setResources(getUiResources());
+    inspectorLoader.setLocation(getClass().getResource("/fxml/ConfigurationInspectionPane.fxml"));
+    inspectorPane = inspectorLoader.load();
     inspectorPaneController = inspectorLoader.getController();
   }
 

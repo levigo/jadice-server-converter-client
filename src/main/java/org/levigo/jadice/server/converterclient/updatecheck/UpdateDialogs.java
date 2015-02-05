@@ -1,5 +1,7 @@
 package org.levigo.jadice.server.converterclient.updatecheck;
 
+import static org.levigo.jadice.server.converterclient.util.UiUtil.getUiResources;
+
 import java.awt.Desktop;
 
 import javafx.scene.Node;
@@ -12,7 +14,7 @@ import org.controlsfx.dialog.Dialogs;
 public final class UpdateDialogs {
   
   private static final Logger LOGGER = Logger.getLogger(UpdateDialogs.class);
-
+  
   private UpdateDialogs() {
     // Utility class -> hidden constr.
   }
@@ -21,11 +23,11 @@ public final class UpdateDialogs {
   public static void showUpdateAvailableDialog(UpdateCheckResult result, Node owner) {
     Dialogs.create()//
     .styleClass(Dialog.STYLE_CLASS_NATIVE)//
-    .title("Update Check")//
-    .masthead("New version available")//
-    .message(String.format("New version available: %s\nYour are working with version %s",//
+    .title(getUiResources().getString("dialogs.update.update-available.title"))//
+    .masthead(getUiResources().getString("dialogs.update.update-available.masthead"))//
+    .message(String.format(getUiResources().getString("dialogs.update.update-available.message"),//
         result.getLatestVersionNumber(), result.getCurrentVersionNumber()))//
-    .actions(new DialogAction("Go to download page", evt2 -> {
+    .actions(new DialogAction(getUiResources().getString("dialogs.update.update-available.action"), evt -> {
       try {
         Desktop.getDesktop().browse(result.getLatestReleaseURL().toURI());
       } catch (Exception e) {
@@ -41,8 +43,8 @@ public final class UpdateDialogs {
   public static void showNoUpdateAvailableDialog(Node owner) {
     Dialogs.create()//
     .styleClass(Dialog.STYLE_CLASS_NATIVE)//
-    .title("Update Check")//
-    .message("Your software is up to date")//
+    .title(getUiResources().getString("dialogs.update.latest-version.title"))//
+    .message(getUiResources().getString("dialogs.update.latest-version.message"))//
     .owner(owner)//
     .showInformation();
   }
@@ -51,8 +53,8 @@ public final class UpdateDialogs {
   public static void showUpdateErrorDialog(Throwable error, Node owner) {
     Dialogs.create()//
     .styleClass(Dialog.STYLE_CLASS_NATIVE)//
-    .title("Update Check")//
-    .message("Could not perform update check")//
+    .title(getUiResources().getString("dialogs.update.error.title"))//
+    .message(getUiResources().getString("dialogs.update.error.message"))//
     .owner(owner)//
     .showException(error);
   }

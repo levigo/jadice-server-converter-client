@@ -65,9 +65,9 @@ public class ConversionPaneController {
 
   private static final Logger LOGGER = Logger.getLogger(ConversionPaneController.class);
 
-  private static final AwesomeIcon LIMITS_ENABLED_ICON = AwesomeIcon.BELL_ALT;
+  private static final AwesomeIcon LIMITS_ENABLED_ICON = AwesomeIcon.BELL_O;
 
-  private static final AwesomeIcon LIMITS_DISABLED_ICON = AwesomeIcon.BELL_SLASH_ALT;
+  private static final AwesomeIcon LIMITS_DISABLED_ICON = AwesomeIcon.BELL_SLASH_O;
   
   @FXML
   private BorderPane pane;

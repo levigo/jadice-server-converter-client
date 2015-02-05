@@ -69,7 +69,7 @@ public class MetroMenuPaneController {
   @FXML
   protected void initialize() {
     initIconButton(conversion, AwesomeIcon.GEARS, evt -> ConverterClientApplication.getInstance().openConversion());
-    initIconButton(serverLog, AwesomeIcon.TASKS, evt -> ConverterClientApplication.getInstance().openServerLog());
+    initIconButton(serverLog, AwesomeIcon.SERVER, evt -> ConverterClientApplication.getInstance().openServerLog());
     initIconButton(jmx, AwesomeIcon.AREA_CHART, evt -> ConverterClientApplication.getInstance().openJMX());
     initIconButton(inspector, AwesomeIcon.SEARCH, evt -> ConverterClientApplication.getInstance().openInspector());
     initSmallIconButton(options, AwesomeIcon.SLIDERS, evt -> ConverterClientApplication.getInstance().openOptions());

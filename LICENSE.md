@@ -1,4 +1,4 @@
-Copyright (c) 2014, levigo holding gmbh.
+Copyright (c) 2015, levigo holding gmbh.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, 

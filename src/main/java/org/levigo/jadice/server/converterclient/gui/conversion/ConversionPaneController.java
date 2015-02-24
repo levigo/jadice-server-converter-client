@@ -26,7 +26,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -37,6 +36,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.StringConverter;
 
@@ -57,17 +57,17 @@ import com.levigo.jadice.server.Job.State;
 import com.levigo.jadice.server.Limit;
 import com.levigo.jadice.server.util.Util;
 
-import de.jensd.fx.fontawesome.AwesomeDude;
-import de.jensd.fx.fontawesome.AwesomeIcon;
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconName;
 
 
 public class ConversionPaneController {
 
   private static final Logger LOGGER = Logger.getLogger(ConversionPaneController.class);
 
-  private static final AwesomeIcon LIMITS_ENABLED_ICON = AwesomeIcon.BELL_O;
+  private static final FontAwesomeIconName LIMITS_ENABLED_ICON = FontAwesomeIconName.BELL_O;
 
-  private static final AwesomeIcon LIMITS_DISABLED_ICON = AwesomeIcon.BELL_SLASH_O;
+  private static final FontAwesomeIconName LIMITS_DISABLED_ICON = FontAwesomeIconName.BELL_SLASH_O;
   
   @FXML
   private BorderPane pane;
@@ -364,8 +364,8 @@ public class ConversionPaneController {
     applyLimitsPopover.setDetachable(false);
     applyLimitsPopover.setArrowLocation(ArrowLocation.TOP_RIGHT);
 
-    final Label enabledIcon = AwesomeDude.createIconLabel(LIMITS_ENABLED_ICON);
-    final Label disabledIcon = AwesomeDude.createIconLabel(LIMITS_DISABLED_ICON);
+    final Text enabledIcon = GlyphsDude.createIcon(LIMITS_ENABLED_ICON);
+    final Text disabledIcon = GlyphsDude.createIcon(LIMITS_DISABLED_ICON);
     final ReadOnlyBooleanProperty emptyLimitsProperty = new ReadOnlyListWrapper<Limit>(applyLimitsController.getLimits()).emptyProperty();
     applyLimits.graphicProperty().bind(new When(emptyLimitsProperty).then(disabledIcon).otherwise(enabledIcon));
   }

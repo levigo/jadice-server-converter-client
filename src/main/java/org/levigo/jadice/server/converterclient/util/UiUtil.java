@@ -7,8 +7,9 @@ import javafx.scene.control.ContentDisplay;
 
 import org.levigo.jadice.server.converterclient.gui.ConverterClientApplication;
 
-import de.jensd.fx.fontawesome.AwesomeDude;
-import de.jensd.fx.fontawesome.AwesomeIcon;
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconName;
+
 
 public class UiUtil {
   
@@ -19,7 +20,7 @@ public class UiUtil {
   }
 
   public static void configureHomeButton(Button home) {
-    AwesomeDude.setIcon(home, AwesomeIcon.ARROW_LEFT, "15px", ContentDisplay.GRAPHIC_ONLY);
+    GlyphsDude.setIcon(home, FontAwesomeIconName.ARROW_LEFT, "15px", ContentDisplay.GRAPHIC_ONLY);
     home.setOnAction(evt -> ConverterClientApplication.getInstance().openMenu());
   }
   

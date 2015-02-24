@@ -37,7 +37,7 @@
     <prefuse.version>beta-20130106</prefuse.version>
     <controlsfx.version>8.20.8</controlsfx.version>
     <enzo.version>0.1.9</enzo.version>
-    <fontawesomefx.version>8.0.13</fontawesomefx.version>
+    <fontawesomefx.version>8.1</fontawesomefx.version>
     <jackson.version>2.4.5</jackson.version>
     <junit.version>4.12</junit.version>
     

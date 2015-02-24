@@ -53,12 +53,12 @@
 			<items>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.open-result" onAction="#openSelectedResults">
 					<graphic>
-						<de.jensd.fx.fontawesome.Icon  awesomeIcon="FOLDER_OPEN" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon  iconName="FOLDER_OPEN" size="16px" />
 					</graphic>
 				</MenuItem>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.save-result" onAction="#saveSelectedResults">
 					<graphic>
-						<de.jensd.fx.fontawesome.Icon  awesomeIcon="DOWNLOAD" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon  iconName="DOWNLOAD" size="16px" />
 					</graphic>
 				</MenuItem>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.open-original" onAction="#openSelectedOriginalFiles" />
@@ -66,22 +66,22 @@
 				<SeparatorMenuItem />
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.abort" onAction="#abortSelectedJobs">
 					<graphic>
-						<de.jensd.fx.fontawesome.Icon  awesomeIcon="BAN" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon  iconName="BAN" size="16px" />
 					</graphic>
 				</MenuItem>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.retry" onAction="#retrySelectedJobs">
 					<graphic>
-						<de.jensd.fx.fontawesome.Icon  awesomeIcon="REPEAT" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon  iconName="REPEAT" size="16px" />
 					</graphic>
 				</MenuItem>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.inspect-workflow" onAction="#inspectSelectedWorkflow">
 					<graphic>
-						<de.jensd.fx.fontawesome.Icon  awesomeIcon="SEARCH" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon  iconName="SEARCH" size="16px" />
 					</graphic>
 				</MenuItem>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.remove" onAction="#removeSelectedJobs">
 					<graphic>
-						<de.jensd.fx.fontawesome.Icon  awesomeIcon="REMOVE" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon  iconName="REMOVE" size="16px" />
 					</graphic>
 				</MenuItem>
 			</items>

@@ -4,7 +4,6 @@ import static org.levigo.jadice.server.converterclient.util.UiUtil.getUiResource
 
 import java.io.IOException;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -22,7 +21,6 @@ import javafx.util.Duration;
 import org.levigo.jadice.server.converterclient.JobCard;
 import org.levigo.jadice.server.converterclient.JobCardScheduler;
 import org.levigo.jadice.server.converterclient.gui.inspector.ConfigurationInspectorPaneController;
-import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 import com.levigo.jadice.server.client.JobFactory;
 

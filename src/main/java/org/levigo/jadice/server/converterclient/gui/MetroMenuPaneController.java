@@ -25,7 +25,6 @@ import org.levigo.jadice.server.converterclient.updatecheck.UpdateService;
 
 import de.jensd.fx.glyphs.GlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconName;
-import de.jensd.fx.glyphs.testapps.AwesomeIconNameComparator;
 
 
 public class MetroMenuPaneController {

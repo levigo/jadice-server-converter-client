@@ -36,7 +36,7 @@ public class ConverterClient {
 		if (cl.hasOption("help"))
 			printHelp(opt);
 		else if (cl.hasOption("gui")) {
-        Application.launch(ConverterClientApplication.class, new String[] {});
+        Application.launch(ConverterClientApplication.class);
 		} else if (cl.hasOption("list")) {
 			System.out.println("Available Configurations (<ID>: <description>)");
 			String format = "%15s: %s";

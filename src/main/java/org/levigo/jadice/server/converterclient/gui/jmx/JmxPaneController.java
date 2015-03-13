@@ -9,10 +9,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
+import org.controlsfx.dialog.ExceptionDialog;
 import org.levigo.jadice.server.converterclient.Preferences;
+import org.levigo.jadice.server.converterclient.gui.Icons;
 import org.levigo.jadice.server.converterclient.gui.jmx.JMXHandler.CallbackHandler;
 import org.levigo.jadice.server.converterclient.gui.jmx.JMXHandler.ConnectionStatus;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
@@ -52,12 +53,15 @@ public class JmxPaneController {
     public void connectionFailed(Throwable reason) {
       Platform.runLater(() -> {
         gauges.connectionFailed();
-        Dialogs.create()
-          .owner(connect)
-          .styleClass(Dialog.STYLE_CLASS_NATIVE)
-          .title(resources.getString("dialogs.jmx.connection-error.title"))
-          .message(resources.getString("dialogs.jmx.connection-error.message"))
-          .showException(reason);
+        final ExceptionDialog dialog = new ExceptionDialog(reason);
+        dialog.setTitle(resources.getString("dialogs.jmx.connection-error.title"));
+        dialog.setHeaderText(resources.getString("dialogs.jmx.connection-error.message"));
+        
+        dialog.initOwner(connect.getScene().getWindow());
+        // http://code.makery.ch/blog/javafx-dialogs-official/
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().addAll(Icons.getAllIcons());
+        dialog.show();
       });
     }
 

@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javafx.beans.property.IntegerProperty;
@@ -285,7 +286,7 @@ public class JobCard implements Runnable, JobListener, StreamListener {
         soNode.addStreamResultListener(this);
       }
       job.submit();
-      job.waitForTermination(-1);
+      job.waitForTermination(-1, TimeUnit.SECONDS);
     } catch (JobException e) {
       LOGGER.error("Job submit failed", e);
     }

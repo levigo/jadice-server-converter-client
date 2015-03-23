@@ -38,18 +38,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import org.apache.log4j.Logger;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
+import org.controlsfx.dialog.ExceptionDialog;
 import org.levigo.jadice.server.converterclient.JobCard;
 import org.levigo.jadice.server.converterclient.JobCardFactory;
 import org.levigo.jadice.server.converterclient.Preferences;
 import org.levigo.jadice.server.converterclient.configurations.WorkflowConfiguration;
 import org.levigo.jadice.server.converterclient.gui.ConverterClientApplication;
+import org.levigo.jadice.server.converterclient.gui.Icons;
 import org.levigo.jadice.server.converterclient.gui.OSHelper;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
@@ -59,6 +60,7 @@ import com.levigo.jadice.server.util.Util;
 
 import de.jensd.fx.glyphs.GlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconName;
+
 
 
 public class ConversionPaneController {
@@ -568,13 +570,16 @@ public class ConversionPaneController {
           Util.copyAndClose(new FileInputStream(file), new FileOutputStream(resultFile));
         } catch (IOException e) {
           LOGGER.error("Could not save " + resultFile.getName(), e);
-          Dialogs.create() //
-            .owner(pane) //
-            .styleClass(Dialog.STYLE_CLASS_NATIVE) //
-            .title(resources.getString("dialogs.conversion.save-error.title")) //
-            .masthead(resources.getString("dialogs.conversion.save-error.masthead")) //
-            .message(String.format(resources.getString("dialogs.conversion.save-error.message"), resultFile.getAbsolutePath())) //
-            .showException(e);
+          final ExceptionDialog dialog = new ExceptionDialog(e);
+          dialog.setTitle(resources.getString("dialogs.conversion.save-error.title"));
+          dialog.setHeaderText(resources.getString("dialogs.conversion.save-error.masthead"));
+          dialog.setContentText(String.format(resources.getString("dialogs.conversion.save-error.message"), resultFile.getAbsolutePath()));
+          dialog.initOwner(pane.getScene().getWindow());
+          
+          // http://code.makery.ch/blog/javafx-dialogs-official/
+          Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+          stage.getIcons().addAll(Icons.getAllIcons());
+          dialog.show();
         }
       }
     });

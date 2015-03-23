@@ -17,6 +17,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -26,9 +27,9 @@ import javax.jms.ObjectMessage;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
-import org.controlsfx.dialog.Dialog;
-import org.controlsfx.dialog.Dialogs;
+import org.controlsfx.dialog.ExceptionDialog;
 import org.levigo.jadice.server.converterclient.Preferences;
+import org.levigo.jadice.server.converterclient.gui.Icons;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 import com.levigo.jadice.server.util.Util;
@@ -122,12 +123,15 @@ public class LogPaneController implements MessageListener {
         subscription.set(SubscriptionFactory.getInstance().createSubscription(servers.getValue(), this));
       } catch (Exception e) {
         LOGGER.error("Connection Error", e);
-        Dialogs.create()
-          .owner(subscribe)
-          .styleClass(Dialog.STYLE_CLASS_NATIVE)
-          .title(resources.getString("dialogs.server-log.connection-error.title"))
-          .message(resources.getString("dialogs.server-log.connection-error.message"))
-          .showException(e);
+        final ExceptionDialog dialog = new ExceptionDialog(e);
+        dialog.setTitle(resources.getString("dialogs.server-log.connection-error.title"));
+        dialog.setHeaderText(resources.getString("dialogs.server-log.connection-error.message"));
+        dialog.initOwner(subscribe.getScene().getWindow());
+        
+        // http://code.makery.ch/blog/javafx-dialogs-official/
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        stage.getIcons().addAll(Icons.getAllIcons());
+        dialog.show();
       }
     } else {
       try {

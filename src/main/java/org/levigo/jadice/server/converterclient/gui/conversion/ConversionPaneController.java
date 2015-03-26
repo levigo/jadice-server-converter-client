@@ -59,7 +59,7 @@ import com.levigo.jadice.server.Limit;
 import com.levigo.jadice.server.util.Util;
 
 import de.jensd.fx.glyphs.GlyphsDude;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconName;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
 
 
 
@@ -67,9 +67,9 @@ public class ConversionPaneController {
 
   private static final Logger LOGGER = Logger.getLogger(ConversionPaneController.class);
 
-  private static final FontAwesomeIconName LIMITS_ENABLED_ICON = FontAwesomeIconName.BELL_O;
+  private static final FontAwesomeIcons LIMITS_ENABLED_ICON = FontAwesomeIcons.BELL_O;
 
-  private static final FontAwesomeIconName LIMITS_DISABLED_ICON = FontAwesomeIconName.BELL_SLASH_O;
+  private static final FontAwesomeIcons LIMITS_DISABLED_ICON = FontAwesomeIcons.BELL_SLASH_O;
   
   @FXML
   private BorderPane pane;

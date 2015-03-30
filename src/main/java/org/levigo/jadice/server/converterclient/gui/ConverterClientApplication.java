@@ -40,6 +40,8 @@ public class ConverterClientApplication extends Application {
   private final Pane conversionPane;
   
   private final Pane serverlogPane;
+  
+  private final Pane clusterHealthPane;
 
   private final Pane jmxPane;
   
@@ -66,6 +68,7 @@ public class ConverterClientApplication extends Application {
     conversionPane = FXMLLoader.load(getClass().getResource("/fxml/ConversionPane.fxml"), getUiResources());
     jmxPane = FXMLLoader.load(getClass().getResource("/fxml/JmxPane.fxml"), getUiResources());
     serverlogPane = FXMLLoader.load(getClass().getResource("/fxml/LogPane.fxml"), getUiResources());
+    clusterHealthPane = FXMLLoader.load(getClass().getResource("/fxml/ClusterHealthPane.fxml"), getUiResources());
     optionsPane = FXMLLoader.load(getClass().getResource("/fxml/OptionsPane.fxml"), getUiResources());
 
     final FXMLLoader menuLoader = new FXMLLoader();
@@ -152,6 +155,11 @@ public class ConverterClientApplication extends Application {
     displayPanel(serverlogPane);
   }
   
+  public void openClusterHealth() {
+    displayPanel(clusterHealthPane);
+  }
+
+  
   public void openInspector() {
     displayPanel(inspectorPane);
   }
@@ -206,4 +214,5 @@ public class ConverterClientApplication extends Application {
   public static void main(String[] args) {
     launch(args);
   }
+
 }

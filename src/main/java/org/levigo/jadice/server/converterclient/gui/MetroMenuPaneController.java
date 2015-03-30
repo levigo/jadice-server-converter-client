@@ -39,6 +39,9 @@ public class MetroMenuPaneController {
   Button serverLog;
   
   @FXML
+  Button clusterHealth;
+  
+  @FXML
   Button jmx;
   
   @FXML
@@ -71,6 +74,7 @@ public class MetroMenuPaneController {
     initIconButton(conversion, FontAwesomeIcons.GEARS, evt -> ConverterClientApplication.getInstance().openConversion());
     initIconButton(serverLog, FontAwesomeIcons.SERVER, evt -> ConverterClientApplication.getInstance().openServerLog());
     initIconButton(jmx, FontAwesomeIcons.AREA_CHART, evt -> ConverterClientApplication.getInstance().openJMX());
+    initIconButton(clusterHealth, FontAwesomeIcons.HEARTBEAT, evt -> ConverterClientApplication.getInstance().openClusterHealth());
     initIconButton(inspector, FontAwesomeIcons.SEARCH, evt -> ConverterClientApplication.getInstance().openInspector());
     initSmallIconButton(options, FontAwesomeIcons.SLIDERS, evt -> ConverterClientApplication.getInstance().openOptions());
     initSmallIconButton(about, FontAwesomeIcons.INFO, evt -> ConverterClientApplication.getInstance().openAbout());

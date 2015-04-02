@@ -5,6 +5,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.*?>
+<?import org.controlsfx.control.GridView?>
 
 <BorderPane prefHeight="493.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.levigo.jadice.server.converterclient.gui.clusterhealth.ClusterHealthPaneController">
 <top>
@@ -24,4 +25,6 @@
 	</FlowPane>
 </top>
 
-<center></center></BorderPane>
+<center>
+	<GridView fx:id="gridView" cellHeight="40" cellWidth="350" verticalCellSpacing="5" horizontalCellSpacing="5" /> 
+</center></BorderPane>

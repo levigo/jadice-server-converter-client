@@ -108,6 +108,13 @@ public class ClusterHealthPaneController {
   
   private void loadRules() {
     // TODO: make them editable
+    rules.add(new ServerRunningRule());
+    rules.add(new AverageExecutionTimeRule(200));
+    rules.add(new TotalFailureRateRule(0.05f));
+    rules.add(new RecentAverageExecutionTimeRule(200));
+    rules.add(new RecentEfficiencyRule(0.4f));
+    rules.add(new RecentEfficiencyRule(0.4f));
+    rules.add(new RecentFailureRateRule(0.05f));
   }
   
   @FXML

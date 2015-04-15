@@ -6,25 +6,84 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.*?>
 <?import org.controlsfx.control.GridView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.FlowPane?>
+<?import org.controlsfx.control.HiddenSidesPane?>
+<?import javafx.scene.layout.Background?>
+<?import java.util.ArrayList?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
 
 <BorderPane prefHeight="493.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.levigo.jadice.server.converterclient.gui.clusterhealth.ClusterHealthPaneController">
 <top>
-	<FlowPane styleClass="label-top">
-		<children>
-			<Button fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
-				prefHeight="30.0" prefWidth="30.0" styleClass="home" text="%app.home">
-				<FlowPane.margin>
-					<Insets right="10.0" />
-				</FlowPane.margin>
-			</Button>
-			<Label styleClass="label-top" text="%cluster-health.title" />
-		</children>
-		<padding>
-			<Insets left="10.0" top="5.0" />
-		</padding>
-	</FlowPane>
+	<BorderPane>
+		<left>
+			<FlowPane styleClass="label-top">
+				<children>
+					<Button fx:id="home" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
+						prefHeight="30.0" prefWidth="30.0" styleClass="home" text="%app.home">
+						<FlowPane.margin>
+							<Insets right="10.0" />
+						</FlowPane.margin>
+					</Button>
+					<Label styleClass="label-top" text="%cluster-health.title" />
+				</children>
+				<padding>
+					<Insets left="10.0" top="5.0" />
+				</padding>
+			</FlowPane>
+		</left>
+		<right>
+			<FlowPane alignment="CENTER_RIGHT">
+				<padding><Insets top="5" right="20" bottom="5" left="5" /></padding>
+				<children>
+					<ToggleButton fx:id="toggleSettingsButton" text="Toogle Settings" contentDisplay="GRAPHIC_ONLY">
+						<graphic>
+							<FontAwesomeIcon glyphName="BARS" />
+						</graphic>
+					</ToggleButton>
+				</children>
+			</FlowPane>
+			
+		</right>
+	</BorderPane>
 </top>
 
 <center>
-	<GridView fx:id="gridView" cellHeight="40" cellWidth="350" verticalCellSpacing="5" horizontalCellSpacing="5" /> 
-</center></BorderPane>
+<HiddenSidesPane fx:id="hiddenSidePane" triggerDistance="0" animationDelay="80ms">
+	<content>
+		<GridView fx:id="gridView" cellHeight="40" cellWidth="350" verticalCellSpacing="5" horizontalCellSpacing="5" />
+	</content>
+	<top>
+		<FlowPane orientation="HORIZONTAL" alignment="TOP_RIGHT" vgap="10" hgap="10" style="-fx-background-color: #000000AA">
+			<padding><Insets top="5" right="20" bottom="5" left="5"/></padding>
+			<children>
+				<Button fx:id="addInstance" text="%cluster-health.add-instance" contentDisplay="GRAPHIC_ONLY" onAction="#onAddInstance">
+					<graphic>
+						<FontAwesomeIcon glyphName="PLUS_CIRCLE" size="25px"/>
+					</graphic>
+				</Button>
+	
+				<Button fx:id="defineWarnings" text="%cluster-health.define-warnings" contentDisplay="GRAPHIC_ONLY">
+					<graphic>
+						<FontAwesomeIcon glyphName="GEARS" size="25px"/>
+					</graphic>
+				</Button>
+				
+				<Button text="%cluster-health.update-now" contentDisplay="GRAPHIC_ONLY" onAction="#runUpdate">
+					<graphic>
+						<FontAwesomeIcon glyphName="REFRESH" size="25px"/>
+					</graphic>
+				</Button>
+				
+			</children>
+		</FlowPane> 
+	</top>
+</HiddenSidesPane> 
+</center>
+
+<bottom>
+
+</bottom>
+</BorderPane>

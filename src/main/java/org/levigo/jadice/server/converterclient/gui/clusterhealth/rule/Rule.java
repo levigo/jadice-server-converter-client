@@ -1,25 +1,10 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.rule;
 
-import java.util.Optional;
-
-import javax.management.JMException;
 import javax.management.MBeanServerConnection;
 
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.HealthStatus;
-
-public interface Rule {
-  
-  public enum Severity {
-    WARNING,
-    FATAL;
-  }
+public interface Rule<T> {
   
   String getDescription();
   
-  Optional<String> check(MBeanServerConnection mbsc) throws JMException;
-  
-  default HealthStatus getStatus() {
-    return HealthStatus.ATTENTION;
-  }
-
+  EvaluationResult<T> evaluate(MBeanServerConnection mbsc);
 }

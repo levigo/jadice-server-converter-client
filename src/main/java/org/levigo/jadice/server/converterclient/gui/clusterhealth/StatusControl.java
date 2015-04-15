@@ -1,7 +1,11 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth;
 
+import java.util.stream.Collectors;
+
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -11,8 +15,8 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Text;
-import eu.hansolo.enzo.led.Led;
-import eu.hansolo.enzo.led.LedBuilder;
+import eu.hansolo.enzo.canvasled.Led;
+import eu.hansolo.enzo.canvasled.LedBuilder;
 
 public class StatusControl extends HBox {
 
@@ -21,6 +25,8 @@ public class StatusControl extends HBox {
   private final Led yellow = buildLed(Color.GOLD);
   
   private final Led red = buildLed(Color.RED);
+  
+  private final Tooltip messagesTooltip = new Tooltip();
   
   private final Text instanceName = new Text();
   
@@ -50,11 +56,23 @@ public class StatusControl extends HBox {
     initBindings();
   }
   
+  public ClusterInstance getClusterInstance() {
+    return instance;
+  }
+  
   private void initBindings() {
     green.onProperty().bind(instance.healthProperty().isEqualTo(HealthStatus.GOOD));
     yellow.onProperty().bind(instance.healthProperty().isEqualTo(HealthStatus.ATTENTION));
     red.onProperty().bind(instance.healthProperty().isEqualTo(HealthStatus.FAILURE));
     instanceName.textProperty().bind(instance.serverNameProperty());
+    instance.messagesProperty().addListener((ListChangeListener.Change<? extends String>  c) -> {
+      if (instance.messagesProperty().get().isEmpty()) {
+        Tooltip.uninstall(innerBox, messagesTooltip);
+      } else {
+        Tooltip.install(innerBox, messagesTooltip);
+        messagesTooltip.setText(instance.messagesProperty().stream().collect(Collectors.joining("\n")));
+      }
+    });
   }
 
   private static Led buildLed(Color color) {

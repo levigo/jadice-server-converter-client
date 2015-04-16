@@ -189,7 +189,12 @@ public class JobCard implements Runnable, JobListener, StreamListener {
           final FileOutputStream fos = new FileOutputStream(file);
           
           usis.seek(0);
-          Util.copyAndClose(usis, fos);
+          final long bytesWritten = Util.copyAndClose(usis, fos);
+          if (bytesWritten == 0) {
+            LOGGER.info("Stream is empty, ignore it.");
+            file.delete();
+            return;
+          }
           LOGGER.info("Copied result to " + file.getCanonicalPath());
           results.add(file);
         } catch (Exception e) {

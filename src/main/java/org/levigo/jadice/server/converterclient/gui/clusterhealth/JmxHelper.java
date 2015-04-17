@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
 import javax.management.JMException;
 import javax.management.MBeanServerConnection;
@@ -43,8 +42,9 @@ public class JmxHelper {
     }
   }
   
+  @SuppressWarnings("unchecked")
   private static <N extends Number> N retrieveNumericValue(MBeanServerConnection mbsc, String beanClassName, String attributeName,
-      N fallbackValue, Function<String, N> parser) throws JMException {
+      N fallbackValue) throws JMException {
     try {
       ObjectInstance bean = getBeanByClassName(beanClassName, mbsc);
       if (bean == null) {
@@ -54,8 +54,8 @@ public class JmxHelper {
       if (attribute == null) {
         return fallbackValue;
       }
-      return parser.apply(attribute.toString());
-    } catch (IOException | NumberFormatException e) {
+      return (N) attribute;
+    } catch (IOException | ClassCastException e) {
       throw wrap(e);
     }
   }
@@ -79,23 +79,23 @@ public class JmxHelper {
   }
 
   public static float getTotalFailureRate(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "TotalFailureRate", Float.NaN, Float::parseFloat);
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "TotalFailureRate", Float.NaN);
   }
 
   public static float getRecentFailureRate(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "TotalFailureRate", Float.NaN, Float::parseFloat);
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "TotalFailureRate", Float.NaN);
   }
 
   public static long getRecentAverageExecutionTime(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "RecentAverageExecutionTime", 0L, Long::parseLong);
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "RecentAverageExecutionTime", 0L);
   }
 
   public static long getAverageExecutionTime(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "AverageExecutionTime", 0L, Long::parseLong);
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "AverageExecutionTime", 0L);
   }
   
   public static float getEfficiency10Min(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "Efficiency10Min", Float.NaN, Float::parseFloat);
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "Efficiency10Min", Float.NaN);
   }
 
   public static boolean isRunning(MBeanServerConnection mbsc) throws JMException {
@@ -118,6 +118,4 @@ public class JmxHelper {
     jmException.initCause(e);
     return jmException;
   }
-
-
 }

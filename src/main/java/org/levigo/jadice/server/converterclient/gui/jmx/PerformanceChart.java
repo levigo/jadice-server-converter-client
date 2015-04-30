@@ -67,6 +67,7 @@ public class PerformanceChart extends ChartViewer implements Chart {
     
     final TimeSeriesCollection durationColletion = new TimeSeriesCollection(durations);
     XYItemRenderer dotRenderer = new XYLineAndShapeRenderer(false, true);
+    dotRenderer.setBaseToolTipGenerator(new JobExectionToolTipGenerator(durations));
     plot.setDataset(1, durationColletion);
     plot.mapDatasetToRangeAxis(1, 0);
     plot.setRenderer(1, dotRenderer);
@@ -91,15 +92,16 @@ public class PerformanceChart extends ChartViewer implements Chart {
 	
 	@Override
 	public void addObservation(JobStateEventDTO event) {
-	  if (event.state.isTerminalState()) {
-	    addDuration(event.age);
+	  if (!event.state.isTerminalState()) {
+	    return;
 	  }
+    addDuration(event);
 	}
 
-	public void addDuration(long duration) {
+	private void addDuration(JobStateEventDTO event) {
 		try {
       FixedMillisecond now = new FixedMillisecond();
-      durations.addOrUpdate(now, duration);
+      durations.addOrUpdate(new JobExecutionDataItem(now, event));
     } catch (NullPointerException npe) {
       LOGGER.error("Could not render duration", npe);
       clear();

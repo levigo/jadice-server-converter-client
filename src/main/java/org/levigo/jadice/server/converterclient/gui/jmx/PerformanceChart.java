@@ -1,5 +1,7 @@
 package org.levigo.jadice.server.converterclient.gui.jmx;
 
+import static java.util.concurrent.TimeUnit.MINUTES;
+
 import java.awt.Color;
 
 import org.apache.log4j.Logger;
@@ -33,12 +35,13 @@ public class PerformanceChart extends ChartViewer implements Chart {
 	
 	public PerformanceChart() {
 	  super(ChartFactory.createTimeSeriesChart("performance", "time", "ms", new TimeSeriesCollection(), true, false, false));
-		// Convert minutes to milliseconds
-		durations.setMaximumItemAge(MAX_DATA_AGE * 1000 * 60);
-		efficiency.setMaximumItemAge(MAX_DATA_AGE * 1000 * 60);
-		maxDurations.setMaximumItemAge(MAX_DATA_AGE * 1000 * 60);
-		minDurations.setMaximumItemAge(MAX_DATA_AGE * 1000 * 60);
-		avgDurations.setMaximumItemAge(MAX_DATA_AGE * 1000 * 60);
+		// Method requires milliseconds
+		durations.setMaximumItemAge(MINUTES.toMillis(MAX_DATA_AGE));
+		efficiency.setMaximumItemAge(MINUTES.toMillis(MAX_DATA_AGE));
+		maxDurations.setMaximumItemAge(MINUTES.toMillis(MAX_DATA_AGE));
+		minDurations.setMaximumItemAge(MINUTES.toMillis(MAX_DATA_AGE));
+		avgDurations.setMaximumItemAge(MINUTES.toMillis(MAX_DATA_AGE));
+		
 		
 		// TimeSeriesCollection that was used in super constr.
 		final TimeSeriesCollection minMaxCollection = (TimeSeriesCollection) getChart().getXYPlot().getDataset(0);
@@ -64,6 +67,7 @@ public class PerformanceChart extends ChartViewer implements Chart {
     
     final TimeSeriesCollection durationColletion = new TimeSeriesCollection(durations);
     XYItemRenderer dotRenderer = new XYLineAndShapeRenderer(false, true);
+    dotRenderer.setBaseToolTipGenerator(new JobExectionToolTipGenerator(durations));
     plot.setDataset(1, durationColletion);
     plot.mapDatasetToRangeAxis(1, 0);
     plot.setRenderer(1, dotRenderer);
@@ -88,15 +92,16 @@ public class PerformanceChart extends ChartViewer implements Chart {
 	
 	@Override
 	public void addObservation(JobStateEventDTO event) {
-	  if (event.state.isTerminalState()) {
-	    addDuration(event.age);
+	  if (!event.state.isTerminalState()) {
+	    return;
 	  }
+    addDuration(event);
 	}
 
-	public void addDuration(long duration) {
+	private void addDuration(JobStateEventDTO event) {
 		try {
       FixedMillisecond now = new FixedMillisecond();
-      durations.addOrUpdate(now, duration);
+      durations.addOrUpdate(new JobExecutionDataItem(now, event));
     } catch (NullPointerException npe) {
       LOGGER.error("Could not render duration", npe);
       clear();

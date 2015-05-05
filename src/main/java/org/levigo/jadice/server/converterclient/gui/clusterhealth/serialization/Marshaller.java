@@ -24,14 +24,14 @@ public abstract class Marshaller {
     return new V1Marshaller();
   }
   
-  public static Marshaller get(String version) {
+  public static Marshaller get(String version) throws MarshallingException {
     Objects.assertNotNull("version", version);
     switch (version) {
       case "1.0" : 
         return new V1Marshaller();
       
       default :
-        throw new IllegalArgumentException("no support for serialization format version " + version);
+        throw new MarshallingException("no support for serialization format version " + version);
     }
   }
   

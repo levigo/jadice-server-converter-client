@@ -1,12 +1,9 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.Rule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.ServerRunningRule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.TotalFailureRateRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.v1.V1Marshaller;
 
 import com.fasterxml.jackson.core.JsonFactory;

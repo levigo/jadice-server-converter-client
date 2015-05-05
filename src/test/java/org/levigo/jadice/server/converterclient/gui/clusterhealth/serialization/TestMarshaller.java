@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.levigo.jadice.server.converterclient.Preferences.Defaults;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.AverageExecutionTimeRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentAverageExecutionTimeRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentEfficiencyRule;
@@ -62,6 +63,15 @@ public class TestMarshaller {
 
     assertTrue("instances shall be empty", dto2.instances.isEmpty());
     assertTrue("rules shall be empty", dto2.rules.isEmpty());
+  }
+
+  @Test
+  public void testUnmarshallDefault() throws Exception {
+    final String v = Marshaller.lookupVersion(Defaults.CLUSTER_HEALTH);
+    assertFalse("No version found", v.isEmpty());
+    
+    final ClusterHealthDTO dto = Marshaller.get(v).unmarshall(Defaults.CLUSTER_HEALTH);
+    assertNotNull("No object unmarshalled", dto);
   }
   @Test
   public void testLookupVersion() throws Exception {

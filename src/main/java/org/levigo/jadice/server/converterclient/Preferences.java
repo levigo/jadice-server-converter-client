@@ -51,6 +51,8 @@ public class Preferences {
     final String JMX_PASSWORD = null;
     
     final UpdatePolicy UPDATE_POLICY = UpdatePolicy.ON_EVERY_START;
+    
+    final String CLUSTER_HEALTH = "{\"version\" : \"1.0\"}";
 	}
 	
 	private static interface Keys {
@@ -72,6 +74,8 @@ public class Preferences {
     final String JMX_PASSWORD = "jmx.password";
     
     final String UPDATE_POLICY = "updates";
+    
+    final String CLUSTER_HEALTH = "clusterHealth";
 	}
 
   private static java.util.prefs.Preferences PREF = java.util.prefs.Preferences.userNodeForPackage(Preferences.class);
@@ -98,6 +102,8 @@ public class Preferences {
 	private static StringProperty jmxPasswordProperty;
 
   private static SimpleObjectProperty<UpdatePolicy> updatePolicyProperty;
+  
+  private static StringProperty clusterHealthProperty;
 
 	
   public static ListProperty<String> recentServersProperty() {
@@ -321,8 +327,16 @@ public class Preferences {
     }
     return updatePolicyProperty;
   }
-
-
+  
+  public static StringProperty clusterHealthProperty() {
+    if (clusterHealthProperty == null) {
+      clusterHealthProperty = new SimpleStringProperty(PREF.get(Keys.CLUSTER_HEALTH, Defaults.CLUSTER_HEALTH));
+      clusterHealthProperty.addListener((observable, oldValue, newValue) -> {
+        putNullSafe(Keys.CLUSTER_HEALTH, newValue);
+      });
+    }
+    return clusterHealthProperty;
+  }
   
   public static void restoreDefaults() {
     recentServersProperty().setAll(Defaults.RECENT_SERVERS);
@@ -339,7 +353,7 @@ public class Preferences {
     jmxUsernameProperty().set(Defaults.JMX_USER_NAME);
     jmxPasswordProperty().set(Defaults.JMX_PASSWORD);
     updatePolicyProperty().setValue(Defaults.UPDATE_POLICY);
-    
+    clusterHealthProperty().setValue(Defaults.CLUSTER_HEALTH);
   }
 
   private static void putNullSafe(String key, String value) {

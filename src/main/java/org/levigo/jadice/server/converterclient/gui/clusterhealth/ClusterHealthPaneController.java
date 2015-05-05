@@ -22,6 +22,7 @@ import javafx.stage.Modality;
 
 import org.controlsfx.control.GridView;
 import org.controlsfx.control.HiddenSidesPane;
+import org.levigo.jadice.server.converterclient.Preferences;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.AverageExecutionTimeRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentAverageExecutionTimeRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentEfficiencyRule;
@@ -29,6 +30,9 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentFai
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.Rule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.ServerRunningRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.TotalFailureRateRule;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.ClusterHealthDTO;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.MarshallingException;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 
@@ -70,8 +74,15 @@ public class ClusterHealthPaneController {
   @FXML
   protected void initialize() {
     UiUtil.configureHomeButton(home);
-    loadRules();
-    loadControlElements();
+    
+    try {
+      final ClusterHealthDTO dto = loadClusterHealthPreferences();
+      loadRules(dto);
+      loadControlElements(dto);
+    } catch (MarshallingException e) {
+      // FIXME
+      e.printStackTrace();
+    }
     
     hiddenSidePane.pinnedSideProperty().bind(new When(toggleSettingsButton.selectedProperty()).then(Side.TOP).otherwise((Side) null));
     
@@ -106,7 +117,9 @@ public class ClusterHealthPaneController {
     );
   }
   
-  private void loadRules() {
+  private void loadRules(ClusterHealthDTO preferencesDTO) {
+    rules.addAll(preferencesDTO.rules);
+    
     // TODO: make them editable
     rules.add(new ServerRunningRule());
     rules.add(new AverageExecutionTimeRule(200));
@@ -133,8 +146,17 @@ public class ClusterHealthPaneController {
   }
   
 
-  private void loadControlElements() {
-    // TODO: make them persistent
+  private void loadControlElements(ClusterHealthDTO preferencesDTO) {
+    preferencesDTO.instances.forEach(instance -> {
+      controlElements.add(new StatusControl(new ClusterInstance(instance, rules)));
+    });
+  }
+
+  private ClusterHealthDTO loadClusterHealthPreferences() throws MarshallingException {
+    final String pref = Preferences.clusterHealthProperty().get();
+    final String version = Marshaller.lookupVersion(pref);
+    final ClusterHealthDTO preferencesDTO = Marshaller.get(version).unmarshall(pref);
+    return preferencesDTO;
   }
 
 }

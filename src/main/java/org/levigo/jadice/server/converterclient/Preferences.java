@@ -3,11 +3,14 @@ package org.levigo.jadice.server.converterclient;
 import java.io.File;
 import java.util.List;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
+import javafx.beans.property.ReadOnlyProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -18,6 +21,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 
 import org.apache.log4j.Logger;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.ClusterHealthDTO;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.MarshallingException;
 import org.levigo.jadice.server.converterclient.util.FilenameGenerator;
 import org.levigo.jadice.server.converterclient.util.PasswordObfuscator;
 
@@ -52,7 +58,7 @@ public class Preferences {
     
     final UpdatePolicy UPDATE_POLICY = UpdatePolicy.ON_EVERY_START;
     
-    final String CLUSTER_HEALTH = "{\"version\" : \"1.0\"}";
+    final ClusterHealthDTO CLUSTER_HEALTH = new ClusterHealthDTO();
 	}
 	
 	private static interface Keys {
@@ -103,7 +109,7 @@ public class Preferences {
 
   private static SimpleObjectProperty<UpdatePolicy> updatePolicyProperty;
   
-  private static StringProperty clusterHealthProperty;
+  private static SimpleObjectProperty<ClusterHealthDTO> clusterHealthProperty;
 
 	
   public static ListProperty<String> recentServersProperty() {
@@ -328,12 +334,32 @@ public class Preferences {
     return updatePolicyProperty;
   }
   
-  public static StringProperty clusterHealthProperty() {
+  public static ReadOnlyProperty<ClusterHealthDTO> clusterHealthProperty() {
     if (clusterHealthProperty == null) {
-      clusterHealthProperty = new SimpleStringProperty(PREF.get(Keys.CLUSTER_HEALTH, Defaults.CLUSTER_HEALTH));
-      clusterHealthProperty.addListener((observable, oldValue, newValue) -> {
-        putNullSafe(Keys.CLUSTER_HEALTH, newValue);
-      });
+      ClusterHealthDTO health = Defaults.CLUSTER_HEALTH;
+      
+      final String raw = PREF.get(Keys.CLUSTER_HEALTH, null);
+      if (raw != null) {
+        try {
+          final String version = Marshaller.lookupVersion(raw);
+          health = Marshaller.get(version).unmarshall(raw);
+        } catch (MarshallingException e) {
+          LOGGER.error("Could not load cluster health preferences", e);
+        }
+      }
+      
+      clusterHealthProperty = new SimpleObjectProperty<>(health);
+      InvalidationListener il = (Observable observable) -> {
+          try {
+            final String marshalled = Marshaller.getDefault().marshall(clusterHealthProperty.get());
+            putNullSafe(Keys.CLUSTER_HEALTH, marshalled);
+          } catch (MarshallingException e) {
+            LOGGER.error("Could not store cluster health preferences", e);
+          }
+        };
+      clusterHealthProperty.get().instances.addListener(il);
+      clusterHealthProperty.get().rules.addListener(il);
+      
     }
     return clusterHealthProperty;
   }
@@ -353,7 +379,11 @@ public class Preferences {
     jmxUsernameProperty().set(Defaults.JMX_USER_NAME);
     jmxPasswordProperty().set(Defaults.JMX_PASSWORD);
     updatePolicyProperty().setValue(Defaults.UPDATE_POLICY);
-    clusterHealthProperty().setValue(Defaults.CLUSTER_HEALTH);
+    
+    clusterHealthProperty().getValue().instances.clear();
+    clusterHealthProperty().getValue().instances.addAll(Defaults.CLUSTER_HEALTH.instances);
+    clusterHealthProperty().getValue().rules.clear();
+    clusterHealthProperty().getValue().rules.addAll(Defaults.CLUSTER_HEALTH.rules);
   }
 
   private static void putNullSafe(String key, String value) {

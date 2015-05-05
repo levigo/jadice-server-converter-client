@@ -3,6 +3,9 @@ package org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization
 import java.io.IOException;
 import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.Rule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.v1.V1Marshaller;
 
@@ -13,8 +16,19 @@ import com.levigo.util.base.Objects;
 public abstract class Marshaller {
   
   public static final class ClusterHealthDTO {
-    public List<String> instances;
-    public List<Rule<?>> rules;
+    
+    public ClusterHealthDTO() {
+      this(FXCollections.observableArrayList(), FXCollections.observableArrayList());
+    }
+    
+    public ClusterHealthDTO(ObservableList<String> instances, ObservableList<Rule<?>> rules) {
+      this.instances = instances;
+      this.rules = rules;
+    }
+    
+    public ObservableList<String> instances;
+    
+    public ObservableList<Rule<?>> rules;
   }
   
   public static Marshaller getDefault() {
@@ -49,9 +63,7 @@ public abstract class Marshaller {
   public abstract String marshall(ClusterHealthDTO dto) throws MarshallingException;
   
   public String marshall(List<String> instances, List<Rule<?>> rules) throws MarshallingException {
-    ClusterHealthDTO dto = new ClusterHealthDTO();
-    dto.instances = instances;
-    dto.rules = rules;
+    ClusterHealthDTO dto = new ClusterHealthDTO(FXCollections.observableList(instances), FXCollections.observableList(rules));
     return marshall(dto);
   };
   

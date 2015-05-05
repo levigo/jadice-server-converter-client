@@ -1,17 +1,18 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.levigo.jadice.server.converterclient.Preferences.Defaults;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.AverageExecutionTimeRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentAverageExecutionTimeRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentEfficiencyRule;
@@ -56,8 +57,6 @@ public class TestMarshaller {
   @Test
   public void testEmptySerialization() throws Exception {
     final ClusterHealthDTO dto1 = new ClusterHealthDTO();
-    dto1.instances = Collections.emptyList();
-    dto1.rules = Collections.emptyList();
     Marshaller m = Marshaller.getDefault();
     final ClusterHealthDTO dto2 = m.unmarshall(m.marshall(dto1));
 
@@ -65,15 +64,6 @@ public class TestMarshaller {
     assertTrue("rules shall be empty", dto2.rules.isEmpty());
   }
 
-  @Test
-  public void testUnmarshallDefault() throws Exception {
-    final String v = Marshaller.lookupVersion(Defaults.CLUSTER_HEALTH);
-    assertFalse("No version found", v.isEmpty());
-    
-    final ClusterHealthDTO dto = Marshaller.get(v).unmarshall(Defaults.CLUSTER_HEALTH);
-    assertNotNull("No object unmarshalled", dto);
-  }
-  @Test
   public void testLookupVersion() throws Exception {
     assertEquals("Version mismatch", "42.0", Marshaller.lookupVersion("{\"version\": \"42.0\"}"));
   }

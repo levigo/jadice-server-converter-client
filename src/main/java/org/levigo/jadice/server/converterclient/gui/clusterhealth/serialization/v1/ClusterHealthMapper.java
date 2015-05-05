@@ -1,7 +1,6 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.v1;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
 
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.ImmutableBooleanRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.NumericRule;
@@ -34,8 +33,7 @@ public class ClusterHealthMapper {
   
   public ClusterHealthDTO unmap(ClusterHealth ch) throws MarshallingException {
     ClusterHealthDTO result = new ClusterHealthDTO();
-    result.instances = ch.instances;
-    result.rules = new ArrayList<>(ch.rules.size());
+    result.instances.addAll(ch.instances);
     
     for (Rule<?> rule : ch.rules) {
       try {

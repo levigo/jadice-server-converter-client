@@ -30,9 +30,7 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentFai
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.Rule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.ServerRunningRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.TotalFailureRateRule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.ClusterHealthDTO;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.MarshallingException;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 
@@ -75,14 +73,9 @@ public class ClusterHealthPaneController {
   protected void initialize() {
     UiUtil.configureHomeButton(home);
     
-    try {
-      final ClusterHealthDTO dto = loadClusterHealthPreferences();
-      loadRules(dto);
-      loadControlElements(dto);
-    } catch (MarshallingException e) {
-      // FIXME
-      e.printStackTrace();
-    }
+    final ClusterHealthDTO dto = loadClusterHealthPreferences();
+    loadRules(dto);
+    loadControlElements(dto);
     
     hiddenSidePane.pinnedSideProperty().bind(new When(toggleSettingsButton.selectedProperty()).then(Side.TOP).otherwise((Side) null));
     
@@ -152,11 +145,8 @@ public class ClusterHealthPaneController {
     });
   }
 
-  private ClusterHealthDTO loadClusterHealthPreferences() throws MarshallingException {
-    final String pref = Preferences.clusterHealthProperty().get();
-    final String version = Marshaller.lookupVersion(pref);
-    final ClusterHealthDTO preferencesDTO = Marshaller.get(version).unmarshall(pref);
-    return preferencesDTO;
+  private ClusterHealthDTO loadClusterHealthPreferences() {
+    return Preferences.clusterHealthProperty().getValue();
   }
 
 }

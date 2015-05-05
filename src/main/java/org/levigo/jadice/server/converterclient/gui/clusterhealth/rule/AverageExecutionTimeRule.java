@@ -37,4 +37,14 @@ public class AverageExecutionTimeRule implements NumericRule<Long> {
       return new EvaluationResult<Long>(HealthStatus.FAILURE, -1L, e);
     }
   }
+  
+  @Override
+  public int hashCode() {
+    return (int) (limit ^ (limit >>> 32));
+  }
+  
+  @Override
+  public boolean equals(Object other) {
+    return other instanceof AverageExecutionTimeRule && ((AverageExecutionTimeRule) other).limit == this.limit;
+  }
 }

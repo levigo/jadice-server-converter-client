@@ -30,4 +30,15 @@ public class ServerRunningRule implements ImmutableBooleanRule {
       return new EvaluationResult<Boolean>(HealthStatus.FAILURE, false, e);
     }
   }
+  
+  @Override
+  public int hashCode() {
+    // an arbitrary chosen value :-)
+    return 42;
+  }
+  
+  @Override
+  public boolean equals(Object other) {
+    return other instanceof ServerRunningRule;
+  }
 }

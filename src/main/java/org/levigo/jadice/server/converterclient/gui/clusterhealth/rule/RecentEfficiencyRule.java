@@ -37,4 +37,14 @@ public class RecentEfficiencyRule implements NumericRule<Float> {
       return new EvaluationResult<Float>(HealthStatus.FAILURE, Float.NaN, e);
     }
   }
+
+  @Override
+  public int hashCode() {
+    return Float.floatToIntBits(limit);
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    return other instanceof RecentEfficiencyRule && ((RecentEfficiencyRule) other).limit == this.limit;
+  }
 }

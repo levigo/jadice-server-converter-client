@@ -38,4 +38,14 @@ public class RecentAverageExecutionTimeRule implements NumericRule<Long> {
     }
 
   }
+
+  @Override
+  public int hashCode() {
+    return (int) (limit ^ (limit >>> 32));
+  }
+
+  @Override
+  public boolean equals(Object other) {
+    return other instanceof RecentAverageExecutionTimeRule && ((RecentAverageExecutionTimeRule) other).limit == this.limit;
+  }
 }

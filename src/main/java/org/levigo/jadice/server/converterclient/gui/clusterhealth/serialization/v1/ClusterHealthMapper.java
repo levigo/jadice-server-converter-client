@@ -5,12 +5,12 @@ import java.util.ArrayList;
 
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.ImmutableBooleanRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.NumericRule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.MarshallingDTO;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.ClusterHealthDTO;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.MarshallingException;
 
 public class ClusterHealthMapper {
   
-  public ClusterHealth map(MarshallingDTO dto) throws MarshallingException {
+  public ClusterHealth map(ClusterHealthDTO dto) throws MarshallingException {
     final ClusterHealth result = new ClusterHealth();
     
     result.instances = dto.instances;
@@ -32,8 +32,8 @@ public class ClusterHealthMapper {
     return result;
   }
   
-  public MarshallingDTO unmap(ClusterHealth ch) throws MarshallingException {
-    MarshallingDTO result = new MarshallingDTO();
+  public ClusterHealthDTO unmap(ClusterHealth ch) throws MarshallingException {
+    ClusterHealthDTO result = new ClusterHealthDTO();
     result.instances = ch.instances;
     result.rules = new ArrayList<>(ch.rules.size());
     

@@ -1,9 +1,6 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,7 +18,7 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentFai
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.Rule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.ServerRunningRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.TotalFailureRateRule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.MarshallingDTO;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.ClusterHealthDTO;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.v1.V1Marshaller;
 
 import com.levigo.jadice.server.util.Util;
@@ -35,19 +32,7 @@ public class TestMarshaller {
   private static List<Rule<?>> RULES;
 
   private static List<String> INSTANCES;
-
-  @Test
-  public void testEmptySerialization() throws Exception {
-    final MarshallingDTO dto1 = new MarshallingDTO();
-    dto1.instances = Collections.emptyList();
-    dto1.rules = Collections.emptyList();
-    Marshaller m = Marshaller.getDefault();
-    final MarshallingDTO dto2 = m.unmarshall(m.marshall(dto1));
-
-    assertTrue("instances shall be empty", dto2.instances.isEmpty());
-    assertTrue("rules shall be empty", dto2.rules.isEmpty());
-  }
-
+  
   @BeforeClass
   public static void createRules() {
     RULES = new ArrayList<>();
@@ -58,14 +43,26 @@ public class TestMarshaller {
     RULES.add(new RecentFailureRateRule(40f));
     RULES.add(new TotalFailureRateRule(50f));
   }
-
+  
   @BeforeClass
   public static void createInstances() {
     INSTANCES = new ArrayList<>();
     INSTANCES.add("localhost:61619");
     INSTANCES.add("jadice-server.example.com:61619");
   }
+  
+  
+  @Test
+  public void testEmptySerialization() throws Exception {
+    final ClusterHealthDTO dto1 = new ClusterHealthDTO();
+    dto1.instances = Collections.emptyList();
+    dto1.rules = Collections.emptyList();
+    Marshaller m = Marshaller.getDefault();
+    final ClusterHealthDTO dto2 = m.unmarshall(m.marshall(dto1));
 
+    assertTrue("instances shall be empty", dto2.instances.isEmpty());
+    assertTrue("rules shall be empty", dto2.rules.isEmpty());
+  }
   @Test
   public void testLookupVersion() throws Exception {
     assertEquals("Version mismatch", "42.0", Marshaller.lookupVersion("{\"version\": \"42.0\"}"));
@@ -86,7 +83,7 @@ public class TestMarshaller {
   public void testV1Marshalling() throws Exception {
     final String m = Marshaller.get(V1).marshall(INSTANCES, RULES);
     assertEquals("Wrong version marshalled", "1.0", Marshaller.lookupVersion(m));
-    final MarshallingDTO unmarshalled = Marshaller.get(V1).unmarshall(m);
+    final ClusterHealthDTO unmarshalled = Marshaller.get(V1).unmarshall(m);
 
     assertArrayEquals("Wrong instances", INSTANCES.toArray(), unmarshalled.instances.toArray());
     assertArrayEquals("Wrong rules", RULES.toArray(), unmarshalled.rules.toArray());
@@ -99,7 +96,7 @@ public class TestMarshaller {
     String version = Marshaller.lookupVersion(json);
     assertEquals("Wrong version detected", V1, version);
 
-    final MarshallingDTO unmarshalled = Marshaller.get(V1).unmarshall(json);
+    final ClusterHealthDTO unmarshalled = Marshaller.get(V1).unmarshall(json);
 
     assertArrayEquals("Wrong instances", INSTANCES.toArray(), unmarshalled.instances.toArray());
     assertArrayEquals("Wrong rules", RULES.toArray(), unmarshalled.rules.toArray());

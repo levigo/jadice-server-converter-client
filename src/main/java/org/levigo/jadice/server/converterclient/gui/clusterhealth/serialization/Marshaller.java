@@ -12,7 +12,7 @@ import com.levigo.util.base.Objects;
 
 public abstract class Marshaller {
   
-  public static final class MarshallingDTO {
+  public static final class ClusterHealthDTO {
     public List<String> instances;
     public List<Rule<?>> rules;
   }
@@ -46,14 +46,14 @@ public abstract class Marshaller {
     throw new MarshallingException("No serialization version found");
   }
   
-  public abstract String marshall(MarshallingDTO dto) throws MarshallingException;
+  public abstract String marshall(ClusterHealthDTO dto) throws MarshallingException;
   
   public String marshall(List<String> instances, List<Rule<?>> rules) throws MarshallingException {
-    MarshallingDTO dto = new MarshallingDTO();
+    ClusterHealthDTO dto = new ClusterHealthDTO();
     dto.instances = instances;
     dto.rules = rules;
     return marshall(dto);
   };
   
-  public abstract MarshallingDTO unmarshall(String s) throws MarshallingException;
+  public abstract ClusterHealthDTO unmarshall(String s) throws MarshallingException;
 }

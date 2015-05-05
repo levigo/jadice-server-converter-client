@@ -17,7 +17,7 @@ public class V1Marshaller extends Marshaller {
   
   private final boolean prettyPrint = true;
   
-  public String marshall(MarshallingDTO dto) throws MarshallingException {
+  public String marshall(ClusterHealthDTO dto) throws MarshallingException {
     final ClusterHealth ch = mapper.map(dto);
     try {
       return prettyPrint //
@@ -28,7 +28,7 @@ public class V1Marshaller extends Marshaller {
     }
   }
   
-  public MarshallingDTO unmarshall(String s) throws MarshallingException {
+  public ClusterHealthDTO unmarshall(String s) throws MarshallingException {
     try {
       final ClusterHealth ch = objectMapper.readValue(s.getBytes(Charset.forName("UTF-8")), ClusterHealth.class);
       return mapper.unmap(ch);

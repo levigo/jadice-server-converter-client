@@ -55,7 +55,7 @@ public class ClusterHealthMapper {
           System.out.println();
           final NumericRule<?> r = (NumericRule<?>) constr.newInstance(castValue(constr.getParameterTypes()[0], rule.limit));
           result.rules.add(r);
-        } else if (clazz.isAssignableFrom(ImmutableBooleanRule.class)) {
+        } else if (ImmutableBooleanRule.class.isAssignableFrom(clazz)) {
           final ImmutableBooleanRule r = (ImmutableBooleanRule) clazz.newInstance();
           result.rules.add(r);
         } else {

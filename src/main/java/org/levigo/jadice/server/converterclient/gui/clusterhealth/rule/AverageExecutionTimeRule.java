@@ -1,5 +1,9 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.rule;
 
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleLongProperty;
+
 import javax.management.JMException;
 import javax.management.MBeanServerConnection;
 
@@ -8,10 +12,10 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 
 public class AverageExecutionTimeRule implements NumericRule<Long> {
 
-  private final long limit;
+  private final LongProperty limit;
 
   public AverageExecutionTimeRule(long limit) {
-    this.limit = limit;
+    this.limit = new SimpleLongProperty(limit);
   }
 
   @Override
@@ -20,15 +24,25 @@ public class AverageExecutionTimeRule implements NumericRule<Long> {
   }
   
   @Override
-  public Long getLimit() {
+  public Property<Number> limitProperty() {
     return limit;
+  }
+  
+  @Override
+  public void setLimit(Long value) {
+    limit.set(value);
+  }
+  
+  @Override
+  public Long getLimit() {
+    return limit.get();
   }
 
   @Override
   public EvaluationResult<Long> evaluate(MBeanServerConnection mbsc) {
     try {
       final long execTime = JmxHelper.getAverageExecutionTime(mbsc);
-      if (execTime <= limit) {
+      if (execTime <= limit.get()) {
         return new EvaluationResult<Long>(HealthStatus.GOOD, execTime);
       } else {
         return new EvaluationResult<Long>(HealthStatus.ATTENTION, execTime, getDescription() + ": " + execTime);
@@ -40,11 +54,11 @@ public class AverageExecutionTimeRule implements NumericRule<Long> {
   
   @Override
   public int hashCode() {
-    return (int) (limit ^ (limit >>> 32));
+    return limit.hashCode();
   }
   
   @Override
   public boolean equals(Object other) {
-    return other instanceof AverageExecutionTimeRule && ((AverageExecutionTimeRule) other).limit == this.limit;
+    return other instanceof AverageExecutionTimeRule && ((AverageExecutionTimeRule) other).getLimit().equals(this.getLimit());
   }
 }

@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,16 +24,18 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.TotalFail
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.MarshallingDTO;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.v1.V1Marshaller;
 
+import com.levigo.jadice.server.util.Util;
+
 public class TestMarshaller {
-  
+
   private static final String V1 = "1.0";
-  
-  private static final String SERIALIZED_BY_V1 = "{\"version\":1.0,\"rules\":[{\"limit\":15.0,\"implementation\":\"org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.TotalFailureRateRule\"}],\"instances\":[\"localhost:61619\",\"jadice-server.example.com:61619\"]}";
+
+  private static final String SERIALIZED_BY_V1_RESOURCE = "/clusterhealth/serialization/V1.json";
 
   private static List<Rule<?>> RULES;
-  
+
   private static List<String> INSTANCES;
-  
+
   @Test
   public void testEmptySerialization() throws Exception {
     final MarshallingDTO dto1 = new MarshallingDTO();
@@ -38,12 +43,11 @@ public class TestMarshaller {
     dto1.rules = Collections.emptyList();
     Marshaller m = Marshaller.getDefault();
     final MarshallingDTO dto2 = m.unmarshall(m.marshall(dto1));
-    
+
     assertTrue("instances shall be empty", dto2.instances.isEmpty());
     assertTrue("rules shall be empty", dto2.rules.isEmpty());
   }
 
-  
   @BeforeClass
   public static void createRules() {
     RULES = new ArrayList<>();
@@ -54,30 +58,30 @@ public class TestMarshaller {
     RULES.add(new RecentFailureRateRule(40f));
     RULES.add(new TotalFailureRateRule(50f));
   }
-  
+
   @BeforeClass
   public static void createInstances() {
     INSTANCES = new ArrayList<>();
     INSTANCES.add("localhost:61619");
     INSTANCES.add("jadice-server.example.com:61619");
   }
-  
+
   @Test
   public void testLookupVersion() throws Exception {
     assertEquals("Version mismatch", "42.0", Marshaller.lookupVersion("{\"version\": \"42.0\"}"));
   }
-  
+
   @Test
   public void testMarshallerV1Available() throws Exception {
     assertNotNull("No marshaller given", Marshaller.get(V1));
     assertEquals("Wrong marshaller given", V1Marshaller.class, Marshaller.get(V1).getClass());
   }
-  
+
   @Test(expected = MarshallingException.class)
   public void testNoV99MarshallerAvailable() throws Exception {
     Marshaller.get("99");
   }
-  
+
   @Test
   public void testV1Marshalling() throws Exception {
     final String m = Marshaller.get(V1).marshall(INSTANCES, RULES);
@@ -87,20 +91,25 @@ public class TestMarshaller {
     assertArrayEquals("Wrong instances", INSTANCES.toArray(), unmarshalled.instances.toArray());
     assertArrayEquals("Wrong rules", RULES.toArray(), unmarshalled.rules.toArray());
   }
-  
+
   @Test
   public void testV1Unmarshalling() throws Exception {
-    String version = Marshaller.lookupVersion(SERIALIZED_BY_V1);
+    final String json = loadJSON(SERIALIZED_BY_V1_RESOURCE);
+    
+    String version = Marshaller.lookupVersion(json);
     assertEquals("Wrong version detected", V1, version);
 
-    final MarshallingDTO unmarshalled = Marshaller.get(V1).unmarshall(SERIALIZED_BY_V1);
-    
-    assertArrayEquals("Wrong instances", //
-        new String[] {"localhost:61619","jadice-server.example.com:61619"}, //
-        unmarshalled.instances.toArray());
-    
-    assertArrayEquals("Wrong rules", //
-        new Rule<?>[] { new TotalFailureRateRule(15f)}, //
-        unmarshalled.rules.toArray());
+    final MarshallingDTO unmarshalled = Marshaller.get(V1).unmarshall(json);
+
+    assertArrayEquals("Wrong instances", INSTANCES.toArray(), unmarshalled.instances.toArray());
+    assertArrayEquals("Wrong rules", RULES.toArray(), unmarshalled.rules.toArray());
+  }
+
+  private static String loadJSON(String resourceName) throws IOException {
+    try (final InputStream is = TestMarshaller.class.getResourceAsStream(resourceName)) {
+      ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      Util.copyAndClose(is, baos);
+      return new String(baos.toByteArray(), "UTF-8");
+    }
   }
 }

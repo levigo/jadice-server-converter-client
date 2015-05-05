@@ -3,8 +3,10 @@ package org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.BeforeClass;
@@ -28,6 +30,19 @@ public class TestMarshaller {
   private static List<Rule<?>> RULES;
   
   private static List<String> INSTANCES;
+  
+  @Test
+  public void testEmptySerialization() throws Exception {
+    final MarshallingDTO dto1 = new MarshallingDTO();
+    dto1.instances = Collections.emptyList();
+    dto1.rules = Collections.emptyList();
+    Marshaller m = Marshaller.getDefault();
+    final MarshallingDTO dto2 = m.unmarshall(m.marshall(dto1));
+    
+    assertTrue("instances shall be empty", dto2.instances.isEmpty());
+    assertTrue("rules shall be empty", dto2.rules.isEmpty());
+  }
+
   
   @BeforeClass
   public static void createRules() {

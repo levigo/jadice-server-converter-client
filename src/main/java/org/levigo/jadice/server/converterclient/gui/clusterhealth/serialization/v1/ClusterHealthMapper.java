@@ -40,23 +40,11 @@ public class ClusterHealthMapper {
     for (Rule<?> rule : ch.rules) {
       try {
         final Class<?> clazz = Class.forName(rule.implementation);
-        Constructor<?> constr = null;
         if (NumericRule.class.isAssignableFrom(clazz)) {
-          for (Constructor<?> c : clazz.getConstructors()) {
-            if (c.getParameterCount() != 1) {
-              continue;
-            }
-            constr = c;
-            break;
-          }
-          if (constr == null) {
-            throw new MarshallingException("No matching constructor found for type " + rule.implementation);
-          }
-          System.out.println();
-          final NumericRule<?> r = (NumericRule<?>) constr.newInstance(castValue(constr.getParameterTypes()[0], rule.limit));
+          final NumericRule<?> r = unmarshallNumericRule(rule, clazz);
           result.rules.add(r);
         } else if (ImmutableBooleanRule.class.isAssignableFrom(clazz)) {
-          final ImmutableBooleanRule r = (ImmutableBooleanRule) clazz.newInstance();
+          final ImmutableBooleanRule r = unmarshallImmutableBooleanRule(clazz);
           result.rules.add(r);
         } else {
           throw new MarshallingException("No support for rule of type " + rule.implementation);
@@ -67,6 +55,26 @@ public class ClusterHealthMapper {
     }
 
     return result;
+  }
+
+  private ImmutableBooleanRule unmarshallImmutableBooleanRule(final Class<?> clazz) throws ReflectiveOperationException {
+    return (ImmutableBooleanRule) clazz.newInstance();
+  }
+
+  private NumericRule<?> unmarshallNumericRule(Rule<?> rule, final Class<?> clazz) throws ReflectiveOperationException, MarshallingException {
+    Constructor<?> constr = null;
+    for (Constructor<?> c : clazz.getConstructors()) {
+      if (c.getParameterCount() != 1) {
+        continue;
+      }
+      constr = c;
+      break;
+    }
+    if (constr == null) {
+      throw new MarshallingException("No matching constructor found for type " + rule.implementation);
+    }
+    final NumericRule<?> r = (NumericRule<?>) constr.newInstance(castValue(constr.getParameterTypes()[0], rule.limit));
+    return r;
   }
   
   private static Number castValue(Class<?> target, Object o) throws MarshallingException {
@@ -84,5 +92,4 @@ public class ClusterHealthMapper {
       throw new MarshallingException("No numeric conversion for type " + target.getSimpleName() + " available");
     }
   }
-
 }

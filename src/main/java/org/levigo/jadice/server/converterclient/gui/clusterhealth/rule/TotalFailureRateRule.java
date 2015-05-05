@@ -6,7 +6,7 @@ import javax.management.MBeanServerConnection;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.HealthStatus;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 
-public class TotalFailureRateRule implements Rule<Float> {
+public class TotalFailureRateRule implements NumericRule<Float> {
 
   private final float limit;
 
@@ -17,6 +17,11 @@ public class TotalFailureRateRule implements Rule<Float> {
   @Override
   public String getDescription() {
     return "Total failure rate";
+  }
+  
+  @Override
+  public Float getLimit() {
+    return limit;
   }
 
   @Override

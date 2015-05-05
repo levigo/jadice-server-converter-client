@@ -7,4 +7,5 @@ public interface Rule<T> {
   String getDescription();
   
   EvaluationResult<T> evaluate(MBeanServerConnection mbsc);
+  
 }

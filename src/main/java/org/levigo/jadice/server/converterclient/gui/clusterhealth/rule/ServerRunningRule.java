@@ -6,11 +6,16 @@ import javax.management.MBeanServerConnection;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.HealthStatus;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 
-public class ServerRunningRule implements Rule<Boolean> {
+public class ServerRunningRule implements ImmutableBooleanRule {
 
   @Override
   public String getDescription() {
     return "Instance is running";
+  }
+  
+  @Override
+  public boolean getExpectedValue() {
+    return true;
   }
 
   @Override

@@ -6,7 +6,7 @@ import javax.management.MBeanServerConnection;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.HealthStatus;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 
-public class AverageExecutionTimeRule implements Rule<Long> {
+public class AverageExecutionTimeRule implements NumericRule<Long> {
 
   private final long limit;
 
@@ -17,6 +17,11 @@ public class AverageExecutionTimeRule implements Rule<Long> {
   @Override
   public String getDescription() {
     return "Average execution time";
+  }
+  
+  @Override
+  public Long getLimit() {
+    return limit;
   }
 
   @Override

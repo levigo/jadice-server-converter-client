@@ -20,7 +20,7 @@ public class RecentAverageExecutionTimeRule implements NumericRule<Long> {
 
   @Override
   public String getDescription() {
-    return "Average execution time";
+    return "Recent average execution time";
   }
   
   @Override

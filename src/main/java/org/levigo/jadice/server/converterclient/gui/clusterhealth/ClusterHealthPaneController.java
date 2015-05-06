@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import javafx.animation.AnimationTimer;
 import javafx.beans.binding.When;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Side;
@@ -27,12 +28,10 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.AverageEx
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentAverageExecutionTimeRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentEfficiencyRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentFailureRateRule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.Rule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.ServerRunningRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.TotalFailureRateRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.ClusterHealthDTO;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
-
 
 public class ClusterHealthPaneController {
 
@@ -58,8 +57,8 @@ public class ClusterHealthPaneController {
   private ResourceBundle resources;
 
   private final ExecutorService exec = Executors.newWorkStealingPool();
-
-  private final ObservableList<Rule<?>> rules = FXCollections.observableArrayList();
+  
+  private final ClusterHealthDTO settings = Preferences.clusterHealthProperty().getValue();
 
   private final ObservableList<StatusControl> controlElements = FXCollections.observableArrayList();
   
@@ -73,9 +72,8 @@ public class ClusterHealthPaneController {
   protected void initialize() {
     UiUtil.configureHomeButton(home);
     
-    final ClusterHealthDTO dto = loadClusterHealthPreferences();
-    loadRules(dto);
-    loadControlElements(dto);
+    loadControlElements();
+    loadRules();
     
     hiddenSidePane.pinnedSideProperty().bind(new When(toggleSettingsButton.selectedProperty()).then(Side.TOP).otherwise((Side) null));
     
@@ -104,23 +102,26 @@ public class ClusterHealthPaneController {
   
   private void runUpdateAsyn(StatusControl control) {
     exec.submit(() -> {
+      // TODO: Use Logger
       System.out.println("Running update for " + control.getClusterInstance().serverNameProperty().get());
       control.getClusterInstance().update();
       }
     );
   }
   
-  private void loadRules(ClusterHealthDTO preferencesDTO) {
-    rules.addAll(preferencesDTO.rules);
-    
-    // TODO: make them editable
-    rules.add(new ServerRunningRule());
-    rules.add(new AverageExecutionTimeRule(200));
-    rules.add(new TotalFailureRateRule(0.05f));
-    rules.add(new RecentAverageExecutionTimeRule(200));
-    rules.add(new RecentEfficiencyRule(0.4f));
-    rules.add(new RecentEfficiencyRule(0.4f));
-    rules.add(new RecentFailureRateRule(0.05f));
+  @Deprecated
+  private void loadRules() {
+    if (settings.rules.isEmpty()) {
+      System.out.println("init some demo rules!");
+      // TODO: make them editable
+      settings.rules.add(new ServerRunningRule());
+      settings.rules.add(new AverageExecutionTimeRule(200));
+      settings.rules.add(new TotalFailureRateRule(0.05f));
+      settings.rules.add(new RecentAverageExecutionTimeRule(200));
+      settings.rules.add(new RecentEfficiencyRule(0.4f));
+      settings.rules.add(new RecentEfficiencyRule(0.4f));
+      settings.rules.add(new RecentFailureRateRule(0.05f));
+    }
   }
   
   @FXML
@@ -132,21 +133,27 @@ public class ClusterHealthPaneController {
     inputDialog.initOwner(addInstance.getScene().getWindow());
     
     inputDialog.showAndWait().ifPresent(jmxUrl -> {
-      final StatusControl newInstance = new StatusControl(new ClusterInstance(jmxUrl, rules));
-      controlElements.add(newInstance);
-      runUpdateAsyn(newInstance);
+      settings.instances.add(jmxUrl);
       });
   }
   
 
-  private void loadControlElements(ClusterHealthDTO preferencesDTO) {
-    preferencesDTO.instances.forEach(instance -> {
-      controlElements.add(new StatusControl(new ClusterInstance(instance, rules)));
+  private void loadControlElements() {
+    settings.instances.forEach(instance -> {
+      controlElements.add(new StatusControl(new ClusterInstance(instance, settings.rules)));
+    });
+    settings.instances.addListener((ListChangeListener<? super String>) change -> {
+      while (change.next()) {
+        change.getAddedSubList().forEach(added -> {
+          final StatusControl newInstance = new StatusControl(new ClusterInstance(added, settings.rules));
+          controlElements.add(newInstance);
+          runUpdateAsyn(newInstance);
+        });
+        change.getRemoved().forEach(removed -> {
+          controlElements.removeIf(ce -> ce.getClusterInstance().serverNameProperty().get().equals(removed));
+        });
+        // TODO: Support for permutation / update
+      }
     });
   }
-
-  private ClusterHealthDTO loadClusterHealthPreferences() {
-    return Preferences.clusterHealthProperty().getValue();
-  }
-
 }

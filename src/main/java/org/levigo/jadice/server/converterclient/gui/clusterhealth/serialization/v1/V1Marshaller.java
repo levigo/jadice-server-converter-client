@@ -15,14 +15,21 @@ public class V1Marshaller extends Marshaller {
   
   private final ObjectMapper objectMapper = new ObjectMapper();
   
-  private final boolean prettyPrint = true;
+  @Override
+  public String marshallPrettyPrint(ClusterHealthDTO dto) throws MarshallingException {
+    final ClusterHealth ch = mapper.map(dto);
+    try {
+      return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(ch);
+    } catch (JsonProcessingException jpe) {
+      throw new MarshallingException("Could not marshall", jpe);
+    }
+  }
   
+  @Override
   public String marshall(ClusterHealthDTO dto) throws MarshallingException {
     final ClusterHealth ch = mapper.map(dto);
     try {
-      return prettyPrint //
-          ? objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(ch) //
-          : objectMapper.writeValueAsString(ch);
+      return objectMapper.writeValueAsString(ch);
     } catch (JsonProcessingException jpe) {
       throw new MarshallingException("Could not marshall", jpe);
     }

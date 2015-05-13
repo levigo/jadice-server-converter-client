@@ -62,10 +62,18 @@ public abstract class Marshaller {
   
   public abstract String marshall(ClusterHealthDTO dto) throws MarshallingException;
   
+  public abstract String marshallPrettyPrint(ClusterHealthDTO dto) throws MarshallingException;
+
   public String marshall(List<String> instances, List<Rule<?>> rules) throws MarshallingException {
     ClusterHealthDTO dto = new ClusterHealthDTO(FXCollections.observableList(instances), FXCollections.observableList(rules));
     return marshall(dto);
   };
   
+  public String marshallPrettyPrint(List<String> instances, List<Rule<?>> rules) throws MarshallingException {
+    ClusterHealthDTO dto = new ClusterHealthDTO(FXCollections.observableList(instances), FXCollections.observableList(rules));
+    return marshallPrettyPrint(dto);
+  };
+  
   public abstract ClusterHealthDTO unmarshall(String s) throws MarshallingException;
+
 }

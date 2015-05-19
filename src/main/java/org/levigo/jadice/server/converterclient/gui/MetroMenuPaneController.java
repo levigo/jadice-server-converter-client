@@ -24,7 +24,7 @@ import org.levigo.jadice.server.converterclient.updatecheck.UpdateDialogs;
 import org.levigo.jadice.server.converterclient.updatecheck.UpdateService;
 
 import de.jensd.fx.glyphs.GlyphsDude;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 
 public class MetroMenuPaneController {
@@ -68,15 +68,15 @@ public class MetroMenuPaneController {
   
   @FXML
   protected void initialize() {
-    initIconButton(conversion, FontAwesomeIcons.GEARS, evt -> ConverterClientApplication.getInstance().openConversion());
-    initIconButton(serverLog, FontAwesomeIcons.SERVER, evt -> ConverterClientApplication.getInstance().openServerLog());
-    initIconButton(jmx, FontAwesomeIcons.AREA_CHART, evt -> ConverterClientApplication.getInstance().openJMX());
-    initIconButton(inspector, FontAwesomeIcons.SEARCH, evt -> ConverterClientApplication.getInstance().openInspector());
-    initSmallIconButton(options, FontAwesomeIcons.SLIDERS, evt -> ConverterClientApplication.getInstance().openOptions());
-    initSmallIconButton(about, FontAwesomeIcons.INFO, evt -> ConverterClientApplication.getInstance().openAbout());
-    initSmallIconButton(fullscreen, FontAwesomeIcons.EXPAND, evt -> {((Stage)pane.getScene().getWindow()).setFullScreen(true);});
-    initSmallIconButton(exitFullscreen, FontAwesomeIcons.COMPRESS, evt -> {((Stage)pane.getScene().getWindow()).setFullScreen(false);});
-    initSmallIconButton(update, FontAwesomeIcons.BULLHORN, evt -> {
+    initIconButton(conversion, FontAwesomeIcon.GEARS, evt -> ConverterClientApplication.getInstance().openConversion());
+    initIconButton(serverLog, FontAwesomeIcon.SERVER, evt -> ConverterClientApplication.getInstance().openServerLog());
+    initIconButton(jmx, FontAwesomeIcon.AREA_CHART, evt -> ConverterClientApplication.getInstance().openJMX());
+    initIconButton(inspector, FontAwesomeIcon.SEARCH, evt -> ConverterClientApplication.getInstance().openInspector());
+    initSmallIconButton(options, FontAwesomeIcon.SLIDERS, evt -> ConverterClientApplication.getInstance().openOptions());
+    initSmallIconButton(about, FontAwesomeIcon.INFO, evt -> ConverterClientApplication.getInstance().openAbout());
+    initSmallIconButton(fullscreen, FontAwesomeIcon.EXPAND, evt -> {((Stage)pane.getScene().getWindow()).setFullScreen(true);});
+    initSmallIconButton(exitFullscreen, FontAwesomeIcon.COMPRESS, evt -> {((Stage)pane.getScene().getWindow()).setFullScreen(false);});
+    initSmallIconButton(update, FontAwesomeIcon.BULLHORN, evt -> {
       final UpdateCheckResult result = UpdateService.getInstance().getValue();
       if (result != null && result.isNewerVersionAvailable()) {
         UpdateDialogs.showUpdateAvailableDialog(result, update);
@@ -153,7 +153,7 @@ public class MetroMenuPaneController {
     }
   }
   
-  private void initSmallIconButton(Button button, FontAwesomeIcons icon, EventHandler<ActionEvent> evt) {
+  private void initSmallIconButton(Button button, FontAwesomeIcon icon, EventHandler<ActionEvent> evt) {
     final Tooltip tooltip = new Tooltip();
     tooltip.textProperty().bind(button.textProperty());
     button.setTooltip(tooltip);
@@ -162,7 +162,7 @@ public class MetroMenuPaneController {
     button.setOnAction(evt);
   }
   
-  private void initIconButton(Button button, FontAwesomeIcons icon, EventHandler<ActionEvent> evt) {
+  private void initIconButton(Button button, FontAwesomeIcon icon, EventHandler<ActionEvent> evt) {
     GlyphsDude.setIcon(button, icon, ICON_SIZE, ContentDisplay.TOP);
     button.setOnAction(evt);
   }

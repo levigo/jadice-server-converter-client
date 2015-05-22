@@ -5,7 +5,9 @@ import java.util.stream.Collectors;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -18,7 +20,7 @@ import javafx.scene.text.Text;
 import eu.hansolo.enzo.canvasled.Led;
 import eu.hansolo.enzo.canvasled.LedBuilder;
 
-public class StatusControl extends HBox {
+public class StatusControl extends AnchorPane {
 
   private final Led green = buildLed(Color.LAWNGREEN);
   
@@ -32,11 +34,18 @@ public class StatusControl extends HBox {
   
   private final ClusterInstance instance;
   
+  private final ClusterHealthPaneController controller;
+  
+  private final HBox middleBox = new HBox();
+  
   private final HBox innerBox = new HBox();
   
-  public StatusControl(ClusterInstance instance) {
+  private final Button removeBttn = new Button("x");
+  
+  public StatusControl(ClusterInstance instance, ClusterHealthPaneController controller) {
     this.instance = instance;
-    getChildren().add(innerBox);
+    this.controller = controller;
+    middleBox.getChildren().add(innerBox);
     innerBox.getChildren().add(red);
     innerBox.getChildren().add(yellow);
     innerBox.getChildren().add(green);
@@ -44,16 +53,33 @@ public class StatusControl extends HBox {
     final LinearGradient gradient = new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, new Stop(0, Color.BLACK), new Stop(1, Color.DIMGRAY));
     innerBox.setBackground(new Background(new BackgroundFill(gradient, new CornerRadii(15), null)));
     innerBox.setPadding(new Insets(2, 5, 2, 5));
-    getChildren().add(instanceName);
-    setMaxHeight(USE_PREF_SIZE);
-    setMargin(innerBox, new Insets(0, 0, 0, 3));
-    setMargin(instanceName, new Insets(0, 5, 0, 10));
-    setAlignment(Pos.CENTER_LEFT);
+    middleBox.getChildren().add(instanceName);
+    middleBox.setMaxHeight(USE_PREF_SIZE);
+    HBox.setMargin(innerBox, new Insets(2, 0, 2, 3));
+    HBox.setMargin(instanceName, new Insets(0, 5, 0, 10));
+    middleBox.setAlignment(Pos.CENTER_LEFT);
     
-    setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(9), new Insets(-2))));
+    middleBox.setBackground(new Background(new BackgroundFill(Color.WHITESMOKE, new CornerRadii(9), new Insets(-2))));
+    getChildren().add(middleBox);
+    AnchorPane.setLeftAnchor(middleBox, 0.0);
+    AnchorPane.setRightAnchor(middleBox, 0.0);
+    AnchorPane.setTopAnchor(middleBox, 0.0);
+    AnchorPane.setBottomAnchor(middleBox, 0.0);
+    
+    getChildren().add(removeBttn);
+    AnchorPane.setRightAnchor(removeBttn, 0.0);
     
     instanceName.setStyle("-fx-font-weight: bold;");
     initBindings();
+    
+    configureRemoveButton();
+  }
+
+  private void configureRemoveButton() {
+    removeBttn.setVisible(false);
+    setOnMouseEntered(evt -> removeBttn.setVisible(true));
+    setOnMouseExited(evt -> removeBttn.setVisible(false));
+    removeBttn.setOnAction(evt -> controller.removeClusterInstance(this));
   }
   
   public ClusterInstance getClusterInstance() {

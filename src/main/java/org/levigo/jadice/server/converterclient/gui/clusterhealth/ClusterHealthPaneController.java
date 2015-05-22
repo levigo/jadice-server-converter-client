@@ -137,15 +137,20 @@ public class ClusterHealthPaneController {
       });
   }
   
+  protected void removeClusterInstance(StatusControl controlElement) {
+    controlElements.remove(controlElement);
+    settings.instances.remove(controlElement.getClusterInstance().serverNameProperty().getValue());
+  }
+  
 
   private void loadControlElements() {
     settings.instances.forEach(instance -> {
-      controlElements.add(new StatusControl(new ClusterInstance(instance, settings.rules)));
+      controlElements.add(new StatusControl(new ClusterInstance(instance, settings.rules), this));
     });
     settings.instances.addListener((ListChangeListener<? super String>) change -> {
       while (change.next()) {
         change.getAddedSubList().forEach(added -> {
-          final StatusControl newInstance = new StatusControl(new ClusterInstance(added, settings.rules));
+          final StatusControl newInstance = new StatusControl(new ClusterInstance(added, settings.rules), this);
           controlElements.add(newInstance);
           runUpdateAsyn(newInstance);
         });

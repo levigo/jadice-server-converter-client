@@ -2,6 +2,7 @@ package org.levigo.jadice.server.converterclient.gui.clusterhealth;
 
 import java.util.stream.Collectors;
 
+import javafx.animation.FadeTransition;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,6 +18,9 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
 import eu.hansolo.enzo.canvasled.Led;
 import eu.hansolo.enzo.canvasled.LedBuilder;
 
@@ -40,7 +44,7 @@ public class StatusControl extends AnchorPane {
   
   private final HBox innerBox = new HBox();
   
-  private final Button removeBttn = new Button("x");
+  private final Button removeBttn = GlyphsDude.createIconButton(FontAwesomeIcons.TIMES_CIRCLE);
   
   public StatusControl(ClusterInstance instance, ClusterHealthPaneController controller) {
     this.instance = instance;
@@ -67,7 +71,8 @@ public class StatusControl extends AnchorPane {
     AnchorPane.setBottomAnchor(middleBox, 0.0);
     
     getChildren().add(removeBttn);
-    AnchorPane.setRightAnchor(removeBttn, 0.0);
+    AnchorPane.setTopAnchor(removeBttn, -2.0);
+    AnchorPane.setRightAnchor(removeBttn, -2.0);
     
     instanceName.setStyle("-fx-font-weight: bold;");
     initBindings();
@@ -76,10 +81,26 @@ public class StatusControl extends AnchorPane {
   }
 
   private void configureRemoveButton() {
-    removeBttn.setVisible(false);
-    setOnMouseEntered(evt -> removeBttn.setVisible(true));
-    setOnMouseExited(evt -> removeBttn.setVisible(false));
+    removeBttn.setOpacity(0.0);
+    
+    final FadeTransition fadeIn = new FadeTransition(Duration.millis(200), removeBttn);
+    fadeIn.setFromValue(0.0);
+    fadeIn.setToValue(1.0);
+
+    final FadeTransition fadeOut = new FadeTransition(Duration.millis(100), removeBttn);
+    fadeOut.setFromValue(1.0);
+    fadeOut.setToValue(0.0);
+    
+    setOnMouseEntered(evt -> {
+      fadeOut.stop();
+      fadeIn.playFromStart();
+    });
+    setOnMouseExited(evt -> {
+      fadeIn.stop();
+      fadeOut.playFromStart();
+    });
     removeBttn.setOnAction(evt -> controller.removeClusterInstance(this));
+    removeBttn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
   }
   
   public ClusterInstance getClusterInstance() {

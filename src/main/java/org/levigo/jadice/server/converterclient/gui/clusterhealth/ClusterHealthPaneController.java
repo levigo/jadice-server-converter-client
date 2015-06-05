@@ -138,8 +138,7 @@ public class ClusterHealthPaneController {
   }
   
   protected void removeClusterInstance(StatusControl controlElement) {
-    controlElements.remove(controlElement);
-    settings.instances.remove(controlElement.getClusterInstance().serverNameProperty().getValue());
+    settings.instances.remove(controlElements.indexOf(controlElement));
   }
   
 
@@ -154,11 +153,16 @@ public class ClusterHealthPaneController {
           controlElements.add(newInstance);
           runUpdateAsyn(newInstance);
         });
-        change.getRemoved().forEach(removed -> {
-          controlElements.removeIf(ce -> ce.getClusterInstance().serverNameProperty().get().equals(removed));
-        });
+        if (change.wasRemoved()) {
+          controlElements.remove(change.getFrom());
+        }
         // TODO: Support for permutation / update
       }
+      // Workaround against GridView issue #494
+      // https://bitbucket.org/controlsfx/controlsfx/issue/494/gridview-not-correctly-reflecting-changes
+      final double tmp = gridView.getHorizontalCellSpacing();
+      gridView.setHorizontalCellSpacing(-99);
+      gridView.setHorizontalCellSpacing(tmp);
     });
   }
 }

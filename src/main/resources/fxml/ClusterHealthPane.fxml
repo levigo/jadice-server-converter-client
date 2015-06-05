@@ -12,7 +12,7 @@
 <?import org.controlsfx.control.HiddenSidesPane?>
 <?import javafx.scene.layout.Background?>
 <?import java.util.ArrayList?>
-<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
 
 <BorderPane prefHeight="493.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.levigo.jadice.server.converterclient.gui.clusterhealth.ClusterHealthPaneController">
@@ -40,7 +40,7 @@
 				<children>
 					<ToggleButton fx:id="toggleSettingsButton" text="Toogle Settings" contentDisplay="GRAPHIC_ONLY">
 						<graphic>
-							<FontAwesomeIcon glyphName="BARS" />
+							<FontAwesomeIconView glyphName="BARS" />
 						</graphic>
 					</ToggleButton>
 				</children>
@@ -61,19 +61,19 @@
 			<children>
 				<Button fx:id="addInstance" text="%cluster-health.add-instance" contentDisplay="GRAPHIC_ONLY" onAction="#onAddInstance">
 					<graphic>
-						<FontAwesomeIcon glyphName="PLUS_CIRCLE" size="25px"/>
+						<FontAwesomeIconView glyphName="PLUS_CIRCLE" size="25px"/>
 					</graphic>
 				</Button>
 	
 				<Button fx:id="defineWarnings" text="%cluster-health.define-warnings" contentDisplay="GRAPHIC_ONLY">
 					<graphic>
-						<FontAwesomeIcon glyphName="GEARS" size="25px"/>
+						<FontAwesomeIconView glyphName="GEARS" size="25px"/>
 					</graphic>
 				</Button>
 				
 				<Button text="%cluster-health.update-now" contentDisplay="GRAPHIC_ONLY" onAction="#runUpdate">
 					<graphic>
-						<FontAwesomeIcon glyphName="REFRESH" size="25px"/>
+						<FontAwesomeIconView glyphName="REFRESH" size="25px"/>
 					</graphic>
 				</Button>
 				

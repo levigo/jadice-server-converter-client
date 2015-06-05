@@ -20,7 +20,7 @@ import javafx.scene.paint.Stop;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import de.jensd.fx.glyphs.GlyphsDude;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcons;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import eu.hansolo.enzo.canvasled.Led;
 import eu.hansolo.enzo.canvasled.LedBuilder;
 
@@ -44,7 +44,7 @@ public class StatusControl extends AnchorPane {
   
   private final HBox innerBox = new HBox();
   
-  private final Button removeBttn = GlyphsDude.createIconButton(FontAwesomeIcons.TIMES_CIRCLE);
+  private final Button removeBttn = GlyphsDude.createIconButton(FontAwesomeIcon.TIMES_CIRCLE);
   
   public StatusControl(ClusterInstance instance, ClusterHealthPaneController controller) {
     this.instance = instance;

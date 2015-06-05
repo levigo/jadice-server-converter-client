@@ -53,12 +53,12 @@
 			<items>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.open-result" onAction="#openSelectedResults">
 					<graphic>
-						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon  glyphName="FOLDER_OPEN" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView glyphName="FOLDER_OPEN" size="16px" />
 					</graphic>
 				</MenuItem>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.save-result" onAction="#saveSelectedResults">
 					<graphic>
-						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon  glyphName="DOWNLOAD" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView glyphName="DOWNLOAD" size="16px" />
 					</graphic>
 				</MenuItem>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.open-original" onAction="#openSelectedOriginalFiles" />
@@ -66,22 +66,22 @@
 				<SeparatorMenuItem />
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.abort" onAction="#abortSelectedJobs">
 					<graphic>
-						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon  glyphName="BAN" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView glyphName="BAN" size="16px" />
 					</graphic>
 				</MenuItem>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.retry" onAction="#retrySelectedJobs">
 					<graphic>
-						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon  glyphName="REPEAT" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView glyphName="REPEAT" size="16px" />
 					</graphic>
 				</MenuItem>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.inspect-workflow" onAction="#inspectSelectedWorkflow">
 					<graphic>
-						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon  glyphName="SEARCH" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView glyphName="SEARCH" size="16px" />
 					</graphic>
 				</MenuItem>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.remove" onAction="#removeSelectedJobs">
 					<graphic>
-						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon  glyphName="REMOVE" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView glyphName="REMOVE" size="16px" />
 					</graphic>
 				</MenuItem>
 			</items>

@@ -31,8 +31,8 @@ public class GaugesRatesPane extends VBox implements Chart {
     totalJobCount = createTotalJobCountLcd();
     currentJobCount = createJobCountGauge();
     abortRate = createAbortRateGauge();
-    failureRate = createFailureRateGauge();
     
+    failureRate = createFailureRateGauge();
     getChildren().addAll(totalJobCount, currentJobCount, abortRate, failureRate);
   }
   
@@ -75,14 +75,8 @@ public class GaugesRatesPane extends VBox implements Chart {
         .startAngle(330)
         .angleRange(300)
         .minValue(0)
-        .maxValue(10)
         .sectionsVisible(true)
-        .sections(new Section(0, 4),
-                  new Section(4, 8),
-                  new Section(8,10))
-        .areas(new Section(8, 10))
         .areasVisible(true)
-        .majorTickSpace(2)
         .minorTickSpace(1)
         .decimals(0)
         .plainValue(false)
@@ -95,6 +89,8 @@ public class GaugesRatesPane extends VBox implements Chart {
     g.setSectionFill2(Color.RED);
     g.setAreaFill0(Color.RED.deriveColor(1.0, 1.0, 1.0, 0.3));
     g.setMouseTransparent(true);
+    // Use a resonable value as long as there is no connection
+    reconfigureConcurrentJobsAreas(g, 10);
     return g;
   }
 
@@ -156,11 +152,51 @@ public class GaugesRatesPane extends VBox implements Chart {
     failureRate.setValue(p.failureRate * 100.0); // Absolute to Percentage
     
     if (currentJobCount.getMaxValue() != p.maxJobCount) {
-      // FIXME: handle max job count!
+      reconfigureConcurrentJobsAreas(currentJobCount, p.maxJobCount);
     }
   }
+  
+  private void reconfigureConcurrentJobsAreas(Gauge g, int maxConcurrentJobs) {
+    if (maxConcurrentJobs <= 0) {
+      maxConcurrentJobs = 10;
+    }
 
-
+    // Minor bug in enzo:
+    // tick spaces must be changes before sections in order to be redrawn
+    g.setMinorTickSpace(maxConcurrentJobs > 50 ? 5 : 1);
+    g.setMajorTickSpace(maxConcurrentJobs > 50 ? 10 : 5);
+    
+    final double lowerBound;
+    final double upperBound;
+    
+    switch (maxConcurrentJobs) {
+      case 1:
+        lowerBound = 0.5;
+        upperBound = 0.75;
+        break;
+        
+      case 2:
+        lowerBound = 1;
+        upperBound = 1.5;
+        break;
+        
+      case 3:
+        lowerBound = 1;
+        upperBound = 2;
+        break;
+        
+      default:
+        lowerBound = Math.ceil(.4 * maxConcurrentJobs);
+        upperBound = Math.floor(Math.min(.9 * maxConcurrentJobs, maxConcurrentJobs - 1));
+    }
+    
+    final Section low = new Section(0, lowerBound);
+    final Section medium = new Section(lowerBound, upperBound);
+    final Section high = new Section(upperBound, maxConcurrentJobs);
+    g.setMaxValue(maxConcurrentJobs);
+    g.setSections(low, medium, high);
+    g.setAreas(high);
+  }
 
   @Override
   public void clear() {

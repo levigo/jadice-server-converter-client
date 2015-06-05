@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.levigo.jadice.server</groupId>
   <artifactId>jadice-server-converter-client</artifactId>
-  <version>1.4.1-SNAPSHOT</version>
+  <version>1.5.1-SNAPSHOT</version>
 
   <name>jadice server :: Converter Client</name>
   <url>http://www.levigo.de</url>
@@ -27,17 +27,17 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
     <!-- Dependency versions -->
-    <jadice.server.version>5.1.6.0</jadice.server.version>
-    <levigo.utils.version>2.4.20</levigo.utils.version>
+    <jadice.server.version>5.1.7.1</jadice.server.version>
+    <levigo.utils.version>2.4.21</levigo.utils.version>
     <filetype.analyzer.version>5.0.2.5</filetype.analyzer.version>
     <log4j.version>1.2.17</log4j.version>
     <slf4j.version>1.7.10</slf4j.version>
     <jfreechart.version>1.0.19</jfreechart.version>
-    <activemq.version>5.10.1</activemq.version>
+    <activemq.version>5.11.1</activemq.version>
     <prefuse.version>beta-20130106</prefuse.version>
-    <controlsfx.version>8.20.8</controlsfx.version>
+    <controlsfx.version>8.40.9</controlsfx.version>
     <enzo.version>0.1.9</enzo.version>
-    <fontawesomefx.version>8.2</fontawesomefx.version>
+    <fontawesomefx.version>8.4</fontawesomefx.version>
     <jackson.version>2.4.5</jackson.version>
     <junit.version>4.12</junit.version>
     

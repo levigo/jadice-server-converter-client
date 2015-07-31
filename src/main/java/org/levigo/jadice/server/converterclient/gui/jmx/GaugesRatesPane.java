@@ -163,8 +163,16 @@ public class GaugesRatesPane extends VBox implements Chart {
 
     // Minor bug in enzo:
     // tick spaces must be changes before sections in order to be redrawn
-    g.setMinorTickSpace(maxConcurrentJobs > 50 ? 5 : 1);
-    g.setMajorTickSpace(maxConcurrentJobs > 50 ? 10 : 5);
+    if (maxConcurrentJobs <= 5) {
+      g.setMinorTickSpace(1);
+      g.setMajorTickSpace(1);
+    } else if (maxConcurrentJobs <= 50) {
+      g.setMinorTickSpace(1);
+      g.setMajorTickSpace(5);
+    } else {
+      g.setMinorTickSpace(5);
+      g.setMajorTickSpace(10);
+    }
     
     final double lowerBound;
     final double upperBound;

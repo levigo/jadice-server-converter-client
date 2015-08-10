@@ -67,9 +67,9 @@ public class ConversionPaneController {
 
   private static final Logger LOGGER = Logger.getLogger(ConversionPaneController.class);
 
-  private static final FontAwesomeIcon LIMITS_ENABLED_ICON = FontAwesomeIcon.BELL_O;
+  private static final FontAwesomeIcon LIMITS_ENABLED_ICON = FontAwesomeIcon.BELL_ALT;
 
-  private static final FontAwesomeIcon LIMITS_DISABLED_ICON = FontAwesomeIcon.BELL_SLASH_O;
+  private static final FontAwesomeIcon LIMITS_DISABLED_ICON = FontAwesomeIcon.BELL_SLASH_ALT;
   
   @FXML
   private BorderPane pane;

@@ -31,14 +31,14 @@
     <levigo.utils.version>2.5.0-SNAPSHOT</levigo.utils.version>
     <filetype.analyzer.version>5.0.2.6-SNAPSHOT</filetype.analyzer.version>
     <log4j.version>1.2.17</log4j.version>
-    <slf4j.version>1.7.10</slf4j.version>
+    <slf4j.version>1.7.12</slf4j.version>
     <jfreechart.version>1.0.19</jfreechart.version>
-    <activemq.version>5.11.1</activemq.version>
+    <activemq.version>5.12.0</activemq.version>
     <prefuse.version>beta-20130106</prefuse.version>
     <controlsfx.version>8.40.9</controlsfx.version>
-    <enzo.version>0.1.9</enzo.version>
+    <enzo.version>0.2.8</enzo.version>
     <fontawesomefx.version>8.5</fontawesomefx.version>
-    <jackson.version>2.4.5</jackson.version>
+    <jackson.version>2.6.1</jackson.version>
     <junit.version>4.12</junit.version>
     
     <!-- Spring version as it is also managed by jadice server -->

@@ -99,11 +99,35 @@
           </transformers>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>com.akathist.maven.plugins.launch4j</groupId>
-        <artifactId>launch4j-maven-plugin</artifactId>
-        <version>1.5.2</version>
-        <executions>
+     <plugin>
+       <groupId>org.codehaus.gmaven</groupId>
+       <artifactId>gmaven-plugin</artifactId>
+       <version>1.5</version>
+       <!-- Prepare properties with "-SNAPSHOT" so that launch4j can handle them -->
+       <executions>
+         <execution>
+           <id>prepare-properties-launch4j</id>
+           <phase>initialize</phase>
+           <goals>
+             <goal>execute</goal>
+           </goals>
+           <configuration>
+             <source>
+                def clean = [:] // Avoid ConcurrentModificationException
+             	project.properties.each { k, v -> 
+             	  clean."${k}-clean" = v.replaceAll("-SNAPSHOT", "")
+             	}
+             	project.properties.putAll(clean)
+             </source>
+           </configuration>
+         </execution>
+       </executions>
+     </plugin>
+     <plugin>
+       <groupId>com.akathist.maven.plugins.launch4j</groupId>
+       <artifactId>launch4j-maven-plugin</artifactId>
+       <version>1.5.2</version>
+       <executions>
           <execution>
             <id>l4j-gui</id>
             <phase>package</phase>
@@ -130,11 +154,11 @@
                 <minVersion>1.8.0</minVersion>
               </jre>
               <versionInfo>
-                <fileVersion>${jadice.server.version}</fileVersion>
+                <fileVersion>${jadice.server.version-clean}</fileVersion>
                 <txtFileVersion>${project.version}</txtFileVersion>
                 <fileDescription>${project.name}</fileDescription>
                 <copyright>levigo holding gmbh</copyright>
-                <productVersion>${jadice.server.version}</productVersion>
+                <productVersion>${jadice.server.version-clean}</productVersion>
                 <txtProductVersion>${project.version}</txtProductVersion>
                 <productName>${project.name}</productName>
                 <internalName>${project.artifactId}</internalName>

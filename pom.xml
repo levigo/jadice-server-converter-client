@@ -28,17 +28,17 @@
     
     <!-- Dependency versions -->
     <jadice.server.version>5.2.0.0</jadice.server.version>
-    <levigo.utils.version>2.4.21</levigo.utils.version>
+    <levigo.utils.version>2.5.0</levigo.utils.version>
     <filetype.analyzer.version>5.1.0.0</filetype.analyzer.version>
     <log4j.version>1.2.17</log4j.version>
-    <slf4j.version>1.7.10</slf4j.version>
+    <slf4j.version>1.7.12</slf4j.version>
     <jfreechart.version>1.0.19</jfreechart.version>
-    <activemq.version>5.11.1</activemq.version>
+    <activemq.version>5.12.0</activemq.version>
     <prefuse.version>beta-20130106</prefuse.version>
     <controlsfx.version>8.40.9</controlsfx.version>
-    <enzo.version>0.1.9</enzo.version>
+    <enzo.version>0.2.8</enzo.version>
     <fontawesomefx.version>8.6</fontawesomefx.version>
-    <jackson.version>2.4.5</jackson.version>
+    <jackson.version>2.6.1</jackson.version>
     <junit.version>4.12</junit.version>
     
     <!-- Spring version as it is also managed by jadice server -->
@@ -100,6 +100,30 @@
         </configuration>
       </plugin>
       <plugin>
+       <groupId>org.codehaus.gmaven</groupId>
+       <artifactId>gmaven-plugin</artifactId>
+       <version>1.5</version>
+       <!-- Prepare properties with "-SNAPSHOT" so that launch4j can handle them -->
+       <executions>
+         <execution>
+           <id>prepare-properties-launch4j</id>
+           <phase>initialize</phase>
+           <goals>
+             <goal>execute</goal>
+           </goals>
+           <configuration>
+             <source>
+                def clean = [:] // Avoid ConcurrentModificationException
+             	project.properties.each { k, v -> 
+             	  clean."${k}-clean" = v.replaceAll("-SNAPSHOT", "")
+             	}
+             	project.properties.putAll(clean)
+             </source>
+           </configuration>
+         </execution>
+       </executions>
+     </plugin>
+     <plugin>
         <groupId>com.akathist.maven.plugins.launch4j</groupId>
         <artifactId>launch4j-maven-plugin</artifactId>
         <version>1.5.2</version>
@@ -130,11 +154,11 @@
                 <minVersion>1.8.0</minVersion>
               </jre>
               <versionInfo>
-                <fileVersion>${jadice.server.version}</fileVersion>
+                <fileVersion>${jadice.server.version-clean}</fileVersion>
                 <txtFileVersion>${project.version}</txtFileVersion>
                 <fileDescription>${project.name}</fileDescription>
                 <copyright>levigo holding gmbh</copyright>
-                <productVersion>${jadice.server.version}</productVersion>
+                <productVersion>${jadice.server.version-clean}</productVersion>
                 <txtProductVersion>${project.version}</txtProductVersion>
                 <productName>${project.name}</productName>
                 <internalName>${project.artifactId}</internalName>

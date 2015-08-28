@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.levigo.jadice.server</groupId>
   <artifactId>jadice-server-converter-client</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>1.6.0</version>
 
   <name>jadice server :: Converter Client</name>
   <url>http://www.levigo.de</url>
@@ -114,7 +114,7 @@
            <configuration>
              <source>
                 def clean = [:] // Avoid ConcurrentModificationException
-             	project.properties.each { k, v -> 
+             	project.properties.each { k, v -&gt; 
              	  clean."${k}-clean" = v.replaceAll("-SNAPSHOT", "")
              	}
              	project.properties.putAll(clean)

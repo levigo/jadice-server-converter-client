@@ -8,6 +8,7 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.levigo.jadice.server.converterclient.configurations.WorkflowConfiguration;
 
@@ -43,7 +44,7 @@ public class CommandLineConversion {
 		List<File> result = new ArrayList<File>();
 		JobCard jobCard = JobCardFactory.getInstance().createAndSubmitJobCard(inFile, serverLocation, config, Collections.emptySet());
 		
-		jobCard.job.waitForTermination(-1);
+		jobCard.job.waitForTermination(-1, TimeUnit.SECONDS);
 		
 		while (!jobCard.isResultsCompleted()) {
 			Thread.sleep(100);

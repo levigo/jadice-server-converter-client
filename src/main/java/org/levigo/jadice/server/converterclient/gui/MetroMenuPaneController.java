@@ -1,5 +1,14 @@
 package org.levigo.jadice.server.converterclient.gui;
 
+import org.levigo.jadice.server.converterclient.Preferences;
+import org.levigo.jadice.server.converterclient.Preferences.UpdatePolicy;
+import org.levigo.jadice.server.converterclient.updatecheck.UpdateCheckResult;
+import org.levigo.jadice.server.converterclient.updatecheck.UpdateDialogs;
+import org.levigo.jadice.server.converterclient.updatecheck.UpdateService;
+
+import de.jensd.fx.glyphs.GlyphIcons;
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -16,15 +25,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import org.levigo.jadice.server.converterclient.Preferences;
-import org.levigo.jadice.server.converterclient.Preferences.UpdatePolicy;
-import org.levigo.jadice.server.converterclient.updatecheck.UpdateCheckResult;
-import org.levigo.jadice.server.converterclient.updatecheck.UpdateDialogs;
-import org.levigo.jadice.server.converterclient.updatecheck.UpdateService;
-
-import de.jensd.fx.glyphs.GlyphsDude;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 
 public class MetroMenuPaneController {
@@ -153,7 +153,7 @@ public class MetroMenuPaneController {
     }
   }
   
-  private void initSmallIconButton(Button button, FontAwesomeIcon icon, EventHandler<ActionEvent> evt) {
+  private void initSmallIconButton(Button button, GlyphIcons icon, EventHandler<ActionEvent> evt) {
     final Tooltip tooltip = new Tooltip();
     tooltip.textProperty().bind(button.textProperty());
     button.setTooltip(tooltip);
@@ -162,7 +162,7 @@ public class MetroMenuPaneController {
     button.setOnAction(evt);
   }
   
-  private void initIconButton(Button button, FontAwesomeIcon icon, EventHandler<ActionEvent> evt) {
+  private void initIconButton(Button button, GlyphIcons icon, EventHandler<ActionEvent> evt) {
     GlyphsDude.setIcon(button, icon, ICON_SIZE, ContentDisplay.TOP);
     button.setOnAction(evt);
   }

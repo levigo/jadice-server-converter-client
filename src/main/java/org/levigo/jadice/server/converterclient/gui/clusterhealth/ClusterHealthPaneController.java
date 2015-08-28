@@ -1,28 +1,17 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import javafx.animation.AnimationTimer;
-import javafx.beans.binding.When;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.geometry.Side;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
-import javafx.stage.Modality;
-
+import org.apache.log4j.Logger;
 import org.controlsfx.control.GridView;
 import org.controlsfx.control.HiddenSidesPane;
+import org.controlsfx.control.PopOver;
+import org.controlsfx.control.PopOver.ArrowLocation;
 import org.levigo.jadice.server.converterclient.Preferences;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.AverageExecutionTimeRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentAverageExecutionTimeRule;
@@ -33,7 +22,27 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.TotalFail
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.ClusterHealthDTO;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
+import javafx.animation.AnimationTimer;
+import javafx.beans.binding.When;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Side;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+
 public class ClusterHealthPaneController {
+  
+  private static final Logger LOGGER = Logger.getLogger(ClusterHealthPaneController.class);
 
   @FXML
   private Button home;
@@ -67,12 +76,18 @@ public class ClusterHealthPaneController {
   private AnimationTimer timer;
   
   private long nextUpdate = -1;
+  
+  private PopOver defineWarningsPopover;
+
+  private ConfigureClusterHealthWarningsPaneController configureWarningsController;
 
   @FXML
   protected void initialize() {
     UiUtil.configureHomeButton(home);
     
     loadControlElements();
+    initWarningsRulesButton();
+    
     loadRules();
     
     hiddenSidePane.pinnedSideProperty().bind(new When(toggleSettingsButton.selectedProperty()).then(Side.TOP).otherwise((Side) null));
@@ -93,6 +108,40 @@ public class ClusterHealthPaneController {
     };
     timer.start();
   }
+  
+  private void initWarningsRulesButton() {
+    Node limits = null;
+    try {
+      final FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(getClass().getResource("/fxml/ConfigureClusterHealthWarnings.fxml"));
+      loader.setResources(resources);
+      limits = loader.load();
+      configureWarningsController = loader.getController();
+    } catch (IOException e) {
+      LOGGER.error("Could not load cluster health pane", e);
+      ((FlowPane) defineWarnings.getParent()).getChildren().remove(defineWarnings);
+      return;
+    }
+    
+    defineWarningsPopover = new PopOver(limits);
+    defineWarningsPopover.setHideOnEscape(true);
+    defineWarningsPopover.setAutoHide(true);
+    defineWarningsPopover.setDetachable(false);
+    defineWarningsPopover.setArrowLocation(ArrowLocation.TOP_RIGHT);
+  }
+  
+  @FXML
+  protected void showDefineWarningsPopover() {
+    if (defineWarningsPopover == null) {
+      return;
+    }
+    if (defineWarningsPopover.isShowing()) {
+      defineWarningsPopover.hide();
+    } else {
+      defineWarningsPopover.show(defineWarnings);
+    }
+  }
+
   
   @FXML
   private void runUpdate() {

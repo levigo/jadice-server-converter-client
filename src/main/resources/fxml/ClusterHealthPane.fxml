@@ -65,7 +65,7 @@
 					</graphic>
 				</Button>
 	
-				<Button fx:id="defineWarnings" text="%cluster-health.define-warnings" contentDisplay="GRAPHIC_ONLY">
+				<Button fx:id="defineWarnings" text="%cluster-health.define-warnings" contentDisplay="GRAPHIC_ONLY" onAction="#showDefineWarningsPopover">
 					<graphic>
 						<FontAwesomeIconView glyphName="GEARS" size="25px"/>
 					</graphic>

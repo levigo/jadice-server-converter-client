@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane hgap="4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="4.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.levigo.jadice.server.converterclient.gui.clusterhealth.ConfigureClusterHealthWarningsPaneController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="-Infinity" vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+<RowConstraints minHeight="-Infinity" vgrow="NEVER" />
+    <RowConstraints minHeight="-Infinity" vgrow="NEVER" />
+    <RowConstraints vgrow="NEVER" />
+<RowConstraints minHeight="-Infinity" vgrow="NEVER" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
+  </rowConstraints>
+<children>
+	<CheckBox fx:id="serverRunningCB" mnemonicParsing="false" text="%cluster-health.rule.server-running" GridPane.columnSpan="2147483647" />
+	<CheckBox fx:id="recentExecTimeCB" mnemonicParsing="false" text="%cluster-health.rule.recent-avg-execution-time" GridPane.rowIndex="4" />
+	<CheckBox fx:id="avgExecTimeCB" mnemonicParsing="false" text="%cluster-health.rule.avg-execution-time" GridPane.rowIndex="3" />
+	<CheckBox fx:id="recentEfficiencyCB" mnemonicParsing="false" text="%cluster-health.rule.recent-efficiency" GridPane.rowIndex="5" />
+	<CheckBox fx:id="recentFailureRateCB" mnemonicParsing="false" text="%cluster-health.rule.recent-failure-rate" GridPane.rowIndex="2" />
+	<TextField fx:id="recentExecTimeValue" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+	<TextField fx:id="avgExecTimeValue" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+	<TextField fx:id="recentEfficiencyValue" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+	<TextField fx:id="recentFailureRateValue" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+	<Label text="%cluster-health.unit.ms" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+      <CheckBox fx:id="totalFailureRateCB" mnemonicParsing="false" text="%cluster-health.rule.total-failure-rate" GridPane.rowIndex="1" />
+      <TextField fx:id="totalFailureRateValue" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label text="%cluster-health.unit.ms" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+      <CheckBox fx:id="autoUpdateCB" mnemonicParsing="false" text="%cluster-health.auto-update" GridPane.rowIndex="6" />
+      <Label text="%cluster-health.unit.min" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+      <TextField fx:id="autoUpdateValue" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+</children>
+<padding>
+<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+</padding>
+</GridPane>

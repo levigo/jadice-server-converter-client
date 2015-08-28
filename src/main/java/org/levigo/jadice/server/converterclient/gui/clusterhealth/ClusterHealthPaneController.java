@@ -151,8 +151,7 @@ public class ClusterHealthPaneController {
   
   private void runUpdateAsyn(StatusControl control) {
     exec.submit(() -> {
-      // TODO: Use Logger
-      System.out.println("Running update for " + control.getClusterInstance().serverNameProperty().get());
+      LOGGER.info("Running update for " + control.getClusterInstance().serverNameProperty().get());
       control.getClusterInstance().update();
       }
     );
@@ -161,7 +160,7 @@ public class ClusterHealthPaneController {
   @Deprecated
   private void loadRules() {
     if (settings.rules.isEmpty()) {
-      System.out.println("init some demo rules!");
+      LOGGER.warn("init some demo rules!");
       // TODO: make them editable
       settings.rules.add(new ServerRunningRule());
       settings.rules.add(new AverageExecutionTimeRule(200));

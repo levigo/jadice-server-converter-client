@@ -1,4 +1,4 @@
-package org.levigo.jadice.server.converterclient.gui.conversion;
+package org.levigo.jadice.server.converterclient.util.validation;
 
 import static org.levigo.jadice.server.converterclient.util.UiUtil.getUiResources;
 import javafx.scene.control.Control;

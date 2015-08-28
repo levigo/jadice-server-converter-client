@@ -22,6 +22,9 @@ import javafx.util.StringConverter;
 import org.apache.log4j.Logger;
 import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.ValidationSupport;
+import org.levigo.jadice.server.converterclient.util.validation.IntegerValidator;
+import org.levigo.jadice.server.converterclient.util.validation.LongValidator;
+import org.levigo.jadice.server.converterclient.util.validation.NumberValidator;
 
 import com.levigo.jadice.server.Limit;
 import com.levigo.jadice.server.NodeCountLimit;

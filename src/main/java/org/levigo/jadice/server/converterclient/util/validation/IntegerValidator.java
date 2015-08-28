@@ -1,4 +1,4 @@
-package org.levigo.jadice.server.converterclient.gui.conversion;
+package org.levigo.jadice.server.converterclient.util.validation;
 
 
 public class IntegerValidator extends NumberValidator<String> {

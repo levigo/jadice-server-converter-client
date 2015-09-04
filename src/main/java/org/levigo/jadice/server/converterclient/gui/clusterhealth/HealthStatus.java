@@ -1,6 +1,8 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth;
 
-import java.util.Comparator;
+import static java.util.Objects.requireNonNull;
+
+import java.util.function.BinaryOperator;
 
 public enum HealthStatus {
   
@@ -16,9 +18,13 @@ public enum HealthStatus {
   }
   
   /**
-   * Method can be used as {@link Comparator} where the most severe {@link HealthStatus} appears first.
+   * Return the more severe status of the two given ones. Can be used as {@link BinaryOperator}.
+   * 
+   * @param a an argument
+   * @param b another argument
+   * @return the more severe status of both
    */
-  public static int severeFirst(HealthStatus a, HealthStatus b) {
-    return -Integer.compare(a.severity, b.severity);
+  public static HealthStatus maxSevere(HealthStatus a, HealthStatus b) {
+    return (requireNonNull(a).severity >= requireNonNull(b).severity) ? a : b;
   }
 }

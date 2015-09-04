@@ -2,7 +2,6 @@ package org.levigo.jadice.server.converterclient.gui.clusterhealth;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.management.JMException;
@@ -62,8 +61,8 @@ public class ClusterInstance {
       MBeanServerConnection mbsc = connector.getMBeanServerConnection();
       final List<EvaluationResult<?>> status = checkRules(mbsc, rules);
 
-      final Optional<HealthStatus> relevantStatus = status.stream().map(r -> r.status).sorted(HealthStatus::severeFirst).findFirst();
-      healthProperty.set(relevantStatus.orElse(HealthStatus.UNKNOW));
+      HealthStatus relevantStatus = status.stream().map(r -> r.status).reduce(HealthStatus.UNKNOW, HealthStatus::maxSevere);
+      healthProperty.set(relevantStatus);
       messagesProperty.setAll(filterMessages(status));
 
     } catch (JMException | IOException e) {

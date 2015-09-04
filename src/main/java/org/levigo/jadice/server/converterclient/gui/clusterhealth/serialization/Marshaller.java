@@ -1,10 +1,6 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization;
 
 import java.io.IOException;
-import java.util.List;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.Rule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.v1.V1Marshaller;
@@ -13,22 +9,37 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.levigo.util.base.Objects;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public abstract class Marshaller {
   
+  // TODO: Make the whole DTO Observable so that we don't need to register the Preferences to all of its content elements!
   public static final class ClusterHealthDTO {
-    
-    public ClusterHealthDTO() {
-      this(FXCollections.observableArrayList(), FXCollections.observableArrayList());
-    }
-    
-    public ClusterHealthDTO(ObservableList<String> instances, ObservableList<Rule<?>> rules) {
-      this.instances = instances;
-      this.rules = rules;
-    }
     
     public ObservableList<String> instances;
     
     public ObservableList<Rule<?>> rules;
+    
+    public BooleanProperty autoUpdateEnabled;
+    
+    public IntegerProperty autoUpdateIntervall;
+
+    public ClusterHealthDTO() {
+      this(FXCollections.observableArrayList(), FXCollections.observableArrayList(), new SimpleBooleanProperty(false), new SimpleIntegerProperty(1));
+    }
+    
+    public ClusterHealthDTO(ObservableList<String> instances, ObservableList<Rule<?>> rules, BooleanProperty autoUpdateEnabled, IntegerProperty updateIntervall) {
+      this.instances = instances;
+      this.rules = rules;
+      this.autoUpdateEnabled = autoUpdateEnabled;
+      this.autoUpdateIntervall = updateIntervall;
+    }
+    
   }
   
   public static Marshaller getDefault() {
@@ -64,16 +75,6 @@ public abstract class Marshaller {
   
   public abstract String marshallPrettyPrint(ClusterHealthDTO dto) throws MarshallingException;
 
-  public String marshall(List<String> instances, List<Rule<?>> rules) throws MarshallingException {
-    ClusterHealthDTO dto = new ClusterHealthDTO(FXCollections.observableList(instances), FXCollections.observableList(rules));
-    return marshall(dto);
-  };
-  
-  public String marshallPrettyPrint(List<String> instances, List<Rule<?>> rules) throws MarshallingException {
-    ClusterHealthDTO dto = new ClusterHealthDTO(FXCollections.observableList(instances), FXCollections.observableList(rules));
-    return marshallPrettyPrint(dto);
-  };
-  
   public abstract ClusterHealthDTO unmarshall(String s) throws MarshallingException;
 
 }

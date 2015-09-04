@@ -8,8 +8,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -25,19 +23,28 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.
 
 import com.levigo.jadice.server.util.Util;
 
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class TestMarshaller {
 
   private static final String V1 = "1.0";
 
   private static final String SERIALIZED_BY_V1_RESOURCE = "/clusterhealth/serialization/V1.json";
 
-  private static List<Rule<?>> RULES;
+  private static ObservableList<Rule<?>> RULES;
 
-  private static List<String> INSTANCES;
+  private static ObservableList<String> INSTANCES;
+
+  private static SimpleBooleanProperty AUTO_UPDATE_ENABLED = new SimpleBooleanProperty(true);
   
+  private static SimpleIntegerProperty UPDATE_INTERVALL = new SimpleIntegerProperty(42);
+
   @BeforeClass
   public static void createRules() {
-    RULES = new ArrayList<>();
+    RULES = FXCollections.observableArrayList();
     RULES.add(new ServerRunningRule());
     RULES.add(new AverageExecutionTimeRule(10L));
     RULES.add(new RecentAverageExecutionTimeRule(20L));
@@ -48,7 +55,7 @@ public class TestMarshaller {
   
   @BeforeClass
   public static void createInstances() {
-    INSTANCES = new ArrayList<>();
+    INSTANCES =FXCollections.observableArrayList();
     INSTANCES.add("localhost:61619");
     INSTANCES.add("jadice-server.example.com:61619");
   }
@@ -81,12 +88,15 @@ public class TestMarshaller {
 
   @Test
   public void testV1Marshalling() throws Exception {
-    final String m = Marshaller.get(V1).marshall(INSTANCES, RULES);
+    final ClusterHealthDTO dto = new ClusterHealthDTO(INSTANCES, RULES, AUTO_UPDATE_ENABLED, UPDATE_INTERVALL);
+    final String m = Marshaller.get(V1).marshall(dto);
     assertEquals("Wrong version marshalled", "1.0", Marshaller.lookupVersion(m));
     final ClusterHealthDTO unmarshalled = Marshaller.get(V1).unmarshall(m);
 
     assertArrayEquals("Wrong instances", INSTANCES.toArray(), unmarshalled.instances.toArray());
     assertArrayEquals("Wrong rules", RULES.toArray(), unmarshalled.rules.toArray());
+    assertEquals("wrong auto update setting", AUTO_UPDATE_ENABLED.get(), unmarshalled.autoUpdateEnabled.get());
+    assertEquals("wrong update intervall", UPDATE_INTERVALL.get(), unmarshalled.autoUpdateIntervall.get());
   }
 
   @Test
@@ -100,6 +110,8 @@ public class TestMarshaller {
 
     assertArrayEquals("Wrong instances", INSTANCES.toArray(), unmarshalled.instances.toArray());
     assertArrayEquals("Wrong rules", RULES.toArray(), unmarshalled.rules.toArray());
+    assertEquals("wrong auto update setting", AUTO_UPDATE_ENABLED.get(), unmarshalled.autoUpdateEnabled.get());
+    assertEquals("wrong update intervall", UPDATE_INTERVALL.get(), unmarshalled.autoUpdateIntervall.get());
   }
 
   private static String loadJSON(String resourceName) throws IOException {

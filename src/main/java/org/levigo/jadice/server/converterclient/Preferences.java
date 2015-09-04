@@ -359,6 +359,8 @@ public class Preferences {
         };
       clusterHealthProperty.get().instances.addListener(il);
       clusterHealthProperty.get().rules.addListener(il);
+      clusterHealthProperty.get().autoUpdateEnabled.addListener(il);
+      clusterHealthProperty.get().autoUpdateIntervall.addListener(il);
       
     }
     return clusterHealthProperty;
@@ -384,6 +386,8 @@ public class Preferences {
     clusterHealthProperty().getValue().instances.addAll(Defaults.CLUSTER_HEALTH.instances);
     clusterHealthProperty().getValue().rules.clear();
     clusterHealthProperty().getValue().rules.addAll(Defaults.CLUSTER_HEALTH.rules);
+    clusterHealthProperty().getValue().autoUpdateEnabled.set(Defaults.CLUSTER_HEALTH.autoUpdateEnabled.get());
+    clusterHealthProperty().getValue().autoUpdateIntervall.set(Defaults.CLUSTER_HEALTH.autoUpdateIntervall.get());
   }
 
   private static void putNullSafe(String key, String value) {

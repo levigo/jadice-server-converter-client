@@ -15,7 +15,9 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentFai
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.Rule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.ServerRunningRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.TotalFailureRateRule;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.ClusterHealthDTO;
 import org.levigo.jadice.server.converterclient.util.validation.FloatValidator;
+import org.levigo.jadice.server.converterclient.util.validation.IntegerValidator;
 import org.levigo.jadice.server.converterclient.util.validation.LongValidator;
 import org.levigo.jadice.server.converterclient.util.validation.NumberValidator;
 
@@ -74,6 +76,10 @@ public class ConfigureClusterHealthWarningsPaneController {
   @FXML
   TextField autoUpdateValue;
   
+  // Just instantiate; it will perform it's purpose without any further interaction
+  @SuppressWarnings("unused")
+  private AutoUpdateChangeHandler autoUpdateChangeHandler;
+  
   @FXML
   protected void initialize() {
     final ChangeListener<Rule<?>> limitChangeHandler = (observable, oldValue, newValue) -> {
@@ -104,7 +110,10 @@ public class ConfigureClusterHealthWarningsPaneController {
     
     final SimpleRuleHandler<Float, RecentEfficiencyRule> recentEfficiencyHandler = new FloatRuleHandler<>(existingRuleOf(RecentEfficiencyRule.class), recentEfficiencyCB, recentEfficiencyValue, RecentEfficiencyRule::new);
     recentEfficiencyHandler.ruleProperty().addListener(limitChangeHandler);
+    
+    autoUpdateChangeHandler = new AutoUpdateChangeHandler(autoUpdateCB, autoUpdateValue);
   }
+  
   
   @SuppressWarnings("unchecked")
   public static <T extends Rule<?>> Optional<T> existingRuleOf(Class<T> clazz) {
@@ -120,6 +129,48 @@ public class ConfigureClusterHealthWarningsPaneController {
         T rule = (T) filtered.get(0);
         LOGGER.warn(String.format("There are %d rules of type %s defined! Using only '%s'.", filtered.size(), clazz.getSimpleName(), rule));
         return Optional.of(rule);
+    }
+  }
+  
+  private class AutoUpdateChangeHandler {
+    
+    private final ValidationSupport validationSupport = new ValidationSupport();
+    
+    public AutoUpdateChangeHandler(CheckBox cb, TextField valueField) {
+      final ClusterHealthDTO dto = Preferences.clusterHealthProperty().getValue();
+      cb.setSelected(dto.autoUpdateEnabled.get());
+      valueField.setText(dto.autoUpdateIntervall.getValue().toString());
+
+      dto.autoUpdateEnabled.bindBidirectional(cb.selectedProperty());
+      registerValidator(valueField, cb, new IntegerValidator());
+      
+      valueField.textProperty().addListener((observable, oldValue, newValue) -> {
+        Platform.runLater(() -> {
+          // Run Later because validation support also runs later :-/
+          if (!isInputValid()) {
+            return;
+          }
+          int intervall = (Integer.parseInt(valueField.getText()));
+          LOGGER.debug("Change update intervall: " + intervall);
+          dto.autoUpdateIntervall.set(intervall);
+        });
+      });
+    }
+    
+    private boolean isInputValid() {
+      final ValidationResult validationRes = validationSupport.getValidationResult();
+      return !validationSupport.isInvalid() && 
+          (validationRes != null && validationRes.getWarnings().isEmpty() && validationRes.getErrors().isEmpty());
+    }
+      
+      
+    
+    private void registerValidator(TextField field, CheckBox cb, NumberValidator<String> validator) {
+      cb.selectedProperty().addListener((observable, oldValue, newValue) -> {
+        ValidationSupport.setRequired(field, newValue);
+      });
+      validationSupport.errorDecorationEnabledProperty().bind(cb.selectedProperty());
+      validationSupport.registerValidator(field, cb.isSelected(), validator);
     }
   }
 

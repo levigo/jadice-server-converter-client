@@ -12,5 +12,9 @@ public class ClusterHealth {
   public List<Rule<?>> rules = new ArrayList<>();
   
   public List<String> instances = new ArrayList<>();
+  
+  public boolean autoUpdateEnabled;
+  
+  public int autoUpdateIntervall;
 
 }

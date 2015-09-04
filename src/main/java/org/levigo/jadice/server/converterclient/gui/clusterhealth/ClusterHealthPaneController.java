@@ -14,9 +14,9 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
 import org.levigo.jadice.server.converterclient.Preferences;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.ClusterHealthDTO;
+import org.levigo.jadice.server.converterclient.util.FxAnimationScheduler;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
-import javafx.animation.AnimationTimer;
 import javafx.beans.binding.When;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -67,13 +67,11 @@ public class ClusterHealthPaneController {
   
   private final Duration updateRate = Duration.ofSeconds(60);
   
-  private AnimationTimer timer;
+  private FxAnimationScheduler timer;
   
   private long nextUpdate = -1;
   
   private PopOver defineWarningsPopover;
-
-  private ConfigureClusterHealthWarningsPaneController configureWarningsController;
 
   @FXML
   protected void initialize() {
@@ -87,18 +85,16 @@ public class ClusterHealthPaneController {
     gridView.setCellFactory(view -> new StatusControlGridCell());
     gridView.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
     gridView.setItems(controlElements);
-    timer = new AnimationTimer() {
-      @Override
-      public void handle(long now) {
+    timer = new FxAnimationScheduler(() -> {
+        long now = System.nanoTime();
         if (nextUpdate == -1) {
           nextUpdate = now + TimeUnit.SECONDS.toNanos(5);
         }
         if (now >= nextUpdate) {
           runUpdate();
         }
-      }
-    };
-    timer.start();
+      });
+    timer.startedProperty().bind(Preferences.clusterHealthProperty().getValue().autoUpdateEnabled);
   }
   
   private void initWarningsRulesButton() {
@@ -108,7 +104,6 @@ public class ClusterHealthPaneController {
       loader.setLocation(getClass().getResource("/fxml/ConfigureClusterHealthWarnings.fxml"));
       loader.setResources(resources);
       limits = loader.load();
-      configureWarningsController = loader.getController();
     } catch (IOException e) {
       LOGGER.error("Could not load cluster health pane", e);
       ((FlowPane) defineWarnings.getParent()).getChildren().remove(defineWarnings);

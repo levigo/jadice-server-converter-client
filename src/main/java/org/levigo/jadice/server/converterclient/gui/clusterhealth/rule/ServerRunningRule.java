@@ -7,6 +7,8 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.HealthStatus;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 
 public class ServerRunningRule implements ImmutableBooleanRule {
+  
+  public static final ServerRunningRule INSTANCE = new ServerRunningRule();
 
   @Override
   public String getDescription() {

@@ -13,12 +13,6 @@ import org.controlsfx.control.HiddenSidesPane;
 import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
 import org.levigo.jadice.server.converterclient.Preferences;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.AverageExecutionTimeRule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentAverageExecutionTimeRule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentEfficiencyRule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentFailureRateRule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.ServerRunningRule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.TotalFailureRateRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.ClusterHealthDTO;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
@@ -88,8 +82,6 @@ public class ClusterHealthPaneController {
     loadControlElements();
     initWarningsRulesButton();
     
-    loadRules();
-    
     hiddenSidePane.pinnedSideProperty().bind(new When(toggleSettingsButton.selectedProperty()).then(Side.TOP).otherwise((Side) null));
     
     gridView.setCellFactory(view -> new StatusControlGridCell());
@@ -155,21 +147,6 @@ public class ClusterHealthPaneController {
       control.getClusterInstance().update();
       }
     );
-  }
-  
-  @Deprecated
-  private void loadRules() {
-    if (settings.rules.isEmpty()) {
-      LOGGER.warn("init some demo rules!");
-      // TODO: make them editable
-      settings.rules.add(new ServerRunningRule());
-      settings.rules.add(new AverageExecutionTimeRule(200));
-      settings.rules.add(new TotalFailureRateRule(0.05f));
-      settings.rules.add(new RecentAverageExecutionTimeRule(200));
-      settings.rules.add(new RecentEfficiencyRule(0.4f));
-      settings.rules.add(new RecentEfficiencyRule(0.4f));
-      settings.rules.add(new RecentFailureRateRule(0.05f));
-    }
   }
   
   @FXML

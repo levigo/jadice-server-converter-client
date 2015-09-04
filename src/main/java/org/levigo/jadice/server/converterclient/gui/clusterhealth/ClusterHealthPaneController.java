@@ -1,7 +1,6 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,7 +13,7 @@ import org.controlsfx.control.PopOver;
 import org.controlsfx.control.PopOver.ArrowLocation;
 import org.levigo.jadice.server.converterclient.Preferences;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.ClusterHealthDTO;
-import org.levigo.jadice.server.converterclient.util.FxAnimationScheduler;
+import org.levigo.jadice.server.converterclient.util.FxScheduler;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 import javafx.beans.binding.When;
@@ -65,11 +64,7 @@ public class ClusterHealthPaneController {
 
   private final ObservableList<StatusControl> controlElements = FXCollections.observableArrayList();
   
-  private final Duration updateRate = Duration.ofSeconds(60);
-  
-  private FxAnimationScheduler timer;
-  
-  private long nextUpdate = -1;
+  private FxScheduler timer;
   
   private PopOver defineWarningsPopover;
 
@@ -85,15 +80,10 @@ public class ClusterHealthPaneController {
     gridView.setCellFactory(view -> new StatusControlGridCell());
     gridView.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
     gridView.setItems(controlElements);
-    timer = new FxAnimationScheduler(() -> {
-        long now = System.nanoTime();
-        if (nextUpdate == -1) {
-          nextUpdate = now + TimeUnit.SECONDS.toNanos(5);
-        }
-        if (now >= nextUpdate) {
-          runUpdate();
-        }
-      });
+    
+    timer = new FxScheduler(this::runUpdate);
+    timer.setExecutionUnit(TimeUnit.MINUTES); // Unit is not configurable yet
+    timer.executionRateProperty().bind(Preferences.clusterHealthProperty().getValue().autoUpdateIntervall);
     timer.startedProperty().bind(Preferences.clusterHealthProperty().getValue().autoUpdateEnabled);
   }
   
@@ -133,7 +123,6 @@ public class ClusterHealthPaneController {
   @FXML
   private void runUpdate() {
     controlElements.forEach(ce -> runUpdateAsyn(ce));
-    nextUpdate = System.nanoTime() + updateRate.toNanos();
   }
   
   private void runUpdateAsyn(StatusControl control) {

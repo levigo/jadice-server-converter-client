@@ -33,10 +33,10 @@ import org.controlsfx.control.GridView;
 
 public class StatusControlDemo extends Application {
   
-  private static final ClusterInstance instance1 = new ClusterInstance("localhost:61619", FXCollections.emptyObservableList());
+  private static final ClusterInstance instance1 = new ClusterInstance("localhost:61619");
   private static final StatusControl control1 = new StatusControl(instance1, null);
 
-  private static final ClusterInstance instance2 = new ClusterInstance("jadice-server:61619", FXCollections.emptyObservableList());
+  private static final ClusterInstance instance2 = new ClusterInstance("jadice-server:61619");
   private static final StatusControl control2 = new StatusControl(instance2, null);
   
   private final Timer timer = new Timer();

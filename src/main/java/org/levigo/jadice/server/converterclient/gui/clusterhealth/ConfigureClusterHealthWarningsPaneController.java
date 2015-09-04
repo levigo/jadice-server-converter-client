@@ -1,5 +1,8 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth;
 
+import java.util.Objects;
+import java.util.Optional;
+
 import org.apache.log4j.Logger;
 import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.ValidationSupport;
@@ -23,6 +26,7 @@ import javafx.beans.binding.When;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
@@ -83,33 +87,53 @@ public class ConfigureClusterHealthWarningsPaneController {
       }
     };
 
-    final ServerRunningRuleHandler serverRunningHandler = new ServerRunningRuleHandler();
+    final ServerRunningRuleHandler serverRunningHandler = new ServerRunningRuleHandler(existingRuleOf(ServerRunningRule.class));
     serverRunningHandler.ruleProperty().addListener(limitChangeHandler);
 
-    final SimpleRuleHandler<Float, TotalFailureRateRule> totalFalureRateHandler = new FloatRuleHandler<>(totalFailureRateCB, totalFailureRateValue, TotalFailureRateRule::new);
+    final SimpleRuleHandler<Float, TotalFailureRateRule> totalFalureRateHandler = new FloatRuleHandler<>(existingRuleOf(TotalFailureRateRule.class), totalFailureRateCB, totalFailureRateValue, TotalFailureRateRule::new);
     totalFalureRateHandler.ruleProperty().addListener(limitChangeHandler);
 
-    final SimpleRuleHandler<Float, RecentFailureRateRule> recentFailureRateHandler = new FloatRuleHandler<>(recentFailureRateCB, recentFailureRateValue, RecentFailureRateRule::new);
+    final SimpleRuleHandler<Float, RecentFailureRateRule> recentFailureRateHandler = new FloatRuleHandler<>(existingRuleOf(RecentFailureRateRule.class), recentFailureRateCB, recentFailureRateValue, RecentFailureRateRule::new);
     recentFailureRateHandler.ruleProperty().addListener(limitChangeHandler);
 
-    final SimpleRuleHandler<Long, AverageExecutionTimeRule> avgExecTimeHandler = new LongRuleHandler<>(avgExecTimeCB, avgExecTimeValue, AverageExecutionTimeRule::new);
+    final SimpleRuleHandler<Long, AverageExecutionTimeRule> avgExecTimeHandler = new LongRuleHandler<>(existingRuleOf(AverageExecutionTimeRule.class), avgExecTimeCB, avgExecTimeValue, AverageExecutionTimeRule::new);
     avgExecTimeHandler.ruleProperty().addListener(limitChangeHandler);
 
-    final SimpleRuleHandler<Long, RecentAverageExecutionTimeRule> recentExecTimeHandler = new LongRuleHandler<>(recentExecTimeCB, recentExecTimeValue, RecentAverageExecutionTimeRule::new);
+    final SimpleRuleHandler<Long, RecentAverageExecutionTimeRule> recentExecTimeHandler = new LongRuleHandler<>(existingRuleOf(RecentAverageExecutionTimeRule.class), recentExecTimeCB, recentExecTimeValue, RecentAverageExecutionTimeRule::new);
     recentExecTimeHandler.ruleProperty().addListener(limitChangeHandler);
     
-    final SimpleRuleHandler<Float, RecentEfficiencyRule> recentEfficiencyHandler = new FloatRuleHandler<>(recentEfficiencyCB, recentEfficiencyValue, RecentEfficiencyRule::new);
+    final SimpleRuleHandler<Float, RecentEfficiencyRule> recentEfficiencyHandler = new FloatRuleHandler<>(existingRuleOf(RecentEfficiencyRule.class), recentEfficiencyCB, recentEfficiencyValue, RecentEfficiencyRule::new);
     recentEfficiencyHandler.ruleProperty().addListener(limitChangeHandler);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static <T extends Rule<?>> Optional<T> existingRuleOf(Class<T> clazz) {
+    final FilteredList<Rule<?>> filtered = Preferences.clusterHealthProperty().getValue().rules.filtered(r -> Objects.equals(clazz, r.getClass()));
+    switch (filtered.size()){
+      case 0 :
+        return Optional.empty();
+        
+      case 1 :
+        return Optional.of((T) filtered.get(0));
+
+      default :
+        T rule = (T) filtered.get(0);
+        LOGGER.warn(String.format("There are %d rules of type %s defined! Using only '%s'.", filtered.size(), clazz.getSimpleName(), rule));
+        return Optional.of(rule);
+    }
   }
 
   private class ServerRunningRuleHandler {
     
-    private final ServerRunningRule theRule = new ServerRunningRule();
-
     private final ObjectProperty<ServerRunningRule> ruleProperty = new SimpleObjectProperty<>(null);
+    
+    public ServerRunningRuleHandler(Optional<ServerRunningRule> rule) {
+      if (rule.isPresent()) {
+        serverRunningCB.setSelected(true);
+        ruleProperty.set(rule.get());
+      }
 
-    public ServerRunningRuleHandler() {
-      ruleProperty.bind(new When(serverRunningCB.selectedProperty()).then(theRule).otherwise(ObjectConstant.valueOf(null)));
+      ruleProperty.bind(new When(serverRunningCB.selectedProperty()).then(ServerRunningRule.INSTANCE).otherwise(ObjectConstant.valueOf(null)));
     }
 
     public ObjectProperty<ServerRunningRule> ruleProperty() {
@@ -118,14 +142,14 @@ public class ConfigureClusterHealthWarningsPaneController {
   }
   
   private static class FloatRuleHandler<R extends NumericRule<Float>> extends SimpleRuleHandler<Float, R> {
-    public FloatRuleHandler(CheckBox checkbox, TextField valueField, Constructor<Float, R> constr) {
-      super(checkbox, valueField, Float::parseFloat, constr, new FloatValidator());
+    public FloatRuleHandler(Optional<R> existingRule, CheckBox checkbox, TextField valueField, Constructor<Float, R> constr) {
+      super(existingRule, checkbox, valueField, Float::parseFloat, constr, new FloatValidator());
     }
   }
   
   private static class LongRuleHandler<R extends NumericRule<Long>> extends SimpleRuleHandler<Long, R> {
-    public LongRuleHandler(CheckBox checkbox, TextField valueField, Constructor<Long, R> constr) {
-      super(checkbox, valueField, Long::parseLong, constr, new LongValidator());
+    public LongRuleHandler(Optional<R> existingRule, CheckBox checkbox, TextField valueField, Constructor<Long, R> constr) {
+      super(existingRule, checkbox, valueField, Long::parseLong, constr, new LongValidator());
     }
   }
   
@@ -139,11 +163,17 @@ public class ConfigureClusterHealthWarningsPaneController {
 
     private final ObjectProperty<R> limitProperty = new SimpleObjectProperty<>(null);
     
-    public SimpleRuleHandler(CheckBox checkbox, TextField valueField, Parser<N> parser, Constructor<N, R> constr, NumberValidator<String> validator) {
+    public SimpleRuleHandler(Optional<R> existingRule, CheckBox checkbox, TextField valueField, Parser<N> parser, Constructor<N, R> constr, NumberValidator<String> validator) {
       this.checkbox = checkbox;
       this.valueField = valueField;
       this.parser = parser;
       this.constr = constr;
+      
+      if (existingRule.isPresent()) {
+        checkbox.setSelected(true);
+        valueField.setText(existingRule.get().getLimit().toString());
+        limitProperty.set(existingRule.get());
+      }
       
       registerValidator(valueField, checkbox, validationSupport, validator);
       

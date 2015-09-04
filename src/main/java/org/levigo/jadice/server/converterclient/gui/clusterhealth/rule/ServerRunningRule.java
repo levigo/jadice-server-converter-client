@@ -41,4 +41,9 @@ public class ServerRunningRule implements ImmutableBooleanRule {
   public boolean equals(Object other) {
     return other instanceof ServerRunningRule;
   }
+  
+  @Override
+  public String toString() {
+    return "Check if server is running";
+  }
 }

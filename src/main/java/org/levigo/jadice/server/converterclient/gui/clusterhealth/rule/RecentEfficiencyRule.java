@@ -61,4 +61,9 @@ public class RecentEfficiencyRule implements NumericRule<Float> {
   public boolean equals(Object other) {
     return other instanceof RecentEfficiencyRule && ((RecentEfficiencyRule) other).getLimit().equals(this.getLimit());
   }
+  
+  @Override
+  public String toString() {
+    return String.format("Recent Efficiency of %f", getLimit());
+  }
 }

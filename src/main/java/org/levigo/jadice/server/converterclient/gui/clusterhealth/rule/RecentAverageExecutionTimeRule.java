@@ -62,4 +62,9 @@ public class RecentAverageExecutionTimeRule implements NumericRule<Long> {
   public boolean equals(Object other) {
     return other instanceof RecentAverageExecutionTimeRule && ((RecentAverageExecutionTimeRule) other).getLimit().equals(this.getLimit());
   }
+  
+  @Override
+  public String toString() {
+    return String.format("Recent Average Excecution Time of %d ms", getLimit());
+  }
 }

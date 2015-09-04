@@ -61,5 +61,9 @@ public class RecentFailureRateRule implements NumericRule<Float> {
   public boolean equals(Object other) {
     return other instanceof RecentFailureRateRule && ((RecentFailureRateRule) other).getLimit().equals(this.getLimit());
   }
-
+  
+  @Override
+  public String toString() {
+    return String.format("Recent Failure Rate of %f", getLimit());
+  }
 }

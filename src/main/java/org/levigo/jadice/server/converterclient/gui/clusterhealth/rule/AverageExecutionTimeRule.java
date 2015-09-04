@@ -1,14 +1,14 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.rule;
 
-import javafx.beans.property.LongProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleLongProperty;
-
 import javax.management.JMException;
 import javax.management.MBeanServerConnection;
 
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.HealthStatus;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
+
+import javafx.beans.property.LongProperty;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleLongProperty;
 
 public class AverageExecutionTimeRule implements NumericRule<Long> {
 
@@ -60,5 +60,10 @@ public class AverageExecutionTimeRule implements NumericRule<Long> {
   @Override
   public boolean equals(Object other) {
     return other instanceof AverageExecutionTimeRule && ((AverageExecutionTimeRule) other).getLimit().equals(this.getLimit());
+  }
+  
+  @Override
+  public String toString() {
+    return String.format("Average Excecution Time of %d ms", getLimit());
   }
 }

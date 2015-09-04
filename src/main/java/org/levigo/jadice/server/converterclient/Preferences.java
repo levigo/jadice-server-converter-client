@@ -357,11 +357,7 @@ public class Preferences {
             LOGGER.error("Could not store cluster health preferences", e);
           }
         };
-      clusterHealthProperty.get().instances.addListener(il);
-      clusterHealthProperty.get().rules.addListener(il);
-      clusterHealthProperty.get().autoUpdateEnabled.addListener(il);
-      clusterHealthProperty.get().autoUpdateIntervall.addListener(il);
-      
+      clusterHealthProperty.get().addListener(il);
     }
     return clusterHealthProperty;
   }

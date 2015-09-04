@@ -192,12 +192,12 @@ public class ClusterHealthPaneController {
 
   private void loadControlElements() {
     settings.instances.forEach(instance -> {
-      controlElements.add(new StatusControl(new ClusterInstance(instance, settings.rules), this));
+      controlElements.add(new StatusControl(new ClusterInstance(instance), this));
     });
     settings.instances.addListener((ListChangeListener<? super String>) change -> {
       while (change.next()) {
         change.getAddedSubList().forEach(added -> {
-          final StatusControl newInstance = new StatusControl(new ClusterInstance(added, settings.rules), this);
+          final StatusControl newInstance = new StatusControl(new ClusterInstance(added), this);
           controlElements.add(newInstance);
           runUpdateAsyn(newInstance);
         });

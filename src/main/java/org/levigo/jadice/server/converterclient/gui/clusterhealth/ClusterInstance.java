@@ -4,6 +4,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.management.JMException;
+import javax.management.MBeanServerConnection;
+import javax.management.remote.JMXConnector;
+
+import org.levigo.jadice.server.converterclient.Preferences;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.EvaluationResult;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.Rule;
+
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -11,14 +19,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-import javax.management.JMException;
-import javax.management.MBeanServerConnection;
-import javax.management.remote.JMXConnector;
-
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.EvaluationResult;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.Rule;
 
 public class ClusterInstance {
 
@@ -30,11 +30,8 @@ public class ClusterInstance {
 
   private final ListProperty<String> messagesProperty;
   
-  private final ObservableList<Rule<?>> rules; 
-
-  public ClusterInstance(String jmxUrl, ObservableList<Rule<?>> rules) {
+  public ClusterInstance(String jmxUrl) {
     this.jmxUrl = jmxUrl;
-    this.rules = rules;
 
     serverNameProperty = new SimpleStringProperty(jmxUrl);
     healthProperty = new SimpleObjectProperty<>(HealthStatus.UNKNOW);
@@ -54,10 +51,16 @@ public class ClusterInstance {
   }
 
   public void update() {
+    final List<Rule<?>> rules = Preferences.clusterHealthProperty().getValue().rules;
+    if (rules.isEmpty()) {
+      healthProperty.set(HealthStatus.UNKNOW);
+      return;
+    }
+    
     try {
       try (final JMXConnector connector = JmxHelper.createConnector(this.jmxUrl)) {
         MBeanServerConnection mbsc = connector.getMBeanServerConnection();
-        final List<EvaluationResult<?>> status = checkRules(mbsc);
+        final List<EvaluationResult<?>> status = checkRules(mbsc, rules);
         messagesProperty.setAll(filterMessages(status));
 
         if (status.stream().anyMatch(s -> s.status == HealthStatus.FAILURE)) {
@@ -83,7 +86,7 @@ public class ClusterInstance {
     return results.stream().map(f -> f.message).filter(o -> o.isPresent()).map(o -> o.get()).collect(Collectors.toList());
   }
   
-  private List<EvaluationResult<?>> checkRules(MBeanServerConnection mbsc) {
-    return rules.stream().map(rules -> rules.evaluate(mbsc)).collect(Collectors.toList());
+  private List<EvaluationResult<?>> checkRules(MBeanServerConnection mbsc, List<Rule<?>> rules) {
+    return rules.stream().map(rule -> rule.evaluate(mbsc)).collect(Collectors.toList());
   }
 }

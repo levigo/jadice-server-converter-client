@@ -86,19 +86,19 @@ public class ConfigureClusterHealthWarningsPaneController {
     final ServerRunningRuleHandler serverRunningHandler = new ServerRunningRuleHandler();
     serverRunningHandler.ruleProperty().addListener(limitChangeHandler);
 
-    final SimpleRuleHandler<Float, TotalFailureRateRule> totalFalureRateHandler = new SimpleRuleHandler<>(totalFailureRateCB, totalFailureRateValue, Float::parseFloat, TotalFailureRateRule::new, new FloatValidator());
+    final SimpleRuleHandler<Float, TotalFailureRateRule> totalFalureRateHandler = new FloatRuleHandler<>(totalFailureRateCB, totalFailureRateValue, TotalFailureRateRule::new);
     totalFalureRateHandler.ruleProperty().addListener(limitChangeHandler);
 
-    final SimpleRuleHandler<Float, RecentFailureRateRule> recentFailureRateHandler = new SimpleRuleHandler<>(recentFailureRateCB, recentFailureRateValue, Float::parseFloat, RecentFailureRateRule::new, new FloatValidator());
+    final SimpleRuleHandler<Float, RecentFailureRateRule> recentFailureRateHandler = new FloatRuleHandler<>(recentFailureRateCB, recentFailureRateValue, RecentFailureRateRule::new);
     recentFailureRateHandler.ruleProperty().addListener(limitChangeHandler);
 
-    final SimpleRuleHandler<Long, AverageExecutionTimeRule> avgExecTimeHandler = new SimpleRuleHandler<>(avgExecTimeCB, avgExecTimeValue, Long::parseLong, AverageExecutionTimeRule::new, new LongValidator());
+    final SimpleRuleHandler<Long, AverageExecutionTimeRule> avgExecTimeHandler = new LongRuleHandler<>(avgExecTimeCB, avgExecTimeValue, AverageExecutionTimeRule::new);
     avgExecTimeHandler.ruleProperty().addListener(limitChangeHandler);
 
-    final SimpleRuleHandler<Long, RecentAverageExecutionTimeRule> recentExecTimeHandler = new SimpleRuleHandler<>(recentExecTimeCB, recentExecTimeValue, Long::parseLong, RecentAverageExecutionTimeRule::new, new LongValidator());
+    final SimpleRuleHandler<Long, RecentAverageExecutionTimeRule> recentExecTimeHandler = new LongRuleHandler<>(recentExecTimeCB, recentExecTimeValue, RecentAverageExecutionTimeRule::new);
     recentExecTimeHandler.ruleProperty().addListener(limitChangeHandler);
     
-    final SimpleRuleHandler<Float, RecentEfficiencyRule> recentEfficiencyHandler = new SimpleRuleHandler<>(recentEfficiencyCB, recentEfficiencyValue, Float::parseFloat, RecentEfficiencyRule::new, new FloatValidator());
+    final SimpleRuleHandler<Float, RecentEfficiencyRule> recentEfficiencyHandler = new FloatRuleHandler<>(recentEfficiencyCB, recentEfficiencyValue, RecentEfficiencyRule::new);
     recentEfficiencyHandler.ruleProperty().addListener(limitChangeHandler);
   }
 
@@ -114,6 +114,18 @@ public class ConfigureClusterHealthWarningsPaneController {
 
     public ObjectProperty<ServerRunningRule> ruleProperty() {
       return ruleProperty;
+    }
+  }
+  
+  private static class FloatRuleHandler<R extends NumericRule<Float>> extends SimpleRuleHandler<Float, R> {
+    public FloatRuleHandler(CheckBox checkbox, TextField valueField, Constructor<Float, R> constr) {
+      super(checkbox, valueField, Float::parseFloat, constr, new FloatValidator());
+    }
+  }
+  
+  private static class LongRuleHandler<R extends NumericRule<Long>> extends SimpleRuleHandler<Long, R> {
+    public LongRuleHandler(CheckBox checkbox, TextField valueField, Constructor<Long, R> constr) {
+      super(checkbox, valueField, Long::parseLong, constr, new LongValidator());
     }
   }
   

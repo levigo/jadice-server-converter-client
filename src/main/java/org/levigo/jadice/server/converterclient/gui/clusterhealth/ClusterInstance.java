@@ -2,6 +2,7 @@ package org.levigo.jadice.server.converterclient.gui.clusterhealth;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.management.JMException;
@@ -56,25 +57,14 @@ public class ClusterInstance {
       healthProperty.set(HealthStatus.UNKNOW);
       return;
     }
-    
-    try {
-      try (final JMXConnector connector = JmxHelper.createConnector(this.jmxUrl)) {
-        MBeanServerConnection mbsc = connector.getMBeanServerConnection();
-        final List<EvaluationResult<?>> status = checkRules(mbsc, rules);
-        messagesProperty.setAll(filterMessages(status));
 
-        if (status.stream().anyMatch(s -> s.status == HealthStatus.FAILURE)) {
-          healthProperty.set(HealthStatus.FAILURE);
-          return;
-        }
-        
-        if (status.stream().anyMatch(s -> s.status == HealthStatus.ATTENTION)) {
-          healthProperty.set(HealthStatus.ATTENTION);
-          return;
-        }
-      }
-      
-      healthProperty.set(HealthStatus.GOOD);
+    try (final JMXConnector connector = JmxHelper.createConnector(this.jmxUrl)) {
+      MBeanServerConnection mbsc = connector.getMBeanServerConnection();
+      final List<EvaluationResult<?>> status = checkRules(mbsc, rules);
+
+      final Optional<HealthStatus> relevantStatus = status.stream().map(r -> r.status).sorted(HealthStatus::severeFirst).findFirst();
+      healthProperty.set(relevantStatus.orElse(HealthStatus.UNKNOW));
+      messagesProperty.setAll(filterMessages(status));
 
     } catch (JMException | IOException e) {
       healthProperty.set(HealthStatus.FAILURE);

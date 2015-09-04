@@ -74,11 +74,11 @@ public class ConfigureClusterHealthWarningsPaneController {
   protected void initialize() {
     final ChangeListener<Rule<?>> limitChangeHandler = (observable, oldValue, newValue) -> {
       if (oldValue != null) {
-        LOGGER.info("Remove rule " + oldValue.getClass().getSimpleName());
+        LOGGER.debug(String.format("Remove rule '%s'", oldValue));
         Preferences.clusterHealthProperty().getValue().rules.remove(oldValue);
       }
       if (newValue != null) {
-        LOGGER.info("Add rule " + newValue.getClass().getSimpleName());
+        LOGGER.debug(String.format("Add rule '%s'", newValue.toString()));
         Preferences.clusterHealthProperty().getValue().rules.add(newValue);
       }
     };

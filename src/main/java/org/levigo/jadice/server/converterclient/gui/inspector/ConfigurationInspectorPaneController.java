@@ -1,15 +1,8 @@
 package org.levigo.jadice.server.converterclient.gui.inspector;
 
-import javafx.application.Platform;
-import javafx.beans.property.SimpleListProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.cell.ComboBoxListCell;
-import javafx.scene.layout.BorderPane;
-import javafx.util.StringConverter;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
@@ -30,9 +23,28 @@ import com.levigo.jadice.server.Node;
 import com.levigo.jadice.server.client.JobFactory;
 import com.levigo.jadice.server.client.jms.JMSJobFactory;
 
+import javafx.application.Platform;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.cell.ComboBoxListCell;
+import javafx.scene.layout.BorderPane;
+import javafx.util.StringConverter;
+
 public class ConfigurationInspectorPaneController implements NodeSelectionListener {
 
 	private static final Logger LOGGER = Logger.getLogger(ConfigurationInspectorPaneController.class);
+	
+	private static final String[] HIDDEN_NODE_PROPERTY_NAMES = new String[] {//
+	    "UUID", "job", "limits", "nodeLimits",//
+	    "inputCardinality", "outputCardinality", "streamBundle", //
+	    "predecessors", "successors", "subsidiaryNodes"
+  };
+	  
+	private static final Set<String> HIDDEN_NODE_PROPERTY_NAMES_SET = new HashSet<>(Arrays.asList(HIDDEN_NODE_PROPERTY_NAMES));
 	
 	@FXML
 	private ComboBox<WorkflowConfiguration> configurations;
@@ -148,7 +160,7 @@ public class ConfigurationInspectorPaneController implements NodeSelectionListen
 
 	public void selected(final Node selected) {
 	  LOGGER.debug("SELECTED: " + selected);
-	  final ObservableList<Item> properties = BeanPropertyUtils.getProperties(selected);
+	  final ObservableList<Item> properties = BeanPropertyUtils.getProperties(selected, item -> !HIDDEN_NODE_PROPERTY_NAMES_SET.contains(item.getName()));
 	  properties.stream().forEach(item -> {
 	    try {
 	      item.getValue();

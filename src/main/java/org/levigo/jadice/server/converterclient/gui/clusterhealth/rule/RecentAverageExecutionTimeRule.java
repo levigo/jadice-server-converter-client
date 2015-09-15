@@ -31,7 +31,7 @@ public class RecentAverageExecutionTimeRule extends NumericRule<Long> {
   @Override
   public EvaluationResult<Long> evaluate(MBeanServerConnection mbsc) {
     try {
-      final long execTime = JmxHelper.getRecentAverageExecutionTime(mbsc);
+      final long execTime = jmxFunction().apply(mbsc);
       if (execTime <= limit.get()) {
         return new EvaluationResult<Long>(HealthStatus.GOOD, execTime);
       } else {
@@ -56,5 +56,10 @@ public class RecentAverageExecutionTimeRule extends NumericRule<Long> {
   @Override
   public String toString() {
     return String.format("Recent Average Excecution Time of %d ms", getLimit());
+  }
+  
+  @Override
+  protected ExceptionalFunction<MBeanServerConnection, Long, JMException> jmxFunction() {
+    return JmxHelper::getRecentAverageExecutionTime;
   }
 }

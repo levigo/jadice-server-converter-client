@@ -11,7 +11,7 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleLongProperty;
 
 public class AverageExecutionTimeRule extends NumericRule<Long> {
-
+  
   private final LongProperty limit;
 
   public AverageExecutionTimeRule(long limit) {
@@ -31,7 +31,7 @@ public class AverageExecutionTimeRule extends NumericRule<Long> {
   @Override
   public EvaluationResult<Long> evaluate(MBeanServerConnection mbsc) {
     try {
-      final long execTime = JmxHelper.getAverageExecutionTime(mbsc);
+      final long execTime = jmxFunction().apply(mbsc);
       if (execTime <= limit.get()) {
         return new EvaluationResult<Long>(HealthStatus.GOOD, execTime);
       } else {
@@ -55,5 +55,10 @@ public class AverageExecutionTimeRule extends NumericRule<Long> {
   @Override
   public String toString() {
     return String.format("Average Excecution Time of %d ms", getLimit());
+  }
+
+  @Override
+  protected ExceptionalFunction<MBeanServerConnection, Long, JMException> jmxFunction() {
+    return JmxHelper::getAverageExecutionTime;
   }
 }

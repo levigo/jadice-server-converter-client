@@ -56,4 +56,10 @@ public class TotalFailureRateRule extends NumericRule<Float> {
   public String toString() {
     return String.format("Failure Rate of %f", getLimit());
   }
+  
+  @Override
+  protected ExceptionalFunction<MBeanServerConnection, Float, JMException> jmxFunction() {
+    return JmxHelper::getTotalFailureRate;
+  }
+  
 }

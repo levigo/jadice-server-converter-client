@@ -31,7 +31,7 @@ public class RecentEfficiencyRule extends NumericRule<Float> {
   @Override
   public EvaluationResult<Float> evaluate(MBeanServerConnection mbsc) {
     try {
-      final float eff = JmxHelper.getEfficiency10Min(mbsc);
+      final float eff = jmxFunction().apply(mbsc);
       if (eff <= limit.get()) {
         return new EvaluationResult<Float>(HealthStatus.GOOD, eff);
       } else {
@@ -55,5 +55,10 @@ public class RecentEfficiencyRule extends NumericRule<Float> {
   @Override
   public String toString() {
     return String.format("Recent Efficiency of %f", getLimit());
+  }
+  
+  @Override
+  protected ExceptionalFunction<MBeanServerConnection, Float, JMException> jmxFunction() {
+    return JmxHelper::getEfficiency10Min;
   }
 }

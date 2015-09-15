@@ -31,7 +31,7 @@ public class RecentFailureRateRule extends NumericRule<Float> {
   @Override
   public EvaluationResult<Float> evaluate(MBeanServerConnection mbsc) {
     try {
-      final float rate = JmxHelper.getRecentFailureRate(mbsc);
+      final float rate = jmxFunction().apply(mbsc);
       if (rate <= limit.get()) {
         return new EvaluationResult<Float>(HealthStatus.GOOD, rate);
       } else {
@@ -55,5 +55,10 @@ public class RecentFailureRateRule extends NumericRule<Float> {
   @Override
   public String toString() {
     return String.format("Recent Failure Rate of %f", getLimit());
+  }
+  
+  @Override
+  protected ExceptionalFunction<MBeanServerConnection, Float, JMException> jmxFunction() {
+    return JmxHelper::getRecentFailureRate;
   }
 }

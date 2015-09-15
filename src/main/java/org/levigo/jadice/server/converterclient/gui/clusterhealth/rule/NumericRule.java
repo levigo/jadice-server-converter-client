@@ -2,15 +2,15 @@ package org.levigo.jadice.server.converterclient.gui.clusterhealth.rule;
 
 import javafx.beans.property.Property;
 
-public interface NumericRule<T extends Number> extends Rule<T>  {
+public abstract class NumericRule<T extends Number> implements Rule<T>  {
   
-  Property<Number> limitProperty();
+  abstract Property<Number> limitProperty();
   
-  default Number getLimit() {
+  public Number getLimit() {
     return limitProperty().getValue();
   }
   
-  default void setLimit(Number value) {
+  public void setLimit(Number value) {
     limitProperty().setValue(value);
   }
   

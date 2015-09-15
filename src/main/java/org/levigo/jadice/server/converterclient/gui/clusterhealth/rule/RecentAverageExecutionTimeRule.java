@@ -10,7 +10,7 @@ import javax.management.MBeanServerConnection;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.HealthStatus;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 
-public class RecentAverageExecutionTimeRule implements NumericRule<Long> {
+public class RecentAverageExecutionTimeRule extends NumericRule<Long> {
 
   private final LongProperty limit;
 

@@ -10,7 +10,7 @@ import javax.management.MBeanServerConnection;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.HealthStatus;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 
-public class RecentFailureRateRule implements NumericRule<Float> {
+public class RecentFailureRateRule extends NumericRule<Float> {
 
   private final FloatProperty limit;
 

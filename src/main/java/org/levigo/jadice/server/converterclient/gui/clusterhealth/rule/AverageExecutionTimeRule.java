@@ -10,7 +10,7 @@ import javafx.beans.property.LongProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleLongProperty;
 
-public class AverageExecutionTimeRule implements NumericRule<Long> {
+public class AverageExecutionTimeRule extends NumericRule<Long> {
 
   private final LongProperty limit;
 

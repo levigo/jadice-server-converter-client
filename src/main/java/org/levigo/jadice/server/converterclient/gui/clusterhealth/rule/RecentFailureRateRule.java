@@ -29,16 +29,6 @@ public class RecentFailureRateRule implements NumericRule<Float> {
   }
   
   @Override
-  public Float getLimit() {
-    return limit.get();
-  }
-  
-  @Override
-  public void setLimit(Float value) {
-    limit.set(value);
-  }
-
-  @Override
   public EvaluationResult<Float> evaluate(MBeanServerConnection mbsc) {
     try {
       final float rate = JmxHelper.getRecentFailureRate(mbsc);

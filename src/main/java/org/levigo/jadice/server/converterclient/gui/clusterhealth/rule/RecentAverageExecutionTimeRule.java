@@ -29,16 +29,6 @@ public class RecentAverageExecutionTimeRule implements NumericRule<Long> {
   }
   
   @Override
-  public Long getLimit() {
-    return limit.get();
-  }
-  
-  @Override
-  public void setLimit(Long value) {
-    limit.set(value);
-  }
-
-  @Override
   public EvaluationResult<Long> evaluate(MBeanServerConnection mbsc) {
     try {
       final long execTime = JmxHelper.getRecentAverageExecutionTime(mbsc);

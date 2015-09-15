@@ -6,8 +6,12 @@ public interface NumericRule<T extends Number> extends Rule<T>  {
   
   Property<Number> limitProperty();
   
-  T getLimit();
+  default Number getLimit() {
+    return limitProperty().getValue();
+  }
   
-  void setLimit(T value);
+  default void setLimit(Number value) {
+    limitProperty().setValue(value);
+  }
   
 }

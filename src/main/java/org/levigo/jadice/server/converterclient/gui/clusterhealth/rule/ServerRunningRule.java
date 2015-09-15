@@ -6,10 +6,15 @@ import javax.management.MBeanServerConnection;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.HealthStatus;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 public class ServerRunningRule implements ImmutableBooleanRule {
   
   public static final ServerRunningRule INSTANCE = new ServerRunningRule();
-
+  
+  private final BooleanProperty enabledProperty = new SimpleBooleanProperty(true);
+  
   @Override
   public String getDescription() {
     return "Instance is running";
@@ -18,6 +23,11 @@ public class ServerRunningRule implements ImmutableBooleanRule {
   @Override
   public boolean getExpectedValue() {
     return true;
+  }
+  
+  @Override
+  public BooleanProperty enabledProperty() {
+    return enabledProperty;
   }
 
   @Override

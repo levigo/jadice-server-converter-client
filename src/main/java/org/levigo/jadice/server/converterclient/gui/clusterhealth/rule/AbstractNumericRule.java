@@ -9,7 +9,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
 
-public abstract class NumericRule<T extends Number & Comparable<T>> implements Rule<T>  {
+public abstract class AbstractNumericRule<T extends Number & Comparable<T>> implements Rule<T>  {
   
   interface ExceptionalFunction<T, R, E extends Exception>  {
     R apply(T t) throws E;

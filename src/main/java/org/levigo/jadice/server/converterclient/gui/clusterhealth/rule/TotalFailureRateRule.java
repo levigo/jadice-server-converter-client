@@ -8,7 +8,7 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 
-public class TotalFailureRateRule extends NumericRule<Float> {
+public class TotalFailureRateRule extends AbstractNumericRule<Float> {
 
   private final Property<Float> limit;
 

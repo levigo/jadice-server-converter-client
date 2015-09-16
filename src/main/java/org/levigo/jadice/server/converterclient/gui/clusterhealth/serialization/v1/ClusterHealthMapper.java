@@ -3,7 +3,7 @@ package org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization
 import java.lang.reflect.Constructor;
 
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.ImmutableBooleanRule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.NumericRule;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.AbstractNumericRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller.ClusterHealthDTO;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.MarshallingException;
 
@@ -18,9 +18,9 @@ public class ClusterHealthMapper {
     result.autoUpdateIntervall = dto.autoUpdateIntervall.get();
     
     for (org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.Rule<?> rule : dto.rules) {
-      if (rule instanceof NumericRule<?>) {
+      if (rule instanceof AbstractNumericRule<?>) {
         Rule<Number> r = new Rule<>();
-        r.limit = ((NumericRule<?>) rule).getLimit();
+        r.limit = ((AbstractNumericRule<?>) rule).getLimit();
         r.implementation = rule.getClass().getName();
         result.rules.add(r);
       } else if (rule instanceof ImmutableBooleanRule) {
@@ -43,8 +43,8 @@ public class ClusterHealthMapper {
     for (Rule<?> rule : ch.rules) {
       try {
         final Class<?> clazz = Class.forName(rule.implementation);
-        if (NumericRule.class.isAssignableFrom(clazz)) {
-          final NumericRule<?> r = unmarshallNumericRule(rule, clazz);
+        if (AbstractNumericRule.class.isAssignableFrom(clazz)) {
+          final AbstractNumericRule<?> r = unmarshallNumericRule(rule, clazz);
           result.rules.add(r);
         } else if (ImmutableBooleanRule.class.isAssignableFrom(clazz)) {
           final ImmutableBooleanRule r = unmarshallImmutableBooleanRule(clazz);
@@ -64,7 +64,7 @@ public class ClusterHealthMapper {
     return (ImmutableBooleanRule) clazz.newInstance();
   }
 
-  private NumericRule<?> unmarshallNumericRule(Rule<?> rule, final Class<?> clazz) throws ReflectiveOperationException, MarshallingException {
+  private AbstractNumericRule<?> unmarshallNumericRule(Rule<?> rule, final Class<?> clazz) throws ReflectiveOperationException, MarshallingException {
     Constructor<?> constr = null;
     for (Constructor<?> c : clazz.getConstructors()) {
       if (c.getParameterCount() != 1) {
@@ -76,7 +76,7 @@ public class ClusterHealthMapper {
     if (constr == null) {
       throw new MarshallingException("No matching constructor found for type " + rule.implementation);
     }
-    final NumericRule<?> r = (NumericRule<?>) constr.newInstance(castValue(constr.getParameterTypes()[0], rule.limit));
+    final AbstractNumericRule<?> r = (AbstractNumericRule<?>) constr.newInstance(castValue(constr.getParameterTypes()[0], rule.limit));
     return r;
   }
   

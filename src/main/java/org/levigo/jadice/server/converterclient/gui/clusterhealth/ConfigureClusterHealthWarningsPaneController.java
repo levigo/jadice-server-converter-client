@@ -8,7 +8,7 @@ import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.ValidationSupport;
 import org.levigo.jadice.server.converterclient.Preferences;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.AverageExecutionTimeRule;
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.NumericRule;
+import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.AbstractNumericRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentAverageExecutionTimeRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentEfficiencyRule;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentFailureRateRule;
@@ -192,19 +192,19 @@ public class ConfigureClusterHealthWarningsPaneController {
     }
   }
   
-  private static class FloatRuleHandler<R extends NumericRule<Float>> extends SimpleRuleHandler<Float, R> {
+  private static class FloatRuleHandler<R extends AbstractNumericRule<Float>> extends SimpleRuleHandler<Float, R> {
     public FloatRuleHandler(Optional<R> existingRule, CheckBox checkbox, TextField valueField, Constructor<Float, R> constr) {
       super(existingRule, checkbox, valueField, Float::parseFloat, constr, new FloatValidator());
     }
   }
   
-  private static class LongRuleHandler<R extends NumericRule<Long>> extends SimpleRuleHandler<Long, R> {
+  private static class LongRuleHandler<R extends AbstractNumericRule<Long>> extends SimpleRuleHandler<Long, R> {
     public LongRuleHandler(Optional<R> existingRule, CheckBox checkbox, TextField valueField, Constructor<Long, R> constr) {
       super(existingRule, checkbox, valueField, Long::parseLong, constr, new LongValidator());
     }
   }
   
-  private static class SimpleRuleHandler<N extends Number & Comparable<N>, R extends NumericRule<N>> {
+  private static class SimpleRuleHandler<N extends Number & Comparable<N>, R extends AbstractNumericRule<N>> {
     private final ValidationSupport validationSupport = new ValidationSupport();
 
     private final CheckBox checkbox;
@@ -270,7 +270,7 @@ public class ConfigureClusterHealthWarningsPaneController {
   }
   
   @FunctionalInterface
-  private static interface Constructor<N extends Number & Comparable<N>, L extends NumericRule<N>> {
+  private static interface Constructor<N extends Number & Comparable<N>, L extends AbstractNumericRule<N>> {
     L create(N v);
   }
   

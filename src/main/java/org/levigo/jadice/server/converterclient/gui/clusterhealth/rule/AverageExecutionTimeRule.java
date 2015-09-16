@@ -8,7 +8,7 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 
-public class AverageExecutionTimeRule extends NumericRule<Long> {
+public class AverageExecutionTimeRule extends AbstractNumericRule<Long> {
   
   private final Property<Long> limit;
 

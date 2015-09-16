@@ -1,21 +1,19 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.rule;
 
-import javafx.beans.property.FloatProperty;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleFloatProperty;
-
 import javax.management.JMException;
 import javax.management.MBeanServerConnection;
 
-import org.levigo.jadice.server.converterclient.gui.clusterhealth.HealthStatus;
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
+
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 
 public class RecentEfficiencyRule extends NumericRule<Float> {
 
-  private final FloatProperty limit;
+  private final Property<Float> limit;
 
   public RecentEfficiencyRule(float limit) {
-    this.limit = new SimpleFloatProperty(limit);
+    this.limit = new SimpleObjectProperty<>(limit);
   }
 
   @Override
@@ -24,24 +22,10 @@ public class RecentEfficiencyRule extends NumericRule<Float> {
   }
   
   @Override
-  public Property<Number> limitProperty() {
+  public Property<Float> limitProperty() {
     return limit;
   }
   
-  @Override
-  public EvaluationResult<Float> evaluate(MBeanServerConnection mbsc) {
-    try {
-      final float eff = jmxFunction().apply(mbsc);
-      if (eff <= limit.get()) {
-        return new EvaluationResult<Float>(HealthStatus.GOOD, eff);
-      } else {
-        return new EvaluationResult<Float>(HealthStatus.ATTENTION, eff, getDescription() + ": " + eff);
-      }
-    } catch (JMException e) {
-      return new EvaluationResult<Float>(HealthStatus.FAILURE, Float.NaN, e);
-    }
-  }
-
   @Override
   public int hashCode() {
     return limit.hashCode();

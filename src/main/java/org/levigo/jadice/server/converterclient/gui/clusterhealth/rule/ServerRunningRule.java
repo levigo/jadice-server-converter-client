@@ -39,7 +39,7 @@ public class ServerRunningRule implements ImmutableBooleanRule {
         return new EvaluationResult<Boolean>(HealthStatus.FAILURE, false, getDescription() + ": false");
       }
     } catch (JMException e) {
-      return new EvaluationResult<Boolean>(HealthStatus.FAILURE, false, e);
+      return new EvaluationResult<Boolean>(HealthStatus.FAILURE, e);
     }
   }
   

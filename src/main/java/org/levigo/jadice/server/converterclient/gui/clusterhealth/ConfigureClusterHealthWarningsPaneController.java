@@ -204,7 +204,7 @@ public class ConfigureClusterHealthWarningsPaneController {
     }
   }
   
-  private static class SimpleRuleHandler<N extends Number, R extends NumericRule<N>> {
+  private static class SimpleRuleHandler<N extends Number & Comparable<N>, R extends NumericRule<N>> {
     private final ValidationSupport validationSupport = new ValidationSupport();
 
     private final CheckBox checkbox;
@@ -270,7 +270,7 @@ public class ConfigureClusterHealthWarningsPaneController {
   }
   
   @FunctionalInterface
-  private static interface Constructor<N extends Number, L extends NumericRule<N>> {
+  private static interface Constructor<N extends Number & Comparable<N>, L extends NumericRule<N>> {
     L create(N v);
   }
   

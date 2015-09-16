@@ -1,19 +1,11 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.rule;
 
-import javax.management.JMException;
-import javax.management.MBeanServerConnection;
-
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
-
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleObjectProperty;
 
 public class TotalFailureRateRule extends AbstractNumericRule<Float> {
 
-  private final Property<Float> limit;
-
   public TotalFailureRateRule(float limit) {
-    this.limit = new SimpleObjectProperty<>(limit);
+    super(limit, JmxHelper::getTotalFailureRate);
   }
 
   @Override
@@ -22,13 +14,8 @@ public class TotalFailureRateRule extends AbstractNumericRule<Float> {
   }
   
   @Override
-  public Property<Float> limitProperty() {
-    return limit;
-  }
-  
-  @Override
   public int hashCode() {
-    return limit.hashCode();
+    return limitProperty().hashCode();
   }
 
   @Override
@@ -40,10 +27,4 @@ public class TotalFailureRateRule extends AbstractNumericRule<Float> {
   public String toString() {
     return String.format("Failure Rate of %f", getLimit());
   }
-  
-  @Override
-  protected ExceptionalFunction<MBeanServerConnection, Float, JMException> jmxFunction() {
-    return JmxHelper::getTotalFailureRate;
-  }
-  
 }

@@ -1,19 +1,11 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.rule;
 
-import javax.management.JMException;
-import javax.management.MBeanServerConnection;
-
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
-
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleObjectProperty;
 
 public class RecentEfficiencyRule extends AbstractNumericRule<Float> {
 
-  private final Property<Float> limit;
-
-  public RecentEfficiencyRule(float limit) {
-    this.limit = new SimpleObjectProperty<>(limit);
+  public RecentEfficiencyRule(float initialLimit) {
+    super(initialLimit, JmxHelper::getEfficiency10Min);
   }
 
   @Override
@@ -22,13 +14,8 @@ public class RecentEfficiencyRule extends AbstractNumericRule<Float> {
   }
   
   @Override
-  public Property<Float> limitProperty() {
-    return limit;
-  }
-  
-  @Override
   public int hashCode() {
-    return limit.hashCode();
+    return limitProperty().hashCode();
   }
 
   @Override
@@ -39,10 +26,5 @@ public class RecentEfficiencyRule extends AbstractNumericRule<Float> {
   @Override
   public String toString() {
     return String.format("Recent Efficiency of %f", getLimit());
-  }
-  
-  @Override
-  protected ExceptionalFunction<MBeanServerConnection, Float, JMException> jmxFunction() {
-    return JmxHelper::getEfficiency10Min;
   }
 }

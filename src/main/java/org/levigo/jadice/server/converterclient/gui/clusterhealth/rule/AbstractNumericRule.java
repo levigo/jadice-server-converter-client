@@ -8,20 +8,29 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.HealthStatus;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 public abstract class AbstractNumericRule<T extends Number & Comparable<T>> implements Rule<T>  {
   
-  interface ExceptionalFunction<T, R, E extends Exception>  {
-    R apply(T t) throws E;
+  @FunctionalInterface
+  interface JMXFunction<T>  {
+    T evaluate(MBeanServerConnection mbsc) throws JMException;
   }
   
-  private BooleanProperty enabledProperty = new SimpleBooleanProperty(true);
+  private final Property<T> limitProperty;
   
-//  abstract public EvaluationResult<T> evaluate(MBeanServerConnection mbsc);
+  private final JMXFunction<T> jmxFunction;
+  
+  private final BooleanProperty enabledProperty = new SimpleBooleanProperty(true);
+
+  protected AbstractNumericRule(T initalLimit, JMXFunction<T> jmxFunction) {
+   this.limitProperty = new SimpleObjectProperty<>(initalLimit);
+   this.jmxFunction = jmxFunction;
+  }
   
   public EvaluationResult<T> evaluate(MBeanServerConnection mbsc) {
     try {
-      final T currentValue = jmxFunction().apply(mbsc);
+      final T currentValue = jmxFunction.evaluate(mbsc);
       if (getLimit().compareTo(currentValue) <= 0) { // i.e. getLimit() <= execTime
         return new EvaluationResult<T>(HealthStatus.GOOD, currentValue);
       } else {
@@ -31,23 +40,21 @@ public abstract class AbstractNumericRule<T extends Number & Comparable<T>> impl
       return new EvaluationResult<T>(HealthStatus.FAILURE, e);
     }
   }
-
   
-  abstract Property<T> limitProperty();
-  
-  @Override
-  public BooleanProperty enabledProperty() {
-    return enabledProperty;
+  public final Property<T> limitProperty() {
+    return limitProperty;
   }
   
-  public T getLimit() {
+  public final T getLimit() {
     return limitProperty().getValue();
   }
   
-  public void setLimit(T value) {
+  public final void setLimit(T value) {
     limitProperty().setValue(value);
   }
-  
-  abstract protected ExceptionalFunction<MBeanServerConnection, T, JMException> jmxFunction();
-  
+
+  @Override
+  public final BooleanProperty enabledProperty() {
+    return enabledProperty;
+  }
 }

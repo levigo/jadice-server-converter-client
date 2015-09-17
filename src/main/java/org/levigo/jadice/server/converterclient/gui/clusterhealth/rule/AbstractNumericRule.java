@@ -29,6 +29,9 @@ public abstract class AbstractNumericRule<T extends Number & Comparable<T>> impl
   }
   
   public EvaluationResult<T> evaluate(MBeanServerConnection mbsc) {
+    if (!isEnabled()) {
+      return new EvaluationResult<T>(HealthStatus.UNKNOW);
+    }
     try {
       final T currentValue = jmxFunction.evaluate(mbsc);
       if (getLimit().compareTo(currentValue) <= 0) { // i.e. getLimit() <= execTime

@@ -32,6 +32,9 @@ public class ServerRunningRule implements ImmutableBooleanRule {
 
   @Override
   public EvaluationResult<Boolean> evaluate(MBeanServerConnection mbsc)  {
+    if (!isEnabled()) {
+      return new EvaluationResult<>(HealthStatus.UNKNOW);
+    }
     try {
       if (JmxHelper.isRunning(mbsc)) {
         return new EvaluationResult<Boolean>(HealthStatus.GOOD, true);

@@ -2,7 +2,14 @@ package org.levigo.jadice.server.converterclient.gui.clusterhealth;
 
 import java.util.stream.Collectors;
 
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import eu.hansolo.enzo.canvasled.Led;
+import eu.hansolo.enzo.canvasled.LedBuilder;
+import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.RotateTransition;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,10 +26,6 @@ import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import de.jensd.fx.glyphs.GlyphsDude;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import eu.hansolo.enzo.canvasled.Led;
-import eu.hansolo.enzo.canvasled.LedBuilder;
 
 public class StatusControl extends AnchorPane {
 
@@ -83,21 +86,36 @@ public class StatusControl extends AnchorPane {
   private void configureRemoveButton() {
     removeBttn.setOpacity(0.0);
     
-    final FadeTransition fadeIn = new FadeTransition(Duration.millis(200), removeBttn);
+    final int removeBttnInvisibleAngle = -60;
+    
+    final RotateTransition rotateIn = new RotateTransition(Duration.millis(150), removeBttn);
+    rotateIn.setFromAngle(removeBttnInvisibleAngle);
+    rotateIn.setToAngle(0);
+    
+    final FadeTransition fadeIn = new FadeTransition(Duration.millis(100), removeBttn);
     fadeIn.setFromValue(0.0);
     fadeIn.setToValue(1.0);
+    
+    final Animation mouseEnterAnimation = new ParallelTransition(rotateIn, fadeIn);
 
+    final RotateTransition rotateOut = new RotateTransition(Duration.millis(150), removeBttn);
+    rotateOut.setFromAngle(0);
+    rotateOut.setToAngle(removeBttnInvisibleAngle);
+    
     final FadeTransition fadeOut = new FadeTransition(Duration.millis(100), removeBttn);
     fadeOut.setFromValue(1.0);
     fadeOut.setToValue(0.0);
     
+    final Animation mouseExitedAnimation = new ParallelTransition(rotateOut, fadeOut);
+    
     setOnMouseEntered(evt -> {
-      fadeOut.stop();
-      fadeIn.playFromStart();
+      mouseExitedAnimation.stop();
+      mouseEnterAnimation.playFromStart();
     });
+    
     setOnMouseExited(evt -> {
-      fadeIn.stop();
-      fadeOut.playFromStart();
+      mouseEnterAnimation.stop();
+      mouseExitedAnimation.playFromStart();
     });
     removeBttn.setOnAction(evt -> controller.removeClusterInstance(this));
     removeBttn.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));

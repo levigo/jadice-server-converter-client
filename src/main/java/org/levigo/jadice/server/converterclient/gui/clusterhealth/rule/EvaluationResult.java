@@ -27,6 +27,10 @@ public class EvaluationResult<T> {
     this(status, Optional.of(currentValue), Optional.of(message), Optional.empty());
   }
 
+  public EvaluationResult(HealthStatus status, String message) {
+    this(status, Optional.empty(), Optional.of(message), Optional.empty());
+  }
+
   public EvaluationResult(HealthStatus status, Throwable error) {
     this(status, Optional.empty(), Optional.empty(), Optional.of(error));
   }

@@ -3,6 +3,7 @@ package org.levigo.jadice.server.converterclient.gui.clusterhealth;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.management.JMException;
@@ -43,18 +44,17 @@ public class JmxHelper {
   }
   
   @SuppressWarnings("unchecked")
-  private static <N extends Number> N retrieveNumericValue(MBeanServerConnection mbsc, String beanClassName, String attributeName,
-      N fallbackValue) throws JMException {
+  private static <N extends Number> Optional<N> retrieveNumericValue(MBeanServerConnection mbsc, String beanClassName, String attributeName) throws JMException {
     try {
       ObjectInstance bean = getBeanByClassName(beanClassName, mbsc);
       if (bean == null) {
-        return fallbackValue;
+        return Optional.empty();
       }
       final Object attribute = mbsc.getAttribute(bean.getObjectName(), attributeName);
       if (attribute == null) {
-        return fallbackValue;
+        return Optional.empty();
       }
-      return (N) attribute;
+      return Optional.of((N) attribute);
     } catch (IOException | ClassCastException e) {
       throw wrap(e);
     }
@@ -78,33 +78,33 @@ public class JmxHelper {
     return beans.iterator().next();
   }
 
-  public static float getTotalFailureRate(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "TotalFailureRate", Float.NaN);
+  public static Optional<Float> getTotalFailureRate(MBeanServerConnection mbsc) throws JMException {
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "TotalFailureRate");
   }
 
-  public static float getRecentFailureRate(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "RecentFailureRate", Float.NaN);
+  public static Optional<Float> getRecentFailureRate(MBeanServerConnection mbsc) throws JMException {
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "RecentFailureRate");
   }
 
-  public static long getRecentAverageExecutionTime(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "RecentAverageExecutionTime", -1L);
+  public static Optional<Long> getRecentAverageExecutionTime(MBeanServerConnection mbsc) throws JMException {
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "RecentAverageExecutionTime");
   }
 
-  public static long getAverageExecutionTime(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "AverageExecutionTime", -1L);
+  public static Optional<Long> getAverageExecutionTime(MBeanServerConnection mbsc) throws JMException {
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "AverageExecutionTime");
   }
   
-  public static float getEfficiency10Min(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "Efficiency10Min", Float.NaN);
+  public static Optional<Float> getEfficiency10Min(MBeanServerConnection mbsc) throws JMException {
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "Efficiency10Min");
   }
 
-  public static boolean isRunning(MBeanServerConnection mbsc) throws JMException {
+  public static Optional<Boolean> isRunning(MBeanServerConnection mbsc) throws JMException {
     try {
       final ObjectInstance bean = getJadiceServerBean(mbsc);
       if (bean == null) {
-        return false;
+        return Optional.empty();
       }
-      return "true".equalsIgnoreCase(mbsc.getAttribute(bean.getObjectName(), "Running").toString());
+      return Optional.of("true".equalsIgnoreCase(mbsc.getAttribute(bean.getObjectName(), "Running").toString()));
     } catch (IOException e) {
       throw wrap(e);
     }

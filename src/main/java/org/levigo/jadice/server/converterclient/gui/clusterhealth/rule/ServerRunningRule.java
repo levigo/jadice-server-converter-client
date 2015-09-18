@@ -1,5 +1,7 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.rule;
 
+import java.util.Optional;
+
 import javax.management.JMException;
 import javax.management.MBeanServerConnection;
 
@@ -35,8 +37,13 @@ public class ServerRunningRule implements ImmutableBooleanRule {
     if (!isEnabled()) {
       return new EvaluationResult<>(HealthStatus.UNKNOW);
     }
+    
     try {
-      if (JmxHelper.isRunning(mbsc)) {
+      final Optional<Boolean> running = JmxHelper.isRunning(mbsc);
+      if (!running.isPresent()) {
+        return new EvaluationResult<Boolean>(HealthStatus.FAILURE, false, getDescription() + ": ?");
+      }
+      if (running.get()) {
         return new EvaluationResult<Boolean>(HealthStatus.GOOD, true);
       } else {
         return new EvaluationResult<Boolean>(HealthStatus.FAILURE, false, getDescription() + ": false");

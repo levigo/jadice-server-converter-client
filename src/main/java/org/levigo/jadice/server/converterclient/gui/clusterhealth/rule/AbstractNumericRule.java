@@ -1,5 +1,7 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.rule;
 
+import java.util.Optional;
+
 import javax.management.JMException;
 import javax.management.MBeanServerConnection;
 
@@ -14,7 +16,7 @@ public abstract class AbstractNumericRule<T extends Number & Comparable<T>> impl
   
   @FunctionalInterface
   interface JMXFunction<T>  {
-    T evaluate(MBeanServerConnection mbsc) throws JMException;
+    Optional<T> evaluate(MBeanServerConnection mbsc) throws JMException;
   }
   
   private final Property<T> limitProperty;
@@ -33,11 +35,15 @@ public abstract class AbstractNumericRule<T extends Number & Comparable<T>> impl
       return new EvaluationResult<T>(HealthStatus.UNKNOW);
     }
     try {
-      final T currentValue = jmxFunction.evaluate(mbsc);
-      if (getLimit().compareTo(currentValue) >= 0) { // i.e. getLimit() >= execTime
-        return new EvaluationResult<T>(HealthStatus.GOOD, currentValue);
+      final Optional<T> currentValue = jmxFunction.evaluate(mbsc);
+      if (!currentValue.isPresent()) {
+        return new EvaluationResult<T>(HealthStatus.ATTENTION, getDescription() + ": ?");
+      }
+      T val = currentValue.get();
+      if (getLimit().compareTo(val) >= 0) { // i.e. getLimit() >= execTime
+        return new EvaluationResult<T>(HealthStatus.GOOD, val);
       } else {
-        return new EvaluationResult<T>(HealthStatus.ATTENTION, currentValue, getDescription() + ": " + currentValue);
+        return new EvaluationResult<T>(HealthStatus.ATTENTION, val, getDescription() + ": " + val);
       }
     } catch (JMException e) {
       return new EvaluationResult<T>(HealthStatus.FAILURE, e);

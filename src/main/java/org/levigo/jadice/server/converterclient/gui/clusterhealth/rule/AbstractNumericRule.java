@@ -34,7 +34,7 @@ public abstract class AbstractNumericRule<T extends Number & Comparable<T>> impl
     }
     try {
       final T currentValue = jmxFunction.evaluate(mbsc);
-      if (getLimit().compareTo(currentValue) <= 0) { // i.e. getLimit() <= execTime
+      if (getLimit().compareTo(currentValue) >= 0) { // i.e. getLimit() >= execTime
         return new EvaluationResult<T>(HealthStatus.GOOD, currentValue);
       } else {
         return new EvaluationResult<T>(HealthStatus.ATTENTION, currentValue, getDescription() + ": " + currentValue);

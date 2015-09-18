@@ -83,15 +83,15 @@ public class JmxHelper {
   }
 
   public static float getRecentFailureRate(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "TotalFailureRate", Float.NaN);
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "RecentFailureRate", Float.NaN);
   }
 
   public static long getRecentAverageExecutionTime(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "RecentAverageExecutionTime", 0L);
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "RecentAverageExecutionTime", -1L);
   }
 
   public static long getAverageExecutionTime(MBeanServerConnection mbsc) throws JMException {
-    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "AverageExecutionTime", 0L);
+    return retrieveNumericValue(mbsc, STATISTICS_BEAN_CLASS, "AverageExecutionTime", -1L);
   }
   
   public static float getEfficiency10Min(MBeanServerConnection mbsc) throws JMException {

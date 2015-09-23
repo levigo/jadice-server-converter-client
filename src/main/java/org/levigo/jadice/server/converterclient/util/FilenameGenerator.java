@@ -18,6 +18,8 @@ import com.levigo.jadice.server.shared.types.Stream;
 public class FilenameGenerator {
   
   private static final Logger LOGGER = Logger.getLogger(FilenameGenerator.class);
+  
+  private static Analyzer analyzer; 
 
   public final static String DEFAULT_PATTERN = PatternKeys.ORIGINAL_FILENAME + "-" + PatternKeys.NUMMER + "."
       + PatternKeys.EXTENSION;
@@ -55,13 +57,12 @@ public class FilenameGenerator {
 
   private static String determineExtension(Stream stream) {
     try {
-      final Analyzer al = Analyzer.getInstance("/magic.xml");
       final UncloseableSeekableInputStreamWrapper usis = new UncloseableSeekableInputStreamWrapper(stream.getInputStream());
       final Map<String, Object> alResults;
       try {
         usis.seek(0);
         usis.lockClose();
-        alResults = al.analyze(usis);
+        alResults = getAnalyzer().analyze(usis);
       } finally {
         usis.seek(0);
         usis.unlockClose();
@@ -73,6 +74,14 @@ public class FilenameGenerator {
       LOGGER.error("Could not determine file extension", e);
       return Preferences.defaultExtensionProperty().getValue();
     }
+  }
+
+  private static Analyzer getAnalyzer() throws AnalyzerException {
+    // Initiate lazily
+    if (analyzer == null) {
+      analyzer = Analyzer.getInstance("/magic.xml");
+    }
+    return analyzer;
   }
 
   /**

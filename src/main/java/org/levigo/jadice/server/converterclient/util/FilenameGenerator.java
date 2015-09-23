@@ -1,13 +1,23 @@
 package org.levigo.jadice.server.converterclient.util;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 import java.util.regex.Matcher;
 
+import org.apache.log4j.Logger;
 import org.levigo.jadice.server.converterclient.Preferences;
 
+import com.levigo.jadice.filetype.Analyzer;
+import com.levigo.jadice.filetype.AnalyzerException;
+import com.levigo.jadice.filetype.UncloseableSeekableInputStreamWrapper;
+import com.levigo.jadice.filetype.database.ExtensionAction;
 import com.levigo.jadice.server.Job;
+import com.levigo.jadice.server.shared.types.Stream;
 
 public class FilenameGenerator {
+  
+  private static final Logger LOGGER = Logger.getLogger(FilenameGenerator.class);
 
   public final static String DEFAULT_PATTERN = PatternKeys.ORIGINAL_FILENAME + "-" + PatternKeys.NUMMER + "."
       + PatternKeys.EXTENSION;
@@ -21,18 +31,48 @@ public class FilenameGenerator {
     final String PERCENT_SIGN = "%%";
   }
 
-  public static String generateFilename(Job job, File originalFile, int nmbr, String extension) {
-    final String pttrn = Preferences.resultFilenamePatternProperty().getValue();
-    // Matcher.quoteReplacement(...) in order to escape $ and \ signs
+  public static String generateFilename(Job job, Stream stream, File originalFile, int nmbr) {
+    String pttrn = Preferences.resultFilenamePatternProperty().getValue();
+    // Caveat! Matcher.quoteReplacement(...) in order to escape $ and \ signs
+    
+    if (mustDetermineExtension()) {
+      final String extension = determineExtension(stream);
+      pttrn = pttrn.replaceAll(PatternKeys.EXTENSION, Matcher.quoteReplacement(extension));
+    }
     return pttrn.replaceAll(PatternKeys.JOB_ID, Matcher.quoteReplacement(job.getUUID()))//
-    .replaceAll(PatternKeys.ORIGINAL_FILENAME, Matcher.quoteReplacement(originalFile.getName()))//
-    .replaceAll(PatternKeys.EXTENSION, Matcher.quoteReplacement(extension))//
-    .replaceAll(PatternKeys.NUMMER, Integer.toString(nmbr))//
-    .replaceAll(PatternKeys.TIMESTAMP, Long.toString(System.currentTimeMillis()))//
-    .replaceAll(PatternKeys.PERCENT_SIGN, "%")
-    // Paranoia checks to prevent from storing in other folders:
-    .replaceAll("/", "")//
-    .replace("\\", "");
+        .replaceAll(PatternKeys.ORIGINAL_FILENAME, Matcher.quoteReplacement(originalFile.getName()))//
+        .replaceAll(PatternKeys.NUMMER, Integer.toString(nmbr))//
+        .replaceAll(PatternKeys.TIMESTAMP, Long.toString(System.currentTimeMillis()))//
+        .replaceAll(PatternKeys.PERCENT_SIGN, "%")
+        // Paranoia checks to prevent from storing in other folders:
+        .replaceAll("/", "")//
+        .replace("\\", "");
+  }
+  
+  protected static boolean mustDetermineExtension() {
+    return Preferences.resultFilenamePatternProperty().getValue().contains(PatternKeys.EXTENSION);
+  }
+
+  private static String determineExtension(Stream stream) {
+    try {
+      final Analyzer al = Analyzer.getInstance("/magic.xml");
+      final UncloseableSeekableInputStreamWrapper usis = new UncloseableSeekableInputStreamWrapper(stream.getInputStream());
+      final Map<String, Object> alResults;
+      try {
+        usis.seek(0);
+        usis.lockClose();
+        alResults = al.analyze(usis);
+      } finally {
+        usis.seek(0);
+        usis.unlockClose();
+      }
+
+      final Object o = alResults.get(ExtensionAction.KEY);
+      return (o != null) ? o.toString() : Preferences.defaultExtensionProperty().getValue();
+    } catch (IOException | AnalyzerException e) {
+      LOGGER.error("Could not determine file extension", e);
+      return Preferences.defaultExtensionProperty().getValue();
+    }
   }
 
   /**

@@ -10,28 +10,16 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import org.apache.log4j.Logger;
 import org.levigo.jadice.server.converterclient.LogMessage.Type;
 import org.levigo.jadice.server.converterclient.configurations.WorkflowConfiguration;
 import org.levigo.jadice.server.converterclient.util.FilenameGenerator;
 
-import com.levigo.jadice.filetype.Analyzer;
-import com.levigo.jadice.filetype.UncloseableSeekableInputStreamWrapper;
-import com.levigo.jadice.filetype.database.ExtensionAction;
+import com.levigo.jadice.document.io.SeekableInputStream;
 import com.levigo.jadice.server.Job;
 import com.levigo.jadice.server.Job.State;
 import com.levigo.jadice.server.JobException;
@@ -45,6 +33,15 @@ import com.levigo.jadice.server.nodes.StreamOutputNode;
 import com.levigo.jadice.server.shared.types.Stream;
 import com.levigo.jadice.server.shared.types.StreamDescriptor;
 import com.levigo.jadice.server.util.Util;
+
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class JobCard implements Runnable, JobListener, StreamListener {
   
@@ -171,23 +168,11 @@ public class JobCard implements Runnable, JobListener, StreamListener {
       @Override
       public void run() {
         try {
-          Analyzer al = Analyzer.getInstance("/magic.xml");
-          UncloseableSeekableInputStreamWrapper usis = new UncloseableSeekableInputStreamWrapper(stream.getInputStream());
-          Map<String, Object> alResults;
-          try {
-            usis.lockClose();
-            alResults = al.analyze(usis);
-          } finally {
-            usis.unlockClose();
-          }
-
-          final Object o = alResults.get(ExtensionAction.KEY);
-          final String ext = (o != null) ? o.toString() : Preferences.defaultExtensionProperty().getValue();
-
-          final String filename = FilenameGenerator.generateFilename(job, files.isEmpty() ? null : files.get(0), resultCount.incrementAndGet(), ext);
+          final String filename = FilenameGenerator.generateFilename(job, stream, files.isEmpty() ? null : files.get(0), resultCount.incrementAndGet());
           final File file = new File(Preferences.resultFolderProperty().getValue(), filename);
           final FileOutputStream fos = new FileOutputStream(file);
           
+          final SeekableInputStream usis = stream.getInputStream();
           usis.seek(0);
           final long bytesWritten = Util.copyAndClose(usis, fos);
           if (bytesWritten == 0) {

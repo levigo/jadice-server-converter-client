@@ -183,7 +183,7 @@ public class JobCard implements Runnable, JobListener, StreamListener {
           LOGGER.info("Copied result to " + file.getCanonicalPath());
           results.add(file);
         } catch (Exception e) {
-          LOGGER.error("Could save conversion result", e);
+          LOGGER.error("Could not save conversion result", e);
           addLogMessage(new LogMessage(new Date(), Type.ERROR, null, null, "Could not save conversion result", e));
         } finally {
           copiesInProgress.decrementAndGet();

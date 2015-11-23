@@ -35,7 +35,7 @@
     <jfreechart.version>1.0.19</jfreechart.version>
     <activemq.version>5.12.0</activemq.version>
     <prefuse.version>beta-20130106</prefuse.version>
-    <controlsfx.version>8.40.9</controlsfx.version>
+    <controlsfx.version>8.40.10</controlsfx.version>
     <enzo.version>0.2.8</enzo.version>
     <fontawesomefx.version>8.6</fontawesomefx.version>
     <jackson.version>2.6.1</jackson.version>

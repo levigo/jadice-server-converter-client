@@ -118,6 +118,7 @@ public class JobCardFactory {
     // Configure Workflow
     Job job = config.configureWorkflow(jobFactory);
     job.setType(config.getID());
+    job.setClientLocale(Preferences.jobLocaleProperty().get());
     
     if (jobLimits != null) {
       for (Limit limit : jobLimits) {

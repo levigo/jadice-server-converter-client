@@ -53,7 +53,7 @@
 			<items>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.open-result" onAction="#openSelectedResults">
 					<graphic>
-						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView glyphName="FOLDER_OPEN" size="16px" />
+						<de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView glyphName="FOLDER_ALTPEN" size="16px" />
 					</graphic>
 				</MenuItem>
 				<MenuItem mnemonicParsing="false" text="%conversion.table.context.save-result" onAction="#saveSelectedResults">

@@ -2,6 +2,13 @@ package org.levigo.jadice.server.converterclient;
 
 import java.io.File;
 import java.util.List;
+import java.util.Locale;
+
+import org.apache.log4j.Logger;
+import org.levigo.jadice.server.converterclient.util.FilenameGenerator;
+import org.levigo.jadice.server.converterclient.util.PasswordObfuscator;
+
+import com.levigo.jadice.server.client.jms.JMSJobFactory;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
@@ -16,12 +23,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-
-import org.apache.log4j.Logger;
-import org.levigo.jadice.server.converterclient.util.FilenameGenerator;
-import org.levigo.jadice.server.converterclient.util.PasswordObfuscator;
-
-import com.levigo.jadice.server.client.jms.JMSJobFactory;
 
 public class Preferences {
   
@@ -46,6 +47,7 @@ public class Preferences {
 	  final String JMS_PASSWORD = null;
 	  final boolean JMS_JOBFACTORY_CACHING = true;
     final int JMS_JOB_PRIORITY = JMSJobFactory.DEFAULT_PRIORITY; 
+    final Locale JOB_LOCALE = Locale.getDefault();
     
     final String JMX_USER_NAME = null;
     final String JMX_PASSWORD = null;
@@ -67,6 +69,7 @@ public class Preferences {
     final String JMS_PASSWORD = "jms.password";
     final String JMS_JOBFACTORY_CACHING = "jms.enableJobfactoryCaching";
     final String JMS_JOB_PRIORITY = "jms.jobPriority";
+    final String JOB_LOCALE = "job.locale";
     
     final String JMX_USER_NAME = "jmx.username";
     final String JMX_PASSWORD = "jmx.password";
@@ -92,6 +95,7 @@ public class Preferences {
 	private static StringProperty jmsPasswordProperty;
 	private static BooleanProperty cacheJmsJobFactoryProperty;
 	private static IntegerProperty jmsJobPriority;
+	private static ObjectProperty<Locale> jobLocaleProperty;
 	private static IntegerProperty concurrentJobsProperty;
 	
 	private static StringProperty jmxUsernameProperty;
@@ -272,6 +276,18 @@ public class Preferences {
     return jmsJobPriority;
   }
   
+  public static ObjectProperty<Locale> jobLocaleProperty() {
+    if (jobLocaleProperty == null) {
+      String locale = PREF.get(Keys.JOB_LOCALE, null);
+      jobLocaleProperty = new SimpleObjectProperty<>((locale == null || locale.isEmpty()) ? Defaults.JOB_LOCALE : Locale.forLanguageTag(locale));
+      jobLocaleProperty.addListener((observable, oldValue, newValue) ->
+      {
+        putNullSafe(Keys.JOB_LOCALE, newValue == null ? null : newValue.toLanguageTag());
+      });
+    }
+    return jobLocaleProperty;
+  }
+  
   public static StringProperty jmxUsernameProperty() {
     if (jmxUsernameProperty == null) {
       jmxUsernameProperty = new SimpleStringProperty(PREF.get(Keys.JMX_USER_NAME, Defaults.JMX_USER_NAME));
@@ -336,6 +352,8 @@ public class Preferences {
     jmsRequestQueueNameProperty().set(Defaults.JMS_REQUEST_QUEUE_NAME);
     jmsLogTopicNameProperty().set(Defaults.JMS_LOG_TOPIC_NAME);
     cacheJmsJobFactoryProperty().set(Defaults.JMS_JOBFACTORY_CACHING);
+    jmsJobPriority().set(Defaults.JMS_JOB_PRIORITY);
+    jobLocaleProperty().set(Defaults.JOB_LOCALE);
     jmxUsernameProperty().set(Defaults.JMX_USER_NAME);
     jmxPasswordProperty().set(Defaults.JMX_PASSWORD);
     updatePolicyProperty().setValue(Defaults.UPDATE_POLICY);

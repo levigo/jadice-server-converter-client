@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="568.0" prefWidth="516.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.levigo.jadice.server.converterclient.gui.options.OptionsPaneController">
+<BorderPane prefHeight="568.0" prefWidth="516.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.levigo.jadice.server.converterclient.gui.options.OptionsPaneController">
 <top>
 	<FlowPane styleClass="label-top">
 		<children>
@@ -98,11 +98,11 @@
 <AnchorPane>
 <children><GridPane hgap="5.0" maxHeight="-Infinity" vgap="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 <children>
-<Label text="%options.misc.results-folder" GridPane.rowIndex="1" />
-<GridPane maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS">
+<Label text="%options.misc.results-folder" GridPane.rowIndex="2" />
+<GridPane maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
 <children>
 <TextField fx:id="resultFolder" disable="true" prefHeight="31.0" prefWidth="190.0" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
-<Button fx:id="changeResultsFolder" mnemonicParsing="false" text="%options.misc.change-results-folder" onAction="#changeResultsFolder" GridPane.columnIndex="1" />
+<Button fx:id="changeResultsFolder" mnemonicParsing="false" onAction="#changeResultsFolder" text="%options.misc.change-results-folder" GridPane.columnIndex="1" />
 </children>
 <columnConstraints>
 <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
@@ -114,22 +114,24 @@
 </GridPane>
 <Label text="%options.misc.concurrent-jobs" />
 <Slider fx:id="concurrentJobs" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" />
-<Label text="%options.misc.default-extension" GridPane.rowIndex="2" />
-<TextField fx:id="defaultExtension" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-<Label text="%options.misc.result-filename-pattern" GridPane.rowIndex="3" />
-<TextField fx:id="resultFilename" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-<Text fx:id="patternExplanation" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;pattern explanation&gt;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-<Label text="%options.misc.server-history" GridPane.rowIndex="6" />
-<Button fx:id="clearServerHistory" mnemonicParsing="false" text="%options.misc.clear-server-history" onAction="#clearServerHistory" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-<Label text="%options.misc.updates.title" GridPane.rowIndex="5" /><FlowPane hgap="15.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+<Label text="%options.misc.default-extension" GridPane.rowIndex="3" />
+<TextField fx:id="defaultExtension" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+<Label text="%options.misc.result-filename-pattern" GridPane.rowIndex="4" />
+<TextField fx:id="resultFilename" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+<Text fx:id="patternExplanation" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;pattern explanation&gt;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+<Label text="%options.misc.server-history" GridPane.rowIndex="7" />
+<Button fx:id="clearServerHistory" mnemonicParsing="false" onAction="#clearServerHistory" text="%options.misc.clear-server-history" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+<Label text="%options.misc.updates.title" GridPane.rowIndex="6" /><FlowPane hgap="15.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
 <children><RadioButton fx:id="checkUpdatesOnStart" mnemonicParsing="false" text="%options.misc.updates.check-on-start">
 <toggleGroup>
 <ToggleGroup fx:id="updateCheckGroup" />
 </toggleGroup>
 <FlowPane.margin>
 <Insets />
-</FlowPane.margin></RadioButton><RadioButton fx:id="neverCheckUpdates" mnemonicParsing="false" text="%options.misc.updates.check-never" toggleGroup="$updateCheckGroup" /><Button fx:id="checkUpdatesNow" mnemonicParsing="false" text="%options.misc.updates.check-now" onAction="#checkUpdatesNow" />
+</FlowPane.margin></RadioButton><RadioButton fx:id="neverCheckUpdates" mnemonicParsing="false" text="%options.misc.updates.check-never" toggleGroup="$updateCheckGroup" /><Button fx:id="checkUpdatesNow" mnemonicParsing="false" onAction="#checkUpdatesNow" text="%options.misc.updates.check-now" />
 </children></FlowPane>
+                              <Label text="%options.misc.job-locale" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="jobLocale" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 </children>
 <columnConstraints>
 <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="NEVER" minWidth="10.0" prefWidth="130.0" />
@@ -140,6 +142,7 @@
 </padding>
 <rowConstraints>
 <RowConstraints minHeight="10.0" vgrow="NEVER" />
+<RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />
 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="NEVER" />

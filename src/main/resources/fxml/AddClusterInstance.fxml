@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?> 
+<?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -18,11 +18,11 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="%cluster-health.add-instance.hostname" labelFor="$hostname">
+            <Label text="%cluster-health.add-instance.hostname">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></Label>
-            <Label text="%cluster-health.add-instance.port" GridPane.rowIndex="1" labelFor="$port">
+            <Label text="%cluster-health.add-instance.port" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets bottom="2.0" />
                </GridPane.margin></Label>
@@ -37,7 +37,7 @@
    <bottom>
       <HBox alignment="CENTER_RIGHT">
          <children>
-            <Button mnemonicParsing="false" onAction="#onAddInstance" text="%cluster-health.add-instance.add" />
+            <Button fx:id="addInstance" defaultButton="true" mnemonicParsing="false" onAction="#onAddInstance" text="%cluster-health.add-instance.add" />
          </children>
          <BorderPane.margin>
             <Insets />

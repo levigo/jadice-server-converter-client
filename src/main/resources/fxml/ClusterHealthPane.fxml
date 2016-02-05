@@ -59,7 +59,7 @@
 		<FlowPane orientation="HORIZONTAL" alignment="TOP_RIGHT" vgap="10" hgap="10" style="-fx-background-color: #000000AA">
 			<padding><Insets top="5" right="20" bottom="5" left="5"/></padding>
 			<children>
-				<Button fx:id="addInstance" text="%cluster-health.add-instance" contentDisplay="GRAPHIC_ONLY" onAction="#onAddInstance">
+				<Button fx:id="addInstance" text="%cluster-health.add-instance" contentDisplay="GRAPHIC_ONLY" onAction="#showAddInstancePopover">
 					<graphic>
 						<FontAwesomeIconView glyphName="PLUS_CIRCLE" size="25px"/>
 					</graphic>

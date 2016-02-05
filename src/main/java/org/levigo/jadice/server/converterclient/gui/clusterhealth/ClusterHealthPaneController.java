@@ -1,6 +1,5 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth;
 
-import java.io.IOException;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,13 +24,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.stage.Modality;
 
 public class ClusterHealthPaneController {
   
@@ -66,6 +63,8 @@ public class ClusterHealthPaneController {
   
   private FxScheduler timer;
   
+  private PopOver addInstancePopover;
+  
   private PopOver defineWarningsPopover;
 
   @FXML
@@ -73,7 +72,8 @@ public class ClusterHealthPaneController {
     UiUtil.configureHomeButton(home);
     
     loadControlElements();
-    initWarningsRulesButton();
+    defineWarningsPopover = initPopoverButton(defineWarnings, "/fxml/ConfigureClusterHealthWarnings.fxml");
+    addInstancePopover = initPopoverButton(addInstance, "/fxml/AddClusterInstance.fxml");
     
     hiddenSidePane.pinnedSideProperty().bind(new When(toggleSettingsButton.selectedProperty()).then(Side.TOP).otherwise((Side) null));
     
@@ -87,36 +87,46 @@ public class ClusterHealthPaneController {
     timer.startedProperty().bind(Preferences.clusterHealthProperty().getValue().autoUpdateEnabled);
   }
   
-  private void initWarningsRulesButton() {
+  private PopOver initPopoverButton(Button button, String fxmlLocation) {
     Node limits = null;
     try {
       final FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(getClass().getResource("/fxml/ConfigureClusterHealthWarnings.fxml"));
+      loader.setLocation(getClass().getResource(fxmlLocation));
       loader.setResources(resources);
       limits = loader.load();
-    } catch (IOException e) {
+    } catch (Exception e) {
       LOGGER.error("Could not load cluster health pane", e);
-      ((FlowPane) defineWarnings.getParent()).getChildren().remove(defineWarnings);
-      return;
+      ((Pane) button.getParent()).getChildren().remove(button);
+      return null;
     }
     
-    defineWarningsPopover = new PopOver(limits);
-    defineWarningsPopover.setHideOnEscape(true);
-    defineWarningsPopover.setAutoHide(true);
-    defineWarningsPopover.setDetachable(false);
-    defineWarningsPopover.setArrowLocation(ArrowLocation.TOP_RIGHT);
+    final PopOver result = new PopOver(limits);
+    result.setHideOnEscape(true);
+    result.setAutoHide(true);
+    result.setDetachable(false);
+    result.setArrowLocation(ArrowLocation.TOP_RIGHT);
+    return result;
+  }
+  
+  private void togglePopOver(PopOver p, Node parent) {
+    if (p == null) {
+      return;
+    }
+    if (p.isShowing()) {
+      p.hide();
+    } else {
+      p.show(parent);
+    }
   }
   
   @FXML
   protected void showDefineWarningsPopover() {
-    if (defineWarningsPopover == null) {
-      return;
-    }
-    if (defineWarningsPopover.isShowing()) {
-      defineWarningsPopover.hide();
-    } else {
-      defineWarningsPopover.show(defineWarnings);
-    }
+    togglePopOver(defineWarningsPopover, defineWarnings);
+  }
+  
+  @FXML
+  protected void showAddInstancePopover() {
+    togglePopOver(addInstancePopover, addInstance);
   }
 
   
@@ -131,19 +141,6 @@ public class ClusterHealthPaneController {
       control.getClusterInstance().update();
       }
     );
-  }
-  
-  @FXML
-  private void onAddInstance() {
-    final TextInputDialog inputDialog = new TextInputDialog();
-    inputDialog.setTitle(resources.getString("cluster-health.add-instance.title"));
-    inputDialog.setHeaderText(resources.getString("cluster-health.add-instance.header-text"));
-    inputDialog.initModality(Modality.WINDOW_MODAL);
-    inputDialog.initOwner(addInstance.getScene().getWindow());
-    
-    inputDialog.showAndWait().ifPresent(jmxUrl -> {
-      settings.instances.add(jmxUrl);
-      });
   }
   
   protected void removeClusterInstance(StatusControl controlElement) {

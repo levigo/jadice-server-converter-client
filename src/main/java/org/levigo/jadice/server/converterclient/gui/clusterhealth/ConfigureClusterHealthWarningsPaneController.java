@@ -165,7 +165,7 @@ public class ConfigureClusterHealthWarningsPaneController {
       
       
     
-    private void registerValidator(TextField field, CheckBox cb, NumberValidator<String> validator) {
+    private void registerValidator(TextField field, CheckBox cb, NumberValidator validator) {
       cb.selectedProperty().addListener((observable, oldValue, newValue) -> {
         ValidationSupport.setRequired(field, newValue);
       });
@@ -214,7 +214,7 @@ public class ConfigureClusterHealthWarningsPaneController {
 
     private final ObjectProperty<R> limitProperty = new SimpleObjectProperty<>(null);
     
-    public SimpleRuleHandler(Optional<R> existingRule, CheckBox checkbox, TextField valueField, Parser<N> parser, Constructor<N, R> constr, NumberValidator<String> validator) {
+    public SimpleRuleHandler(Optional<R> existingRule, CheckBox checkbox, TextField valueField, Parser<N> parser, Constructor<N, R> constr, NumberValidator validator) {
       this.checkbox = checkbox;
       this.valueField = valueField;
       this.parser = parser;
@@ -261,7 +261,7 @@ public class ConfigureClusterHealthWarningsPaneController {
         (validationRes != null && validationRes.getWarnings().isEmpty() && validationRes.getErrors().isEmpty());
   }
   
-  private static void registerValidator(TextField field, CheckBox cb, ValidationSupport support, NumberValidator<String> validator) {
+  private static void registerValidator(TextField field, CheckBox cb, ValidationSupport support, NumberValidator validator) {
     cb.selectedProperty().addListener((observable, oldValue, newValue) -> {
       ValidationSupport.setRequired(field, newValue);
     });

@@ -164,7 +164,7 @@ public class ApplyLimitsPaneController {
 
     private final ObjectProperty<L> limitProperty = new SimpleObjectProperty<>(null);
     
-    public SimpleLimitHandler(CheckBox checkbox, TextField valueField, Parser<N> parser, Constructor<N, L> constr, NumberValidator<String> validator) {
+    public SimpleLimitHandler(CheckBox checkbox, TextField valueField, Parser<N> parser, Constructor<N, L> constr, NumberValidator validator) {
       this.checkbox = checkbox;
       this.valueField = valueField;
       this.parser = parser;
@@ -205,7 +205,7 @@ public class ApplyLimitsPaneController {
         (validationRes != null && validationRes.getWarnings().isEmpty() && validationRes.getErrors().isEmpty());
   }
   
-  private static void registerValidator(TextField field, CheckBox cb, ValidationSupport support, NumberValidator<String> validator) {
+  private static void registerValidator(TextField field, CheckBox cb, ValidationSupport support, NumberValidator validator) {
     cb.selectedProperty().addListener((observable, oldValue, newValue) -> {
       ValidationSupport.setRequired(field, newValue);
     });

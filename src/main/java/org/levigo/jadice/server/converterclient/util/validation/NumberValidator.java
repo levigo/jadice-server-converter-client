@@ -6,14 +6,16 @@ import javafx.scene.control.Control;
 import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.Validator;
 
-public abstract class NumberValidator<T> implements Validator<T> {
+import com.levigo.util.base.Strings;
+
+public abstract class NumberValidator implements Validator<String> {
   
   private static final ValidationResult OK = new ValidationResult();
   
   @Override
-  public ValidationResult apply(Control control, T value) {
-    if (value == null || value.toString().isEmpty()) {
-      return ValidationResult.fromWarning(control, getUiResources().getString("validator.null-value.message"));
+  public ValidationResult apply(Control control, String value) {
+    if (Strings.emptyTrim(value)) {
+      return ValidationResult.fromError(control, getUiResources().getString("validator.null-value.message"));
     }
     if (!isNumber(value)) {
       return ValidationResult.fromError(control, getUiResources().getString("validator.not-numeric.message"));
@@ -25,8 +27,8 @@ public abstract class NumberValidator<T> implements Validator<T> {
     return OK;
   }
   
-  abstract boolean isNumber(T value);
+  abstract boolean isNumber(String value);
   
-  abstract boolean isPositive(T value);
+  abstract boolean isPositive(String value);
 
 }

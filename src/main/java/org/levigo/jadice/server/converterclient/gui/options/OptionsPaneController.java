@@ -1,18 +1,7 @@
 package org.levigo.jadice.server.converterclient.gui.options;
 
 import java.io.File;
-
-import javafx.beans.binding.Bindings;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
-import javafx.scene.text.Text;
-import javafx.stage.DirectoryChooser;
+import java.util.Locale;
 
 import org.levigo.jadice.server.converterclient.Preferences;
 import org.levigo.jadice.server.converterclient.Preferences.UpdatePolicy;
@@ -21,6 +10,21 @@ import org.levigo.jadice.server.converterclient.updatecheck.UpdateDialogs;
 import org.levigo.jadice.server.converterclient.updatecheck.UpdateService;
 import org.levigo.jadice.server.converterclient.util.FilenameGenerator;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
+
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
 
 
 public class OptionsPaneController {
@@ -52,6 +56,9 @@ public class OptionsPaneController {
   
   @FXML
   private Slider concurrentJobs; 
+  
+  @FXML
+  private ComboBox<Locale> jobLocale;
   
   @FXML
   private TextField jmxUsername;
@@ -94,6 +101,7 @@ public class OptionsPaneController {
   @FXML
   protected void initialize() {
     UiUtil.configureHomeButton(home);
+    initLocales();
     initValueBindings();
   }
   
@@ -137,6 +145,12 @@ public class OptionsPaneController {
     });
     updateService.restart();
   }
+
+  private void initLocales() {
+    final ObservableList<Locale> locales = FXCollections.observableArrayList(Locale.getAvailableLocales());
+    FXCollections.sort(locales, (loc1, loc2) -> loc1.toString().compareTo(loc2.toString()));
+    jobLocale.setItems(locales);
+  }
   
   private void initValueBindings() {
     // JMS Properties
@@ -153,6 +167,7 @@ public class OptionsPaneController {
     
     // Misc.
     concurrentJobs.valueProperty().bindBidirectional(Preferences.concurrentJobsProperty());
+    jobLocale.valueProperty().bindBidirectional(Preferences.jobLocaleProperty());
     // Read-only, so uni-directional binding is ok
     resultFolder.textProperty().bind(Bindings.convert(Preferences.resultFolderProperty()));
     defaultExtension.textProperty().bindBidirectional(Preferences.defaultExtensionProperty());

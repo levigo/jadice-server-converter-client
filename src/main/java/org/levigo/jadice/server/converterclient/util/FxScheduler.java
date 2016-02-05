@@ -1,11 +1,14 @@
 package org.levigo.jadice.server.converterclient.util;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
-import javafx.animation.AnimationTimer;
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.LongProperty;
@@ -15,12 +18,13 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 /**
- * An enhancement of the java FX default {@link AnimationTimer} which can be
- * configured via properties
+ * A simple repeating timer which can be paused
  */
 public class FxScheduler {
   
   private static final Logger LOGGER = Logger.getLogger(FxScheduler.class);
+  
+  private static final Duration INTERVAL = Duration.of(5, ChronoUnit.SECONDS);
   
   private final BooleanProperty startedProperty = new SimpleBooleanProperty();
   
@@ -32,37 +36,35 @@ public class FxScheduler {
   
   private ObjectProperty<TimeUnit> executionUnitProperty = new SimpleObjectProperty<>(TimeUnit.SECONDS);
   
-  // FIXME: This is a misuse of the FX thread... this timer will be invoked every few milliseconds!
-  private final AnimationTimer timer;
+  private final Timer timer = new Timer("FX-Scheduler", true);
+  
+  private TimerTask schedulerTask;
   
   public FxScheduler(Runnable handler) {
-    Objects.requireNonNull(handler, "handler");
+    Objects.requireNonNull(handler, "handler must not be null");
+    schedulerTask = createTask(handler);
+    timer.schedule(schedulerTask, INTERVAL.toMillis(), INTERVAL.toMillis());
     
-    this.timer = new AnimationTimer() {
+    executionRateProperty.addListener(this::updateRateChanged);
+    executionUnitProperty.addListener(this::updateRateChanged);
+    
+  }
+  
+  private TimerTask createTask(Runnable handler) {
+    return new TimerTask() {
+      
       @Override
-      public void handle(long now) {
-        if (now < nextExecution) {
+      public void run() {
+        final long now = System.currentTimeMillis();
+        if (!isStarted() || now < nextExecution) {
           return;
         }
         handler.run();
         lastExecution = now;
         nextExecution = calculateNextExecution();
       }
+      
     };
-    startedProperty.addListener(this::startedChanged);
-    executionRateProperty.addListener(this::updateRateChanged);
-    executionUnitProperty.addListener(this::updateRateChanged);
-    
-  }
-  
-  private void startedChanged(Observable change) {
-    if (isStarted()) {
-      LOGGER.debug("Starting scheduler");
-      timer.start();
-    } else {
-      LOGGER.debug("Stopping scheduler");
-      timer.stop();
-    }
   }
   
   private void updateRateChanged(Observable change) {
@@ -74,7 +76,7 @@ public class FxScheduler {
     if (lastExecution < 0) {
       return -1;
     }
-    return lastExecution + executionUnitProperty.get().toNanos(executionRateProperty.get());
+    return lastExecution + executionUnitProperty.get().toMillis(executionRateProperty.get());
   }
 
   public BooleanProperty startedProperty() {

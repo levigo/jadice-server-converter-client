@@ -67,4 +67,16 @@ public abstract class AbstractNumericRule<T extends Number & Comparable<T>> impl
   public final BooleanProperty enabledProperty() {
     return enabledProperty;
   }
+  
+  @Override
+  public int hashCode() {
+    return limitProperty().hashCode() + 31 * enabledProperty().hashCode();
+  }
+  
+  @Override
+  public boolean equals(Object other) {
+    return other instanceof AbstractNumericRule //
+        && getLimit().equals(((AbstractNumericRule<?>) other).getLimit()) // 
+        && isEnabled() == ((AbstractNumericRule<?>) other).isEnabled(); 
+  }
 }

@@ -60,12 +60,12 @@ public class ServerRunningRule implements ImmutableBooleanRule {
   @Override
   public int hashCode() {
     // an arbitrary chosen value :-)
-    return 42;
+    return isEnabled() ? 42 : 43;
   }
   
   @Override
   public boolean equals(Object other) {
-    return other instanceof ServerRunningRule;
+    return other instanceof ServerRunningRule && isEnabled() == ((ServerRunningRule) other).isEnabled();
   }
   
   @Override

@@ -14,13 +14,8 @@ public class TotalFailureRateRule extends AbstractNumericRule<Float> {
   }
   
   @Override
-  public int hashCode() {
-    return limitProperty().hashCode();
-  }
-
-  @Override
   public boolean equals(Object other) {
-    return other instanceof TotalFailureRateRule && ((TotalFailureRateRule) other).getLimit().equals(this.getLimit());
+    return other instanceof TotalFailureRateRule && super.equals(other);
   }
   
   @Override

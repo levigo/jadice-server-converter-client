@@ -14,13 +14,8 @@ public class RecentEfficiencyRule extends AbstractNumericRule<Float> {
   }
   
   @Override
-  public int hashCode() {
-    return limitProperty().hashCode();
-  }
-
-  @Override
   public boolean equals(Object other) {
-    return other instanceof RecentEfficiencyRule && ((RecentEfficiencyRule) other).getLimit().equals(this.getLimit());
+    return other instanceof RecentEfficiencyRule && super.equals(other);
   }
   
   @Override

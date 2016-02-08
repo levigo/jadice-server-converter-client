@@ -15,13 +15,8 @@ public class RecentAverageExecutionTimeRule extends AbstractNumericRule<Long> {
   }
   
   @Override
-  public int hashCode() {
-    return limitProperty().hashCode();
-  }
-
-  @Override
   public boolean equals(Object other) {
-    return other instanceof RecentAverageExecutionTimeRule && ((RecentAverageExecutionTimeRule) other).getLimit().equals(this.getLimit());
+    return other instanceof RecentAverageExecutionTimeRule && super.equals(other);
   }
   
   @Override

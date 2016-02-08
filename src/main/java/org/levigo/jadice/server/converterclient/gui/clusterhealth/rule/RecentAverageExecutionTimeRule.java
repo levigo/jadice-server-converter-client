@@ -5,8 +5,8 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 public class RecentAverageExecutionTimeRule extends AbstractNumericRule<Long> {
 
 
-  public RecentAverageExecutionTimeRule(long initalLimit) {
-    super(initalLimit, JmxHelper::getRecentAverageExecutionTime);
+  public RecentAverageExecutionTimeRule(long initalLimit, boolean isEnabled) {
+    super(initalLimit, JmxHelper::getRecentAverageExecutionTime, isEnabled);
   }
 
   @Override

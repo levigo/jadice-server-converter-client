@@ -21,10 +21,12 @@ public class ClusterHealthMapper {
       if (rule instanceof AbstractNumericRule<?>) {
         Rule<Number> r = new Rule<>();
         r.limit = ((AbstractNumericRule<?>) rule).getLimit();
+        r.enabled = rule.isEnabled();
         r.implementation = rule.getClass().getName();
         result.rules.add(r);
       } else if (rule instanceof ImmutableBooleanRule) {
         Rule<Boolean> r = new Rule<>();
+        r.enabled = rule.isEnabled();
         r.implementation = rule.getClass().getName();
         result.rules.add(r);
       } else {
@@ -47,7 +49,7 @@ public class ClusterHealthMapper {
           final AbstractNumericRule<?> r = unmarshallNumericRule(rule, clazz);
           result.rules.add(r);
         } else if (ImmutableBooleanRule.class.isAssignableFrom(clazz)) {
-          final ImmutableBooleanRule r = unmarshallImmutableBooleanRule(clazz);
+          final ImmutableBooleanRule r = unmarshallImmutableBooleanRule(rule, clazz);
           result.rules.add(r);
         } else {
           throw new MarshallingException("No support for rule of type " + rule.implementation);
@@ -60,11 +62,7 @@ public class ClusterHealthMapper {
     return result;
   }
 
-  private ImmutableBooleanRule unmarshallImmutableBooleanRule(final Class<?> clazz) throws ReflectiveOperationException {
-    return (ImmutableBooleanRule) clazz.newInstance();
-  }
-
-  private AbstractNumericRule<?> unmarshallNumericRule(Rule<?> rule, final Class<?> clazz) throws ReflectiveOperationException, MarshallingException {
+  private ImmutableBooleanRule unmarshallImmutableBooleanRule(Rule<?> rule, final Class<?> clazz) throws ReflectiveOperationException, MarshallingException {
     Constructor<?> constr = null;
     for (Constructor<?> c : clazz.getConstructors()) {
       if (c.getParameterCount() != 1) {
@@ -76,7 +74,22 @@ public class ClusterHealthMapper {
     if (constr == null) {
       throw new MarshallingException("No matching constructor found for type " + rule.implementation);
     }
-    final AbstractNumericRule<?> r = (AbstractNumericRule<?>) constr.newInstance(castValue(constr.getParameterTypes()[0], rule.limit));
+    return (ImmutableBooleanRule) constr.newInstance(rule.enabled);
+  }
+
+  private AbstractNumericRule<?> unmarshallNumericRule(Rule<?> rule, final Class<?> clazz) throws ReflectiveOperationException, MarshallingException {
+    Constructor<?> constr = null;
+    for (Constructor<?> c : clazz.getConstructors()) {
+      if (c.getParameterCount() != 2) {
+        continue;
+      }
+      constr = c;
+      break;
+    }
+    if (constr == null) {
+      throw new MarshallingException("No matching constructor found for type " + rule.implementation);
+    }
+    final AbstractNumericRule<?> r = (AbstractNumericRule<?>) constr.newInstance(castValue(constr.getParameterTypes()[0], rule.limit), rule.enabled);
     return r;
   }
   

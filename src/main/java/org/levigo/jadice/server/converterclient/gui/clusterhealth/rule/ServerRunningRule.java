@@ -13,9 +13,13 @@ import javafx.beans.property.SimpleBooleanProperty;
 
 public class ServerRunningRule implements ImmutableBooleanRule {
   
-  public static final ServerRunningRule INSTANCE = new ServerRunningRule();
+  public static final ServerRunningRule INSTANCE = new ServerRunningRule(true);
   
-  private final BooleanProperty enabledProperty = new SimpleBooleanProperty(true);
+  private final BooleanProperty enabledProperty;
+  
+  public ServerRunningRule(boolean isEnabled) {
+    enabledProperty = new SimpleBooleanProperty(isEnabled);
+  }
   
   @Override
   public String getDescription() {

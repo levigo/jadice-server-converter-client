@@ -4,8 +4,8 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 
 public class RecentEfficiencyRule extends AbstractNumericRule<Float> {
 
-  public RecentEfficiencyRule(float initialLimit) {
-    super(initialLimit, JmxHelper::getEfficiency10Min);
+  public RecentEfficiencyRule(float initialLimit, boolean isEnabled) {
+    super(initialLimit, JmxHelper::getEfficiency10Min, isEnabled);
   }
 
   @Override

@@ -245,7 +245,7 @@ public class ConfigureClusterHealthWarningsPaneController {
         return;
       }
 
-      final R limit = constr.create(parser.parse(valueField.getText()));
+      final R limit = constr.create(parser.parse(valueField.getText()), checkbox.isSelected());
       LOGGER.debug("Created new limit: " + limit);
       limitProperty.set(limit);
     }
@@ -271,7 +271,7 @@ public class ConfigureClusterHealthWarningsPaneController {
   
   @FunctionalInterface
   private static interface Constructor<N extends Number & Comparable<N>, L extends AbstractNumericRule<N>> {
-    L create(N v);
+    L create(N v, boolean isEnabled);
   }
   
   @FunctionalInterface

@@ -1,22 +1,28 @@
 {
   "version" : "1.0",
   "rules" : [ {
-    "implementation" : "org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.ServerRunningRule"
+    "implementation" : "org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.ServerRunningRule",
+    "enabled" : false
   }, {
     "implementation" : "org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.AverageExecutionTimeRule",
-    "limit" : 10
+    "limit" : 10,
+    "enabled" : true
   }, {
     "implementation" : "org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentAverageExecutionTimeRule",
-    "limit" : 20
+    "limit" : 20,
+    "enabled" : false
   }, {
     "implementation" : "org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentEfficiencyRule",
-    "limit" : 30.0
+    "limit" : 30.0,
+    "enabled" : true
   }, {
     "implementation" : "org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.RecentFailureRateRule",
-    "limit" : 40.0
+    "limit" : 40.0,
+    "enabled" : false
   }, {
     "implementation" : "org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.TotalFailureRateRule",
-    "limit" : 50.0
+    "limit" : 50.0,
+    "enabled" : true
   } ],
   "instances" : [ "localhost:61619", "jadice-server.example.com:61619" ],
   "autoUpdateEnabled" : true,

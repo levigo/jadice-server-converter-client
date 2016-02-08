@@ -9,4 +9,6 @@ public class Rule<N> {
   public String implementation;
 
   public N limit;
+  
+  public boolean enabled;
 }

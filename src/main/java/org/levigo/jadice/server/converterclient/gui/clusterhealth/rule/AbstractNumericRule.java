@@ -23,11 +23,12 @@ public abstract class AbstractNumericRule<T extends Number & Comparable<T>> impl
   
   private final JMXFunction<T> jmxFunction;
   
-  private final BooleanProperty enabledProperty = new SimpleBooleanProperty(true);
+  private final BooleanProperty enabledProperty;
 
-  protected AbstractNumericRule(T initalLimit, JMXFunction<T> jmxFunction) {
+  protected AbstractNumericRule(T initalLimit, JMXFunction<T> jmxFunction, boolean isEnabled) {
    this.limitProperty = new SimpleObjectProperty<>(initalLimit);
    this.jmxFunction = jmxFunction;
+   this.enabledProperty = new SimpleBooleanProperty(isEnabled);
   }
   
   public EvaluationResult<T> evaluate(MBeanServerConnection mbsc) {
@@ -40,7 +41,7 @@ public abstract class AbstractNumericRule<T extends Number & Comparable<T>> impl
         return new EvaluationResult<T>(HealthStatus.ATTENTION, getDescription() + ": ?");
       }
       T val = currentValue.get();
-      if (getLimit().compareTo(val) >= 0) { // i.e. getLimit() >= execTime
+      if (getLimit().compareTo(val) >= 0) { // i.e. getLimit() >= value
         return new EvaluationResult<T>(HealthStatus.GOOD, val);
       } else {
         return new EvaluationResult<T>(HealthStatus.ATTENTION, val, getDescription() + ": " + val);

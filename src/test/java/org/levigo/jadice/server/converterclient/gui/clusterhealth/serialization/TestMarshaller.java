@@ -45,12 +45,12 @@ public class TestMarshaller {
   @BeforeClass
   public static void createRules() {
     RULES = FXCollections.observableArrayList();
-    RULES.add(new ServerRunningRule());
-    RULES.add(new AverageExecutionTimeRule(10L));
-    RULES.add(new RecentAverageExecutionTimeRule(20L));
-    RULES.add(new RecentEfficiencyRule(30f));
-    RULES.add(new RecentFailureRateRule(40f));
-    RULES.add(new TotalFailureRateRule(50f));
+    RULES.add(new ServerRunningRule(false));
+    RULES.add(new AverageExecutionTimeRule(10L, true));
+    RULES.add(new RecentAverageExecutionTimeRule(20L, false));
+    RULES.add(new RecentEfficiencyRule(30f, true));
+    RULES.add(new RecentFailureRateRule(40f, false));
+    RULES.add(new TotalFailureRateRule(50f, true));
   }
   
   @BeforeClass

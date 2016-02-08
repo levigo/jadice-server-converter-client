@@ -4,8 +4,8 @@ import org.levigo.jadice.server.converterclient.gui.clusterhealth.JmxHelper;
 
 public class RecentFailureRateRule extends AbstractNumericRule<Float> {
 
-  public RecentFailureRateRule(float limit) {
-    super(limit, JmxHelper::getRecentFailureRate);
+  public RecentFailureRateRule(float limit, boolean isEnabled) {
+    super(limit, JmxHelper::getRecentFailureRate, isEnabled);
   }
 
   @Override

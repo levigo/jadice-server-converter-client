@@ -15,7 +15,7 @@ public class ClusterHealthMapper {
     result.instances = dto.instances;
     
     result.autoUpdateEnabled = dto.autoUpdateEnabled.get();
-    result.autoUpdateIntervall = dto.autoUpdateIntervall.get();
+    result.autoUpdateInterval = dto.autoUpdateInterval.get();
     
     for (org.levigo.jadice.server.converterclient.gui.clusterhealth.rule.Rule<?> rule : dto.rules) {
       if (rule instanceof AbstractNumericRule<?>) {
@@ -38,7 +38,7 @@ public class ClusterHealthMapper {
     ClusterHealthDTO result = new ClusterHealthDTO();
     result.instances.addAll(ch.instances);
     result.autoUpdateEnabled.set(ch.autoUpdateEnabled);
-    result.autoUpdateIntervall.set(ch.autoUpdateIntervall);
+    result.autoUpdateInterval.set(ch.autoUpdateInterval);
     
     for (Rule<?> rule : ch.rules) {
       try {

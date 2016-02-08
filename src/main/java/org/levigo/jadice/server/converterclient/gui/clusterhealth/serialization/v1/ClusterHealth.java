@@ -15,6 +15,6 @@ public class ClusterHealth {
   
   public boolean autoUpdateEnabled;
   
-  public int autoUpdateIntervall;
+  public int autoUpdateInterval;
 
 }

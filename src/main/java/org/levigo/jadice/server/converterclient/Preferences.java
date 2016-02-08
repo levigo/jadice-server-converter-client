@@ -401,7 +401,7 @@ public class Preferences {
     clusterHealthProperty().getValue().rules.clear();
     clusterHealthProperty().getValue().rules.addAll(Defaults.CLUSTER_HEALTH.rules);
     clusterHealthProperty().getValue().autoUpdateEnabled.set(Defaults.CLUSTER_HEALTH.autoUpdateEnabled.get());
-    clusterHealthProperty().getValue().autoUpdateIntervall.set(Defaults.CLUSTER_HEALTH.autoUpdateIntervall.get());
+    clusterHealthProperty().getValue().autoUpdateInterval.set(Defaults.CLUSTER_HEALTH.autoUpdateInterval.get());
   }
 
   private static void putNullSafe(String key, String value) {

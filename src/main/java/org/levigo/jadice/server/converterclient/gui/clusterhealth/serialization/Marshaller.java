@@ -29,7 +29,7 @@ public abstract class Marshaller {
     
     public final BooleanProperty autoUpdateEnabled;
     
-    public final IntegerProperty autoUpdateIntervall;
+    public final IntegerProperty autoUpdateInterval;
 
     private final HashSet<InvalidationListener> listeners = new HashSet<>();
     
@@ -37,17 +37,17 @@ public abstract class Marshaller {
       this(FXCollections.observableArrayList(), FXCollections.observableArrayList(), new SimpleBooleanProperty(false), new SimpleIntegerProperty(1));
     }
     
-    public ClusterHealthDTO(ObservableList<String> instances, ObservableList<Rule<?>> rules, BooleanProperty autoUpdateEnabled, IntegerProperty autoUpdateIntervall) {
+    public ClusterHealthDTO(ObservableList<String> instances, ObservableList<Rule<?>> rules, BooleanProperty autoUpdateEnabled, IntegerProperty autoUpdateInterval) {
       this.instances = Objects.requireNonNull(instances);
       this.rules = Objects.requireNonNull(rules);
       this.autoUpdateEnabled = Objects.requireNonNull(autoUpdateEnabled);
-      this.autoUpdateIntervall = Objects.requireNonNull(autoUpdateIntervall);
+      this.autoUpdateInterval = Objects.requireNonNull(autoUpdateInterval);
       
       // Great use case for java 8: this DTO implements InvalidationListener without implementing it!
       this.instances.addListener(this::propertyInvalidated);
       this.rules.addListener(this::propertyInvalidated);
       this.autoUpdateEnabled.addListener(this::propertyInvalidated);
-      this.autoUpdateIntervall.addListener(this::propertyInvalidated);
+      this.autoUpdateInterval.addListener(this::propertyInvalidated);
     }
 
     @Override

@@ -40,7 +40,7 @@ public class TestMarshaller {
 
   private static SimpleBooleanProperty AUTO_UPDATE_ENABLED = new SimpleBooleanProperty(true);
   
-  private static SimpleIntegerProperty UPDATE_INTERVALL = new SimpleIntegerProperty(42);
+  private static SimpleIntegerProperty UPDATE_INTERVAL = new SimpleIntegerProperty(42);
 
   @BeforeClass
   public static void createRules() {
@@ -88,7 +88,7 @@ public class TestMarshaller {
 
   @Test
   public void testV1Marshalling() throws Exception {
-    final ClusterHealthDTO dto = new ClusterHealthDTO(INSTANCES, RULES, AUTO_UPDATE_ENABLED, UPDATE_INTERVALL);
+    final ClusterHealthDTO dto = new ClusterHealthDTO(INSTANCES, RULES, AUTO_UPDATE_ENABLED, UPDATE_INTERVAL);
     final String m = Marshaller.get(V1).marshall(dto);
     assertEquals("Wrong version marshalled", "1.0", Marshaller.lookupVersion(m));
     final ClusterHealthDTO unmarshalled = Marshaller.get(V1).unmarshall(m);
@@ -96,7 +96,7 @@ public class TestMarshaller {
     assertArrayEquals("Wrong instances", INSTANCES.toArray(), unmarshalled.instances.toArray());
     assertArrayEquals("Wrong rules", RULES.toArray(), unmarshalled.rules.toArray());
     assertEquals("wrong auto update setting", AUTO_UPDATE_ENABLED.get(), unmarshalled.autoUpdateEnabled.get());
-    assertEquals("wrong update intervall", UPDATE_INTERVALL.get(), unmarshalled.autoUpdateIntervall.get());
+    assertEquals("wrong update interval", UPDATE_INTERVAL.get(), unmarshalled.autoUpdateInterval.get());
   }
 
   @Test
@@ -111,7 +111,7 @@ public class TestMarshaller {
     assertArrayEquals("Wrong instances", INSTANCES.toArray(), unmarshalled.instances.toArray());
     assertArrayEquals("Wrong rules", RULES.toArray(), unmarshalled.rules.toArray());
     assertEquals("wrong auto update setting", AUTO_UPDATE_ENABLED.get(), unmarshalled.autoUpdateEnabled.get());
-    assertEquals("wrong update intervall", UPDATE_INTERVALL.get(), unmarshalled.autoUpdateIntervall.get());
+    assertEquals("wrong update interval", UPDATE_INTERVAL.get(), unmarshalled.autoUpdateInterval.get());
   }
 
   private static String loadJSON(String resourceName) throws IOException {

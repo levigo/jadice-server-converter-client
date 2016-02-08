@@ -20,5 +20,5 @@
   } ],
   "instances" : [ "localhost:61619", "jadice-server.example.com:61619" ],
   "autoUpdateEnabled" : true,
-  "autoUpdateIntervall" : 42
+  "autoUpdateInterval" : 42
 }

@@ -83,7 +83,7 @@ public class ClusterHealthPaneController {
     
     timer = new FxScheduler(this::runUpdate);
     timer.setExecutionUnit(TimeUnit.MINUTES); // Unit is not configurable yet
-    timer.executionRateProperty().bind(Preferences.clusterHealthProperty().getValue().autoUpdateIntervall);
+    timer.executionRateProperty().bind(Preferences.clusterHealthProperty().getValue().autoUpdateInterval);
     timer.startedProperty().bind(Preferences.clusterHealthProperty().getValue().autoUpdateEnabled);
   }
   

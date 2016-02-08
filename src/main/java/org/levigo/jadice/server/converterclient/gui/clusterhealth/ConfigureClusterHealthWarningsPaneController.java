@@ -139,7 +139,7 @@ public class ConfigureClusterHealthWarningsPaneController {
     public AutoUpdateChangeHandler(CheckBox cb, TextField valueField) {
       final ClusterHealthDTO dto = Preferences.clusterHealthProperty().getValue();
       cb.setSelected(dto.autoUpdateEnabled.get());
-      valueField.setText(dto.autoUpdateIntervall.getValue().toString());
+      valueField.setText(dto.autoUpdateInterval.getValue().toString());
 
       dto.autoUpdateEnabled.bindBidirectional(cb.selectedProperty());
       registerValidator(valueField, cb, new IntegerValidator());
@@ -150,9 +150,9 @@ public class ConfigureClusterHealthWarningsPaneController {
           if (!isInputValid()) {
             return;
           }
-          int intervall = (Integer.parseInt(valueField.getText()));
-          LOGGER.debug("Change update intervall: " + intervall);
-          dto.autoUpdateIntervall.set(intervall);
+          int interval = (Integer.parseInt(valueField.getText()));
+          LOGGER.debug("Change update interval: " + interval);
+          dto.autoUpdateInterval.set(interval);
         });
       });
     }

@@ -116,7 +116,8 @@ public class JobCardFactory {
     
     JMSJobFactory jobFactory = getCachedJobFactory(serverLocation);
     // Configure Workflow
-    Job job = config.configureWorkflow(jobFactory);
+    final Job job = jobFactory.createJob();
+    config.configureWorkflow(job);
     job.setType(config.getID());
     job.setClientLocale(Preferences.jobLocaleProperty().get());
     

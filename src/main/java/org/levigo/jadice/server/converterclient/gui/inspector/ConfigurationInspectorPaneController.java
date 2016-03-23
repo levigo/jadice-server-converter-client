@@ -144,12 +144,13 @@ public class ConfigurationInspectorPaneController implements NodeSelectionListen
 	  });
 	}
 
-	private void showGraph(WorkflowConfiguration item) throws Exception {
-		final Job dummyJob = item.configureWorkflow(dummyJobFactory);
-		SwingUtilities.invokeLater(() -> {
-		  display.showJob(dummyJob);
-		}); 
-	}
+  private void showGraph(WorkflowConfiguration item) throws Exception {
+    final Job dummyJob = dummyJobFactory.createJob();
+    item.configureWorkflow(dummyJob);
+    SwingUtilities.invokeLater(() -> {
+      display.showJob(dummyJob);
+    });
+  }
 
 	public void deselected(Node deselected) {
 		LOGGER.debug("DESELECTED: " + deselected);

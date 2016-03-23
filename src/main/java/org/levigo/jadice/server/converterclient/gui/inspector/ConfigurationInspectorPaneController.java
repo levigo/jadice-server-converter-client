@@ -69,9 +69,6 @@ public class ConfigurationInspectorPaneController implements NodeSelectionListen
 	
 	private final WorkflowDisplay display = new WorkflowDisplay();
 	
-	private final JobFactory dummyJobFactory = initDummyJobFactory();
-	
-	
   @FXML
   protected void initialize() {
     UiUtil.configureHomeButton(home);
@@ -100,11 +97,7 @@ public class ConfigurationInspectorPaneController implements NodeSelectionListen
     LOGGER.info("Created java code:\n" + java);
   }
 
-  private JobFactory initDummyJobFactory() {
-    return new JMSJobFactory(new DummyQueueConnectionFactory(), "DUMMY");
-  }
-
-	private void initConfigurationCB() {
+  private void initConfigurationCB() {
 	  configurations.itemsProperty().bind(new SimpleListProperty<>(JobCardFactory.getInstance().getConfigurations()));
     final StringConverter<WorkflowConfiguration> sc = new StringConverter<WorkflowConfiguration>() {
       @Override
@@ -145,7 +138,7 @@ public class ConfigurationInspectorPaneController implements NodeSelectionListen
 	}
 
   private void showGraph(WorkflowConfiguration item) throws Exception {
-    final Job dummyJob = dummyJobFactory.createJob();
+    final Job dummyJob = new DummyJob();
     item.configureWorkflow(dummyJob);
     SwingUtilities.invokeLater(() -> {
       display.showJob(dummyJob);

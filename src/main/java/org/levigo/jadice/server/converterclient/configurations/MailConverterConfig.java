@@ -4,7 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.levigo.jadice.server.Job;
-import com.levigo.jadice.server.JobCreationException;
+import com.levigo.jadice.server.JobException;
 import com.levigo.jadice.server.client.JobFactory;
 import com.levigo.jadice.server.javamail.MessageRFC822Node;
 import com.levigo.jadice.server.nodes.ScriptNode;
@@ -14,9 +14,7 @@ import com.levigo.jadice.server.pdf.PDFMergeNode;
 
 public class MailConverterConfig implements WorkflowConfiguration {
 
-	public Job configureWorkflow(JobFactory jobFactory)
-			throws URISyntaxException, JobCreationException {
-		
+	public Job configureWorkflow(JobFactory jobFactory) throws URISyntaxException, JobException {
 		ScriptNode scriptNode = new ScriptNode();
 		URI scriptLocation = new URI(
 				"resource:email-conversion/EmailConversion.groovy");

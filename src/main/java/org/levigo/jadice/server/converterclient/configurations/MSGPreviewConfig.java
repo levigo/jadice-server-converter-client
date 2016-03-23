@@ -4,7 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.levigo.jadice.server.Job;
-import com.levigo.jadice.server.JobCreationException;
+import com.levigo.jadice.server.JobException;
 import com.levigo.jadice.server.client.JobFactory;
 import com.levigo.jadice.server.javamail.TNEFNode;
 import com.levigo.jadice.server.javamail.TNEFNode.InputFormat;
@@ -15,8 +15,7 @@ import com.levigo.jadice.server.pdf.PDFMergeNode;
 
 public class MSGPreviewConfig implements WorkflowConfiguration {
 
-	public Job configureWorkflow(JobFactory jobFactory)
-			throws URISyntaxException, JobCreationException {
+	public Job configureWorkflow(JobFactory jobFactory) throws URISyntaxException, JobException {
 	  
 	  final TNEFNode tnefNode = new TNEFNode();
 	  tnefNode.setInputFormat(InputFormat.MSG);

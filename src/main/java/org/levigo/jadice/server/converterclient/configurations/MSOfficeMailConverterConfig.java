@@ -4,7 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.levigo.jadice.server.Job;
-import com.levigo.jadice.server.JobCreationException;
+import com.levigo.jadice.server.JobException;
 import com.levigo.jadice.server.client.JobFactory;
 import com.levigo.jadice.server.javamail.MessageRFC822Node;
 import com.levigo.jadice.server.nodes.ScriptNode;
@@ -14,12 +14,9 @@ import com.levigo.jadice.server.pdf.PDFMergeNode;
 
 public class MSOfficeMailConverterConfig implements WorkflowConfiguration {
 
-	public Job configureWorkflow(JobFactory jobFactory)
-			throws URISyntaxException, JobCreationException {
-		
-		ScriptNode scriptNode = new ScriptNode();
-		URI scriptLocation = new URI(
-				"resource:email-conversion/EmailConversionViaMSOffice.groovy");
+	public Job configureWorkflow(JobFactory jobFactory) throws URISyntaxException, JobException {
+		final ScriptNode scriptNode = new ScriptNode();
+		final URI scriptLocation = new URI("resource:email-conversion/EmailConversionViaMSOffice.groovy");
 		scriptNode.setScript(scriptLocation);
 		scriptNode.getParameters().put("allowExternalHTTPResolution", false);
 		scriptNode.getParameters().put("preferPlainTextBody", false);

@@ -20,8 +20,6 @@ import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 import com.levigo.jadice.server.Job;
 import com.levigo.jadice.server.Node;
-import com.levigo.jadice.server.client.JobFactory;
-import com.levigo.jadice.server.client.jms.JMSJobFactory;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;

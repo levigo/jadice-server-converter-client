@@ -164,6 +164,7 @@ public class ConversionPaneController {
         submitJob(selected);
       } catch (Exception e) {
         LOGGER.error("Could not submit job", e);
+        showSubmissionErrorDialog(e);
       }
     }
   }
@@ -297,6 +298,7 @@ public class ConversionPaneController {
           success = true;
         } catch (Exception e) {
           LOGGER.warn("Cannot create jobs on Drag&Drop", e);
+          showSubmissionErrorDialog(e);
         }
       }
       event.setDropCompleted(success);
@@ -463,12 +465,13 @@ public class ConversionPaneController {
           
         case F5 :
           // Retry
-          for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
-            try {
-              JobCardFactory.getInstance().cloneAndSubmitJob(jc, servers.getValue(), buildJobLimits());
-            } catch (Exception e) {
-              LOGGER.error("Could not re-submit job", e);
+          try {
+            for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
+                JobCardFactory.getInstance().cloneAndSubmitJob(jc, servers.getValue(), buildJobLimits());
             }
+          } catch (Exception e) {
+            LOGGER.error("Could not re-submit job", e);
+            showSubmissionErrorDialog(e);
           }
           event.consume();
           break;
@@ -511,6 +514,19 @@ public class ConversionPaneController {
       }
     });
 
+  }
+
+  private void showSubmissionErrorDialog(Exception e) {
+    final ExceptionDialog dialog = new ExceptionDialog(e);
+    dialog.setTitle(resources.getString("dialogs.conversion.submission-error.title"));
+    dialog.setHeaderText(resources.getString("dialogs.conversion.submission-error.masthead"));
+    dialog.setContentText(resources.getString("dialogs.conversion.submission-error.message"));
+    dialog.initOwner(pane.getScene().getWindow());
+    
+    // http://code.makery.ch/blog/javafx-dialogs-official/
+    Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+    stage.getIcons().addAll(Icons.getAllIcons());
+    dialog.show();    
   }
 
   public void openResults(JobCard job) {

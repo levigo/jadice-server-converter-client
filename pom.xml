@@ -40,6 +40,7 @@
     <fontawesomefx.version>8.8</fontawesomefx.version>
     <jackson.version>2.7.1</jackson.version>
     <junit.version>4.12</junit.version>
+    <ehcache.version>2.10.0</ehcache.version>
     
     <!-- Spring version as it is also managed by jadice server -->
     <spring-context.version>4.1.4.RELEASE</spring-context.version>
@@ -278,5 +279,10 @@
       <artifactId>jackson-databind</artifactId>
       <version>${jackson.version}</version>
     </dependency>
+    <dependency>
+      <groupId>net.sf.ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+      <version>${ehcache.version}</version>
+    </dependency>  
   </dependencies>
 </project>

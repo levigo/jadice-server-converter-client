@@ -217,7 +217,7 @@
       <version>${slf4j.version}</version>
     </dependency>
     <dependency>
-      <!-- Bridge of SLF4J logging to Log4J -->
+      <!-- Bridge of levigo logging to Log4J -->
       <groupId>com.levigo.util</groupId>
       <artifactId>logging-log4j</artifactId>
       <version>${levigo.utils.version}</version>

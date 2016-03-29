@@ -18,7 +18,6 @@ public class MSOfficeMailConverterConfig implements WorkflowConfiguration {
 		scriptNode.getParameters().put("allowExternalHTTPResolution", false);
 		scriptNode.getParameters().put("preferPlainTextBody", false);
 		scriptNode.getParameters().put("showAllAlternativeBody", false);
-		scriptNode.getParameters().put("unhandledAttachmentAction", "failure");
 
 		job.attach(new StreamInputNode() //
 				.appendSuccessor(new MessageRFC822Node()) //

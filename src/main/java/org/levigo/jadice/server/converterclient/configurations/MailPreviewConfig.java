@@ -13,7 +13,7 @@ import com.levigo.jadice.server.pdf.PDFMergeNode;
 public class MailPreviewConfig implements WorkflowConfiguration {
 
 	public void configureWorkflow(Job job) throws URISyntaxException {
-		ScriptNode scriptNode = new ScriptNode();
+		final ScriptNode scriptNode = new ScriptNode();
 		scriptNode.setScript(new URI("resource:email-conversion/EmailPreviewConversion.groovy"));
 
 		job.attach(new StreamInputNode() //

@@ -13,12 +13,11 @@ import com.levigo.jadice.server.pdf.PDFMergeNode;
 public class MailConverterConfig implements WorkflowConfiguration {
 
 	public void configureWorkflow(Job job) throws URISyntaxException {
-		ScriptNode scriptNode = new ScriptNode();
+		final ScriptNode scriptNode = new ScriptNode();
 		scriptNode.setScript(new URI("resource:email-conversion/EmailConversion.groovy"));
 		scriptNode.getParameters().put("allowExternalHTTPResolution", false);
 		scriptNode.getParameters().put("preferPlainTextBody", false);
 		scriptNode.getParameters().put("showAllAlternativeBody", false);
-		scriptNode.getParameters().put("unhandledAttachmentAction", "failure");
 
 		job.attach(new StreamInputNode() //
 				.appendSuccessor(new MessageRFC822Node()) //

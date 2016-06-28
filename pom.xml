@@ -33,7 +33,7 @@
     <log4j.version>1.2.17</log4j.version>
     <slf4j.version>1.7.12</slf4j.version>
     <jfreechart.version>1.0.19</jfreechart.version>
-    <activemq.version>5.12.1</activemq.version>
+    <activemq.version>5.13.0</activemq.version>
     <prefuse.version>beta-20130106</prefuse.version>
     <controlsfx.version>8.40.10</controlsfx.version>
     <enzo.version>0.2.8</enzo.version>

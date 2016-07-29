@@ -142,6 +142,13 @@ public class JobFactoryCache {
       }
     });
     cacheManager.addCache(jobFactoryCache);
+
+   Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+     // Don't use the bulk operation EhCache.removeAll() because it does not notify about every single JF instance
+     for (Object key : jobFactoryCache.getKeys()) {
+       jobFactoryCache.remove(key);
+     }
+   }));
   }
 
   public static JobFactoryCache getInstance() {

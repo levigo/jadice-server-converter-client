@@ -4,8 +4,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.levigo.jadice.server.Job;
-import com.levigo.jadice.server.JobCreationException;
-import com.levigo.jadice.server.client.JobFactory;
 import com.levigo.jadice.server.javamail.TNEFNode;
 import com.levigo.jadice.server.javamail.TNEFNode.InputFormat;
 import com.levigo.jadice.server.nodes.ScriptNode;
@@ -15,24 +13,18 @@ import com.levigo.jadice.server.pdf.PDFMergeNode;
 
 public class MSGPreviewConfig implements WorkflowConfiguration {
 
-	public Job configureWorkflow(JobFactory jobFactory)
-			throws URISyntaxException, JobCreationException {
-	  
+	public void configureWorkflow(Job job) throws URISyntaxException {
 	  final TNEFNode tnefNode = new TNEFNode();
 	  tnefNode.setInputFormat(InputFormat.MSG);
 		
 		ScriptNode scriptNode = new ScriptNode();
-		URI scriptLocation = new URI(
-				"resource:email-conversion/EmailPreviewConversion.groovy");
-		scriptNode.setScript(scriptLocation);
+		scriptNode.setScript(new URI("resource:email-conversion/EmailPreviewConversion.groovy"));
 
-		Job j = jobFactory.createJob();
-		j.attach(new StreamInputNode() //
+		job.attach(new StreamInputNode() //
 				.appendSuccessor(tnefNode) //
 				.appendSuccessor(scriptNode) //
 				.appendSuccessor(new PDFMergeNode()) //
 				.appendSuccessor(new StreamOutputNode()));
-		return j;
 	}
 
 	public String getDescription() {

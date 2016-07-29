@@ -10,12 +10,10 @@ import org.levigo.jadice.server.converterclient.util.PasswordObfuscator;
 
 import com.levigo.jadice.server.client.jms.JMSJobFactory;
 
-import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.Property;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -45,7 +43,6 @@ public class Preferences {
 	  final String JMS_LOG_TOPIC_NAME = "JS.LOG";
 	  final String JMS_USER_NAME = null;
 	  final String JMS_PASSWORD = null;
-	  final boolean JMS_JOBFACTORY_CACHING = true;
     final int JMS_JOB_PRIORITY = JMSJobFactory.DEFAULT_PRIORITY; 
     final Locale JOB_LOCALE = Locale.getDefault();
     
@@ -67,7 +64,6 @@ public class Preferences {
     final String JMS_LOG_TOPIC_NAME = "jms.logTopic";
     final String JMS_USER_NAME = "jms.username";
     final String JMS_PASSWORD = "jms.password";
-    final String JMS_JOBFACTORY_CACHING = "jms.enableJobfactoryCaching";
     final String JMS_JOB_PRIORITY = "jms.jobPriority";
     final String JOB_LOCALE = "job.locale";
     
@@ -93,7 +89,6 @@ public class Preferences {
 	private static StringProperty jmsLogTopicNameProperty;
 	private static StringProperty jmsUsernameProperty;
 	private static StringProperty jmsPasswordProperty;
-	private static BooleanProperty cacheJmsJobFactoryProperty;
 	private static IntegerProperty jmsJobPriority;
 	private static ObjectProperty<Locale> jobLocaleProperty;
 	private static IntegerProperty concurrentJobsProperty;
@@ -254,17 +249,6 @@ public class Preferences {
 	  return jmsPasswordProperty;
 	}
 	
-  public static BooleanProperty cacheJmsJobFactoryProperty() {
-    if (cacheJmsJobFactoryProperty == null) {
-      cacheJmsJobFactoryProperty = new SimpleBooleanProperty(PREF.getBoolean(Keys.JMS_JOBFACTORY_CACHING ,Defaults.JMS_JOBFACTORY_CACHING));
-      cacheJmsJobFactoryProperty.addListener((observable, oldValue, newValue) ->
-      {
-        PREF.putBoolean(Keys.JMS_JOBFACTORY_CACHING, newValue);
-      });
-    }
-    return cacheJmsJobFactoryProperty;
-  }
-  
   public static IntegerProperty jmsJobPriority() {
     if (jmsJobPriority == null) {
       jmsJobPriority = new SimpleIntegerProperty(PREF.getInt(Keys.JMS_JOB_PRIORITY, Defaults.JMS_JOB_PRIORITY));
@@ -351,7 +335,6 @@ public class Preferences {
     jmsPasswordProperty().set(Defaults.JMS_PASSWORD);
     jmsRequestQueueNameProperty().set(Defaults.JMS_REQUEST_QUEUE_NAME);
     jmsLogTopicNameProperty().set(Defaults.JMS_LOG_TOPIC_NAME);
-    cacheJmsJobFactoryProperty().set(Defaults.JMS_JOBFACTORY_CACHING);
     jmsJobPriority().set(Defaults.JMS_JOB_PRIORITY);
     jobLocaleProperty().set(Defaults.JOB_LOCALE);
     jmxUsernameProperty().set(Defaults.JMX_USER_NAME);

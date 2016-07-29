@@ -1,7 +1,6 @@
 package org.levigo.jadice.server.converterclient.configurations;
 
 import com.levigo.jadice.server.Job;
-import com.levigo.jadice.server.client.JobFactory;
 import com.levigo.jadice.server.msoffice.MSOutlookNode;
 import com.levigo.jadice.server.nodes.DynamicPipelineNode;
 import com.levigo.jadice.server.nodes.StreamInputNode;
@@ -10,14 +9,12 @@ import com.levigo.jadice.server.pdf.PDFMergeNode;
 
 public class OutlookConfig implements WorkflowConfiguration {
 
-  public Job configureWorkflow(JobFactory jobFactory) throws Exception {
-    final Job j = jobFactory.createJob();
-    j.attach(new StreamInputNode()//
-    .appendSuccessor(new MSOutlookNode()) //
-    .appendSuccessor(new DynamicPipelineNode()) //
-    .appendSuccessor(new PDFMergeNode()) //
-    .appendSuccessor(new StreamOutputNode()));
-    return j;
+  public void configureWorkflow(Job job) {
+    job.attach(new StreamInputNode()//
+        .appendSuccessor(new MSOutlookNode()) //
+        .appendSuccessor(new DynamicPipelineNode()) //
+        .appendSuccessor(new PDFMergeNode()) //
+        .appendSuccessor(new StreamOutputNode()));
   }
 
   public String getDescription() {

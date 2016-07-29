@@ -16,7 +16,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
@@ -47,10 +46,6 @@ public class OptionsPaneController {
   @FXML
   private Slider jmsJobPriority;
 
-  @FXML
-  private CheckBox cacheJobFactory;
-  
-  
   @FXML
   private TextField resultFolder;
   
@@ -159,7 +154,6 @@ public class OptionsPaneController {
     jmsRequestQueue.textProperty().bindBidirectional(Preferences.jmsRequestQueueNameProperty());
     jmsLogTopic.textProperty().bindBidirectional(Preferences.jmsLogTopicNameProperty());
     jmsJobPriority.valueProperty().bindBidirectional(Preferences.jmsJobPriority());
-    cacheJobFactory.selectedProperty().bindBidirectional(Preferences.cacheJmsJobFactoryProperty());
 
     // JMX Settings
     jmxUsername.textProperty().bindBidirectional(Preferences.jmxUsernameProperty());

@@ -58,8 +58,6 @@
 	<TextField fx:id="jmsLogTopic" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 	<Label text="%options.jms.job-priority" GridPane.rowIndex="4" />
 	<Slider fx:id="jmsJobPriority" blockIncrement="1.0" majorTickUnit="1.0" max="9.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="4.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-	<Label text="%options.jms.job-factory" GridPane.rowIndex="5" />
-	<CheckBox fx:id="cacheJobFactory" mnemonicParsing="false" text="%options.jms.cache-job-factory" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 </children>
 <padding>
 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

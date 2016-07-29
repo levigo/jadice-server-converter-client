@@ -62,8 +62,6 @@ import de.jensd.fx.glyphs.GlyphIcons;
 import de.jensd.fx.glyphs.GlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
-
-
 public class ConversionPaneController {
 
   private static final Logger LOGGER = Logger.getLogger(ConversionPaneController.class);

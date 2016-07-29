@@ -59,13 +59,13 @@ public class JMXHandler implements NotificationListener {
       }
       
       boolean lowTraffic = false;
-      if (System.currentTimeMillis() - lastJobEvent > LOW_TRAFFIC_PERFORMANCE_UPDATE_INTERVALL) {
+      if (System.currentTimeMillis() - lastJobEvent > LOW_TRAFFIC_PERFORMANCE_UPDATE_INTERVAL) {
         lowTraffic = true;
       }
       
-      final long updateIntervall = lowTraffic ? LOW_TRAFFIC_PERFORMANCE_UPDATE_INTERVALL : HIGH_TRAFFIC_PERFOMANCE_UPDATE_INTERVALL;
+      final long updateInterval = lowTraffic ? LOW_TRAFFIC_PERFORMANCE_UPDATE_INTERVAL : HIGH_TRAFFIC_PERFOMANCE_UPDATE_INTERVAL;
       
-      if (System.currentTimeMillis() - lastPerformanceUpdate > updateIntervall) {
+      if (System.currentTimeMillis() - lastPerformanceUpdate > updateInterval) {
         try {
           final ObjectInstance serverStatisticsBean = getServerStatisticsBean(mbsc);
           final ObjectInstance schedulerBean = getJobSchedulerBean(mbsc);
@@ -89,9 +89,9 @@ public class JMXHandler implements NotificationListener {
 
   private static final Logger LOGGER = Logger.getLogger(JMXHandler.class);
   
-  private static final long LOW_TRAFFIC_PERFORMANCE_UPDATE_INTERVALL = TimeUnit.SECONDS.toMillis(10);
+  private static final long LOW_TRAFFIC_PERFORMANCE_UPDATE_INTERVAL = TimeUnit.SECONDS.toMillis(10);
   
-  private static final long HIGH_TRAFFIC_PERFOMANCE_UPDATE_INTERVALL = TimeUnit.SECONDS.toMillis(1);
+  private static final long HIGH_TRAFFIC_PERFOMANCE_UPDATE_INTERVAL = TimeUnit.SECONDS.toMillis(1);
 
   private final CallbackHandler callbackHandler;
   
@@ -105,7 +105,7 @@ public class JMXHandler implements NotificationListener {
 
   public JMXHandler(CallbackHandler callbackHandler) {
     this.callbackHandler = callbackHandler;
-    Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new PerformanceUpdate(), 0, HIGH_TRAFFIC_PERFOMANCE_UPDATE_INTERVALL, TimeUnit.MILLISECONDS);
+    Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new PerformanceUpdate(), 0, HIGH_TRAFFIC_PERFOMANCE_UPDATE_INTERVAL, TimeUnit.MILLISECONDS);
   }
 
   public void openConnection(String url) {

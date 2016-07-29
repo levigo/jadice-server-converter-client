@@ -23,7 +23,7 @@
 	</FlowPane>
 </top>
 <bottom><FlowPane alignment="BOTTOM_RIGHT" columnHalignment="RIGHT" rowValignment="BOTTOM" BorderPane.alignment="CENTER">
-<children><Button fx:id="restoreDefaults" mnemonicParsing="false" text="%options.restore-defaults" onAction="#restoreDefaults" />
+<children><Button fx:id="restoreDefaults" mnemonicParsing="false" onAction="#restoreDefaults" text="%options.restore-defaults" />
 </children>
 <BorderPane.margin>
 <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -56,8 +56,6 @@
 	<TextField fx:id="jmsRequestQueue" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 	<Label text="%options.jms.log-topic" GridPane.rowIndex="3" />
 	<TextField fx:id="jmsLogTopic" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-	<Label text="%options.jms.job-factory" GridPane.rowIndex="5" />
-	<CheckBox fx:id="cacheJobFactory" mnemonicParsing="false" text="%options.jms.cache-job-factory" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 	<Label text="%options.jms.job-priority" GridPane.rowIndex="4" />
 	<Slider fx:id="jmsJobPriority" blockIncrement="1.0" majorTickUnit="1.0" max="9.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="4.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 </children>
@@ -98,6 +96,10 @@
 <AnchorPane>
 <children><GridPane hgap="5.0" maxHeight="-Infinity" vgap="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 <children>
+<Label text="%options.misc.concurrent-jobs" />
+<Slider fx:id="concurrentJobs" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" />
+                              <Label text="%options.misc.job-locale" GridPane.rowIndex="1" />
+                              <ComboBox fx:id="jobLocale" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 <Label text="%options.misc.results-folder" GridPane.rowIndex="2" />
 <GridPane maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
 <children>
@@ -112,15 +114,11 @@
 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
 </rowConstraints>
 </GridPane>
-<Label text="%options.misc.concurrent-jobs" />
-<Slider fx:id="concurrentJobs" blockIncrement="1.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" GridPane.columnIndex="1" />
 <Label text="%options.misc.default-extension" GridPane.rowIndex="3" />
 <TextField fx:id="defaultExtension" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 <Label text="%options.misc.result-filename-pattern" GridPane.rowIndex="4" />
 <TextField fx:id="resultFilename" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 <Text fx:id="patternExplanation" strokeType="OUTSIDE" strokeWidth="0.0" text="&lt;pattern explanation&gt;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-<Label text="%options.misc.server-history" GridPane.rowIndex="7" />
-<Button fx:id="clearServerHistory" mnemonicParsing="false" onAction="#clearServerHistory" text="%options.misc.clear-server-history" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 <Label text="%options.misc.updates.title" GridPane.rowIndex="6" /><FlowPane hgap="15.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
 <children><RadioButton fx:id="checkUpdatesOnStart" mnemonicParsing="false" text="%options.misc.updates.check-on-start">
 <toggleGroup>
@@ -130,8 +128,8 @@
 <Insets />
 </FlowPane.margin></RadioButton><RadioButton fx:id="neverCheckUpdates" mnemonicParsing="false" text="%options.misc.updates.check-never" toggleGroup="$updateCheckGroup" /><Button fx:id="checkUpdatesNow" mnemonicParsing="false" onAction="#checkUpdatesNow" text="%options.misc.updates.check-now" />
 </children></FlowPane>
-                              <Label text="%options.misc.job-locale" GridPane.rowIndex="1" />
-                              <ComboBox fx:id="jobLocale" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+<Label text="%options.misc.server-history" GridPane.rowIndex="7" />
+<Button fx:id="clearServerHistory" mnemonicParsing="false" onAction="#clearServerHistory" text="%options.misc.clear-server-history" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 </children>
 <columnConstraints>
 <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="NEVER" minWidth="10.0" prefWidth="130.0" />

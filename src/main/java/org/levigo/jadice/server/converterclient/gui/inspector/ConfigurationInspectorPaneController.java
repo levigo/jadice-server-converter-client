@@ -20,8 +20,6 @@ import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 import com.levigo.jadice.server.Job;
 import com.levigo.jadice.server.Node;
-import com.levigo.jadice.server.client.JobFactory;
-import com.levigo.jadice.server.client.jms.JMSJobFactory;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleListProperty;
@@ -69,9 +67,6 @@ public class ConfigurationInspectorPaneController implements NodeSelectionListen
 	
 	private final WorkflowDisplay display = new WorkflowDisplay();
 	
-	private final JobFactory dummyJobFactory = initDummyJobFactory();
-	
-	
   @FXML
   protected void initialize() {
     UiUtil.configureHomeButton(home);
@@ -100,11 +95,7 @@ public class ConfigurationInspectorPaneController implements NodeSelectionListen
     LOGGER.info("Created java code:\n" + java);
   }
 
-  private JobFactory initDummyJobFactory() {
-    return new JMSJobFactory(new DummyQueueConnectionFactory(), "DUMMY");
-  }
-
-	private void initConfigurationCB() {
+  private void initConfigurationCB() {
 	  configurations.itemsProperty().bind(new SimpleListProperty<>(JobCardFactory.getInstance().getConfigurations()));
     final StringConverter<WorkflowConfiguration> sc = new StringConverter<WorkflowConfiguration>() {
       @Override
@@ -144,12 +135,13 @@ public class ConfigurationInspectorPaneController implements NodeSelectionListen
 	  });
 	}
 
-	private void showGraph(WorkflowConfiguration item) throws Exception {
-		final Job dummyJob = item.configureWorkflow(dummyJobFactory);
-		SwingUtilities.invokeLater(() -> {
-		  display.showJob(dummyJob);
-		}); 
-	}
+  private void showGraph(WorkflowConfiguration item) throws Exception {
+    final Job dummyJob = new DummyJob();
+    item.configureWorkflow(dummyJob);
+    SwingUtilities.invokeLater(() -> {
+      display.showJob(dummyJob);
+    });
+  }
 
 	public void deselected(Node deselected) {
 		LOGGER.debug("DESELECTED: " + deselected);

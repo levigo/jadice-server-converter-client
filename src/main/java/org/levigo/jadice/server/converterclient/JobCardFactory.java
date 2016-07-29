@@ -8,16 +8,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
-import javax.jms.JMSException;
-
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.log4j.Logger;
 import org.levigo.jadice.server.converterclient.configurations.WorkflowConfiguration;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -27,29 +20,32 @@ import org.springframework.core.type.filter.AssignableTypeFilter;
 import com.levigo.jadice.server.Job;
 import com.levigo.jadice.server.Limit;
 import com.levigo.jadice.server.Node;
-import com.levigo.jadice.server.client.jms.JMSJobFactory;
 import com.levigo.jadice.server.nodes.StreamInputNode;
 import com.levigo.jadice.server.nodes.StreamOutputNode;
 import com.levigo.jadice.server.util.NodeTraversal;
 import com.levigo.jadice.server.util.NodeVisitor;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class JobCardFactory {
+  
+  private static final Logger LOGGER = Logger.getLogger(JobCardFactory.class);
 
-  private static Logger LOGGER = Logger.getLogger(JobCardFactory.class);
-
-  private static JobCardFactory instance = new JobCardFactory();
+  private static final JobCardFactory INSTANCE = new JobCardFactory();
 
   public static JobCardFactory getInstance() {
-    return instance;
+    return INSTANCE;
   }
 
   private JobCardFactory() {
+
   }
 
   private Map<String, WorkflowConfiguration> configurations = null;
 
   private Set<JobCardListener> listeners = new HashSet<>();
-  
+
   public ObservableList<WorkflowConfiguration> getConfigurations() {
     TreeSet<WorkflowConfiguration> result = new TreeSet<>(new Comparator<WorkflowConfiguration>() {
       public int compare(WorkflowConfiguration conf1, WorkflowConfiguration conf2) {
@@ -103,23 +99,23 @@ public class JobCardFactory {
 
   }
 
-  public JobCard createAndSubmitJobCard(File file, String serverLocation, WorkflowConfiguration config, Collection<Limit> jobLimits) throws Exception {
+  public JobCard createAndSubmitJobCard(File file, String serverLocation, WorkflowConfiguration config,
+      Collection<Limit> jobLimits) throws Exception {
     return createAndSubmitJobCard(Collections.singletonList(file), serverLocation, config, jobLimits);
   }
 
-  public JobCard createAndSubmitJobCard(List<File> files, String serverLocation, WorkflowConfiguration config, Collection<Limit> jobLimits)
-      throws Exception {
+  public JobCard createAndSubmitJobCard(List<File> files, String serverLocation, WorkflowConfiguration config,
+      Collection<Limit> jobLimits) throws Exception {
     if (!Preferences.recentServersProperty().contains(serverLocation)) {
       // Store server URL in history
       Preferences.recentServersProperty().add(serverLocation);
     }
-    
-    JMSJobFactory jobFactory = getCachedJobFactory(serverLocation);
-    // Configure Workflow
-    Job job = config.configureWorkflow(jobFactory);
+
+    final Job job = JobFactoryCache.getInstance().createJob(serverLocation);
+    config.configureWorkflow(job);
     job.setType(config.getID());
     job.setClientLocale(Preferences.jobLocaleProperty().get());
-    
+
     if (jobLimits != null) {
       for (Limit limit : jobLimits) {
         job.apply(limit);
@@ -145,46 +141,8 @@ public class JobCardFactory {
     return jobCard;
   }
 
-
-  private JMSJobFactory jobFactory;
-
-  private ActiveMQConnectionFactory amqConnectionFactory;
-  
-  private String jmsRequestQueueName;
-
-  private JMSJobFactory getCachedJobFactory(String serverLocation) throws JMSException {
-    final String jmsUsername = Preferences.jmsUsernameProperty().getValue();
-    final String jmsPassword = Preferences.jmsPasswordProperty().getValue();
-    final String jmsRequestQueueName = Preferences.jmsRequestQueueNameProperty().getValue();
-    final int jmsJobPriority = Preferences.jmsJobPriority().getValue();
-
-    boolean mustRecreate = !Preferences.cacheJmsJobFactoryProperty().getValue();
-    if (jobFactory == null || amqConnectionFactory == null || jmsRequestQueueName == null) {
-      mustRecreate = true;
-    }
-    
-    if (mustRecreate //
-        || !Objects.equals(amqConnectionFactory.getBrokerURL(), serverLocation)//
-        || !Objects.equals(amqConnectionFactory.getUserName(), jmsUsername)//
-        || !Objects.equals(amqConnectionFactory.getPassword(), jmsPassword)//
-        || !Objects.equals(this.jmsRequestQueueName, jmsRequestQueueName)
-        || jobFactory.getDefaultPriority() != jmsJobPriority) {
-      mustRecreate = true;
-    }
-    
-    if (mustRecreate) {
-      this.jmsRequestQueueName = jmsRequestQueueName;
-      amqConnectionFactory = new ActiveMQConnectionFactory(serverLocation);
-      amqConnectionFactory.setUserName(jmsUsername);
-      amqConnectionFactory.setPassword(jmsPassword);
-      jobFactory = new JMSJobFactory(amqConnectionFactory, jmsRequestQueueName);
-      jobFactory.setDefaultPriority(jmsJobPriority);
-      
-    }
-    return jobFactory;
-  }
-
-  public JobCard cloneAndSubmitJob(JobCard oldJob, String serverLocation, Collection<Limit> jobLimits) throws Exception {
+  public JobCard cloneAndSubmitJob(JobCard oldJob, String serverLocation, Collection<Limit> jobLimits)
+      throws Exception {
     return createAndSubmitJobCard(oldJob.files, serverLocation, oldJob.config, jobLimits);
 
   }

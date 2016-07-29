@@ -1,11 +1,9 @@
 import java.io.File;
 import java.util.List;
 
-import javafx.application.Application;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionGroup;
@@ -16,6 +14,8 @@ import org.levigo.jadice.server.converterclient.JobCardFactory;
 import org.levigo.jadice.server.converterclient.configurations.WorkflowConfiguration;
 import org.levigo.jadice.server.converterclient.gui.ConverterClientApplication;
 
+import javafx.application.Application;
+
 
 public class ConverterClient {
 	
@@ -23,7 +23,7 @@ public class ConverterClient {
 
 	public static void main(String[] args) throws Exception {
 		Options opt = buildOptions();
-		CommandLineParser parser = new GnuParser();
+		CommandLineParser parser = new DefaultParser();
 		try {
 			CommandLine cl = parser.parse(opt, args);
 			evalCommandLine(opt, cl);

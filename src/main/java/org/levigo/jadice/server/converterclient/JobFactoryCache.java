@@ -1,6 +1,7 @@
 package org.levigo.jadice.server.converterclient;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
+import org.apache.log4j.Logger;
 
 import com.levigo.jadice.server.ConnectionException;
 import com.levigo.jadice.server.Job;
@@ -17,6 +18,8 @@ import net.sf.ehcache.constructs.blocking.SelfPopulatingCache;
 import net.sf.ehcache.event.CacheEventListenerAdapter;
 
 public class JobFactoryCache {
+  
+  private static final Logger LOGGER = Logger.getLogger(JobFactoryCache.class); 
   
   private static class CacheKey {
 
@@ -110,6 +113,7 @@ public class JobFactoryCache {
       amqConnectionFactory.setPassword(key2.jmsPassword);
       final JMSJobFactory result = new JMSJobFactory(amqConnectionFactory, key2.jmsRequestQueueName);
       result.setDefaultPriority(key2.jmsJobPriority);
+      LOGGER.info("Creating new job factory to " + key2.serverLocation + " as " + result.toString());
       return result;
     });
     jobFactoryCache.getCacheEventNotificationService().registerListener(new CacheEventListenerAdapter() {
@@ -131,6 +135,7 @@ public class JobFactoryCache {
       private void invalidateElement(Element element) {
         if (element.getObjectValue() instanceof JobFactory) {
           JobFactory jf = (JobFactory) element.getObjectValue();
+          LOGGER.info("Closing job factory " + jf.toString());
           jf.close();
         }
         
@@ -158,6 +163,7 @@ public class JobFactoryCache {
 
     if (element.getHitCount() == 0) {
       try {
+        LOGGER.info("Attempt to connect job factory " + jf.toString());
         jf.connect();
       } catch (ConnectionException e) {
         jobFactoryCache.remove(key);

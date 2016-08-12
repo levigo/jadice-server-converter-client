@@ -1,6 +1,7 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -80,16 +81,29 @@ public abstract class Marshaller {
     }
   }
   
+  public static String lookupVersion(InputStream is) throws MarshallingException {
+    try {
+      final JsonParser parser = new JsonFactory().createParser(is);
+      return lookupVersion(parser);
+    } catch (IOException e) {
+      throw new MarshallingException("Could not read serialization version", e);
+    }
+  }
+  
   public static String lookupVersion(String serialized) throws MarshallingException {
     try {
       final JsonParser parser = new JsonFactory().createParser(serialized);
-      while (parser.nextToken() != null) {
-        if (parser.getCurrentToken().isScalarValue() && parser.getCurrentName() == "version") {
-          return parser.getValueAsString();
-        }
-      }
+      return lookupVersion(parser);
     } catch (IOException e) {
       throw new MarshallingException("Could not read serialization version", e);
+    }
+  }
+
+  private static String lookupVersion(final JsonParser parser) throws IOException, MarshallingException {
+    while (parser.nextToken() != null) {
+      if (parser.getCurrentToken().isScalarValue() && parser.getCurrentName() == "version") {
+        return parser.getValueAsString();
+      }
     }
     throw new MarshallingException("No serialization version found");
   }
@@ -99,5 +113,7 @@ public abstract class Marshaller {
   public abstract String marshallPrettyPrint(ClusterHealthDTO dto) throws MarshallingException;
 
   public abstract ClusterHealthDTO unmarshall(String s) throws MarshallingException;
+  
+  public abstract ClusterHealthDTO unmarshall(InputStream is) throws MarshallingException;
 
 }

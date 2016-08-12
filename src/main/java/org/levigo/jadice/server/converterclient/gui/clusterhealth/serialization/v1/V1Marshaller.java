@@ -1,6 +1,7 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.v1;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import org.levigo.jadice.server.converterclient.gui.clusterhealth.serialization.Marshaller;
@@ -44,7 +45,13 @@ public class V1Marshaller extends Marshaller {
     }
   }
 
-
-
-  
+  @Override
+  public ClusterHealthDTO unmarshall(InputStream is) throws MarshallingException {
+    try {
+      final ClusterHealth ch = objectMapper.readValue(is, ClusterHealth.class);
+      return mapper.unmap(ch);
+    } catch (IOException e) {
+      throw new MarshallingException("Could not unmarshall", e);
+    }
+  }
 }

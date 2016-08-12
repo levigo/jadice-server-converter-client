@@ -4,29 +4,22 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.GridView?>
 
 <BorderPane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="870.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.levigo.jadice.server.converterclient.gui.MetroMenuPaneController" styleClass="metro-menu">
-<center><GridPane alignment="BASELINE_LEFT" hgap="15.0" vgap="15.0">
-  <columnConstraints>
-    <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
-    <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
-    <ColumnConstraints fillWidth="false" halignment="LEFT" hgrow="NEVER" maxWidth="-Infinity" minWidth="-Infinity" />
-  </columnConstraints>
-  <rowConstraints>
-    <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" valignment="TOP" vgrow="NEVER" />
-    <RowConstraints fillHeight="false" maxHeight="-Infinity" minHeight="-Infinity" valignment="TOP" vgrow="NEVER" />
-  </rowConstraints>
-<children>
+<center>
+  <TilePane hgap="15.0" vgap="15.0" >
+   <children>
 	<Button fx:id="conversion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="250.0" prefWidth="250.0" styleClass="button-navigation" text="%menu.conversion" AnchorPane.leftAnchor="10.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
 	<Button fx:id="serverLog" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="250.0" prefWidth="250.0" styleClass="button-navigation" text="%menu.server-log" AnchorPane.leftAnchor="280.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
 	<Button fx:id="clusterHealth" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="250.0" prefWidth="250.0" styleClass="button-navigation" text="%menu.cluster-health" AnchorPane.leftAnchor="550.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-	<Button fx:id="jmx" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="250.0" prefWidth="250.0" styleClass="button-navigation" text="%menu.jmx" AnchorPane.leftAnchor="280.0" AnchorPane.topAnchor="270.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
 	<Button fx:id="inspector" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="250.0" prefWidth="250.0" styleClass="button-navigation" text="%menu.inspector" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="270.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-</children>
-<BorderPane.margin>
-<Insets left="45.0" />
-</BorderPane.margin>
-</GridPane>
+	<Button fx:id="jmx" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="250.0" prefWidth="250.0" styleClass="button-navigation" text="%menu.jmx" AnchorPane.leftAnchor="280.0" AnchorPane.topAnchor="270.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+   </children>
+     <padding>
+      <Insets left="40.0" right="40.0"/>
+   </padding>
+  </TilePane>
 </center>
 <top><BorderPane BorderPane.alignment="CENTER">
 <left><FlowPane BorderPane.alignment="CENTER">

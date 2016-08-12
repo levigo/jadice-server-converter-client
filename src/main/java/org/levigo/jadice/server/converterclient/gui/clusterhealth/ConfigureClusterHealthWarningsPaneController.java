@@ -221,7 +221,7 @@ public class ConfigureClusterHealthWarningsPaneController {
       this.constr = constr;
       
       if (existingRule.isPresent()) {
-        checkbox.setSelected(true);
+        checkbox.setSelected(existingRule.get().isEnabled());
         valueField.setText(existingRule.get().getLimit().toString());
         limitProperty.set(existingRule.get());
       }
@@ -240,8 +240,14 @@ public class ConfigureClusterHealthWarningsPaneController {
     }
     
     private void buildRule() {
-      if (!checkbox.isSelected() || !isInputValid(validationSupport)) {
+      if (!checkbox.isSelected() && valueField.getText().isEmpty()) {
+        // Clear rule
         limitProperty.set(null);
+        return;
+      }
+      
+      if (!isInputValid(validationSupport)) {
+        // Don't change the current limit rule
         return;
       }
 

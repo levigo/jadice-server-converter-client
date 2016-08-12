@@ -55,7 +55,7 @@ public class TestMarshaller {
   
   @BeforeClass
   public static void createInstances() {
-    INSTANCES =FXCollections.observableArrayList();
+    INSTANCES = FXCollections.observableArrayList();
     INSTANCES.add("localhost:61619");
     INSTANCES.add("jadice-server.example.com:61619");
   }

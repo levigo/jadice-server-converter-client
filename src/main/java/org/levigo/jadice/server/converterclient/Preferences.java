@@ -352,6 +352,7 @@ public class Preferences {
       InvalidationListener il = (Observable observable) -> {
           try {
             final String marshalled = Marshaller.getDefault().marshall(clusterHealthProperty.get());
+            LOGGER.debug("Storing changed cluster health config: " + marshalled);
             putNullSafe(Keys.CLUSTER_HEALTH, marshalled);
           } catch (MarshallingException e) {
             LOGGER.error("Could not store cluster health preferences", e);

@@ -1,6 +1,7 @@
 package org.levigo.jadice.server.converterclient.gui.clusterhealth;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -78,7 +79,7 @@ public class ClusterHealthPaneController {
 
   private PopOver defineWarningsPopover;
 
-  private File lastExportDir;
+  private File lastImportExportDir;
 
   private ExtensionFilter settingsExtensionFilter;
 
@@ -195,8 +196,8 @@ public class ClusterHealthPaneController {
     FileChooser fc = new FileChooser();
     fc.setTitle(resources.getString("cluster-health.export-settings"));
     fc.getExtensionFilters().add(settingsExtensionFilter);
-    if (lastExportDir != null && lastExportDir.isDirectory()) {
-      fc.setInitialDirectory(lastExportDir);
+    if (lastImportExportDir != null && lastImportExportDir.isDirectory()) {
+      fc.setInitialDirectory(lastImportExportDir);
     }
     final File file = fc.showSaveDialog(gridView.getScene().getWindow());
     if (file == null) {
@@ -217,8 +218,45 @@ public class ClusterHealthPaneController {
       dialog.initOwner(gridView.getScene().getWindow());
       dialog.show();
     } finally {
-      lastExportDir = file.getParentFile();
+      lastImportExportDir = file.getParentFile();
     }
   }
 
+  @FXML
+  public void importSettings() {
+    FileChooser fc = new FileChooser();
+    fc.setTitle(resources.getString("cluster-health.import-settings"));
+    fc.getExtensionFilters().add(settingsExtensionFilter);
+    if (lastImportExportDir != null && lastImportExportDir.isDirectory()) {
+      fc.setInitialDirectory(lastImportExportDir);
+    }
+    final File file = fc.showOpenDialog(gridView.getScene().getWindow());
+    if (file == null) {
+      LOGGER.info("Action cancelled by user");
+      return;
+    }
+    try {
+      final String version = Marshaller.lookupVersion(new FileInputStream(file));
+      LOGGER.debug("Try to unmarshall a setting with version " + version);
+      final ClusterHealthDTO newConfig = Marshaller.get(version).unmarshall(new FileInputStream(file));
+      final ClusterHealthDTO currentConfig = Preferences.clusterHealthProperty().getValue();
+      currentConfig.instances.setAll(newConfig.instances);
+      currentConfig.rules.setAll(newConfig.rules);
+      currentConfig.autoUpdateEnabled.set(newConfig.autoUpdateEnabled.get());
+      currentConfig.autoUpdateInterval.set(newConfig.autoUpdateInterval.get());
+      LOGGER.info("Imported settings from file " + file + " successfully");
+    } catch (MarshallingException | IOException e) {
+      LOGGER.error("Could not import settings", e);
+      final ExceptionDialog dialog = new ExceptionDialog(e);
+      dialog.setTitle(resources.getString("dialogs.cluster-health.import-settings-error.title"));
+      dialog.setHeaderText(resources.getString("dialogs.cluster-health.import-settings-error.masthead"));
+      dialog.setContentText(
+          String.format(resources.getString("dialogs.cluster-health.import-settings-error.message"), file.getAbsolutePath()));
+      dialog.initOwner(gridView.getScene().getWindow());
+      dialog.show();
+    } finally {
+      lastImportExportDir = file.getParentFile();
+    }
+    
+  }
 }

@@ -173,14 +173,14 @@ public class ClusterHealthPaneController {
     });
     settings.instances.addListener((ListChangeListener<? super String>) change -> {
       while (change.next()) {
+        change.getRemoved().forEach(removed -> {
+          controlElements.removeIf(sc -> sc.getClusterInstance().getServerName().equals(removed));
+        });
         change.getAddedSubList().forEach(added -> {
           final StatusControl newInstance = new StatusControl(new ClusterInstance(added), this);
           controlElements.add(newInstance);
           runUpdateAsyn(newInstance);
         });
-        if (change.wasRemoved()) {
-          controlElements.remove(change.getFrom());
-        }
         // TODO: Support for permutation / update
       }
       // Workaround against GridView issue #494

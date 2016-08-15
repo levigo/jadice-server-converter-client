@@ -41,6 +41,10 @@ public class ClusterInstance {
   public StringProperty serverNameProperty() {
     return serverNameProperty;
   }
+  
+  public String getServerName() {
+    return serverNameProperty.get();
+  }
 
   public ObjectProperty<HealthStatus> healthProperty() {
     return healthProperty;

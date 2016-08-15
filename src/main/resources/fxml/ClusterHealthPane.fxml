@@ -73,13 +73,13 @@
 				
                 <Button text="%cluster-health.export-settings" contentDisplay="GRAPHIC_ONLY" onAction="#exportSettings">
                   <graphic>
-                    <FontAwesomeIconView glyphName="DOWNLOAD" size="25px" />
+                    <FontAwesomeIconView glyphName="UPLOAD" size="25px" />
                   </graphic>
                 </Button>
                        
                 <Button text="%cluster-health.import-settings" contentDisplay="GRAPHIC_ONLY" onAction="#importSettings">
                   <graphic>
-                    <FontAwesomeIconView glyphName="UPLOAD" size="25px" />
+                    <FontAwesomeIconView glyphName="DOWNLOAD" size="25px" />
                   </graphic>
                 </Button>
                 

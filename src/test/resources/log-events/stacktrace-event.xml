@@ -1,0 +1,4 @@
+<log4j:event logger="com.example.MyClass" timestamp="1471940217427" level="INFO" thread="main">
+<log4j:message><![CDATA[This is a test message]]></log4j:message>
+<log4j:throwable><![CDATA[java.lang.IllegalArgumentException: This a is test]]></log4j:throwable>
+</log4j:event>

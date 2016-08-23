@@ -1,9 +1,20 @@
 package org.levigo.jadice.server.converterclient.gui.serverlog;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.ResourceBundle;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.controlsfx.dialog.ExceptionDialog;
+import org.levigo.jadice.server.converterclient.Preferences;
+import org.levigo.jadice.server.converterclient.gui.Icons;
+import org.levigo.jadice.server.converterclient.util.LogEvent;
+import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -18,22 +29,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.ObjectMessage;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.spi.LoggingEvent;
-import org.controlsfx.dialog.ExceptionDialog;
-import org.levigo.jadice.server.converterclient.Preferences;
-import org.levigo.jadice.server.converterclient.gui.Icons;
-import org.levigo.jadice.server.converterclient.util.UiUtil;
-
-import com.levigo.jadice.server.util.Util;
-
 
 public class LogPaneController implements MessageListener {
   
@@ -55,25 +50,25 @@ public class LogPaneController implements MessageListener {
   private CheckBox scrollLock;
   
   @FXML
-  private TableView<LoggingEvent> logMessages;
+  private TableView<LogEvent> logMessages;
   
   @FXML
-  private TableColumn<LoggingEvent, String> timestamp;
+  private TableColumn<LogEvent, String> timestamp;
   
   @FXML
-  private TableColumn<LoggingEvent, Level> level;
+  private TableColumn<LogEvent, Level> level;
   
   @FXML
-  private TableColumn<LoggingEvent, String> ndc;
+  private TableColumn<LogEvent, String> ndc;
   
   @FXML
-  private TableColumn<LoggingEvent, String> logger;
+  private TableColumn<LogEvent, String> logger;
   
   @FXML
-  private TableColumn<LoggingEvent, Object> message;
+  private TableColumn<LogEvent, String> message;
   
   @FXML
-  private TableColumn<LoggingEvent, String> stacktrace;
+  private TableColumn<LogEvent, String> stacktrace;
   
   @FXML
   private ResourceBundle resources;
@@ -87,21 +82,21 @@ public class LogPaneController implements MessageListener {
     logMessages.setItems(FXCollections.observableArrayList());
     timestamp.setCellValueFactory(cell -> 
       new SimpleStringProperty(new SimpleDateFormat(resources.getString("server-log.table.timestamp-format")) //
-        .format(new Date(cell.getValue().getTimeStamp())))
+        .format(cell.getValue().timestampProperty().getValue()))
     );
     
     // TODO: Set text color according to the level
-    level.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getLevel()));
-    ndc.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getNDC()));
-    logger.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getLoggerName()));
-    message.setCellValueFactory(cell -> new SimpleObjectProperty<>(cell.getValue().getMessage()));
-    stacktrace.setCellValueFactory(cell -> {
+    level.setCellValueFactory(cell -> cell.getValue().levelProperty());
+    ndc.setCellValueFactory(cell -> cell.getValue().ndcProperty());
+    logger.setCellValueFactory(cell -> cell.getValue().loggerNameProperty());
+    message.setCellValueFactory(cell -> cell.getValue().messageProperty());
+    stacktrace.setCellValueFactory(cell -> cell.getValue().stacktraceProperty()/*{ new 
       final String[] raw = cell.getValue().getThrowableStrRep();
       if (raw == null || raw.length <= 0) {
         return null;
       }
       return new SimpleObjectProperty<>(Util.join(Arrays.asList(raw), "\n"));
-    });
+    }*/);
 
     servers.itemsProperty().bind(Preferences.recentServersProperty());
     servers.setValue(servers.getItems().get(0));
@@ -148,14 +143,15 @@ public class LogPaneController implements MessageListener {
   @Override
   public void onMessage(Message message) {
     try {
-      if (!(message instanceof ObjectMessage)) {
+      if (!(message instanceof TextMessage)) {
+        LOGGER.warn("Expected a TextMessage but got a " + message.getClass().getSimpleName());
         return;
       }
-      Object o = ((ObjectMessage) message).getObject();
-      if (!(o instanceof LoggingEvent)) {
-        return;
-      }
-      final LoggingEvent logEvent = (LoggingEvent) o;
+      
+      String raw = ((TextMessage) message).getText();
+      LOGGER.debug("Received log event: " + raw);
+
+      final LogEvent logEvent = LogEvent.parse(raw);
       Platform.runLater(() -> {
         logMessages.getItems().add(logEvent);
         if (!scrollLock.isSelected()) {

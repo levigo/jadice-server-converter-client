@@ -1,5 +1,6 @@
 package org.levigo.jadice.server.converterclient.gui.serverlog;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
@@ -14,6 +15,7 @@ import org.controlsfx.dialog.ExceptionDialog;
 import org.levigo.jadice.server.converterclient.Preferences;
 import org.levigo.jadice.server.converterclient.gui.Icons;
 import org.levigo.jadice.server.converterclient.util.LogEvent;
+import org.levigo.jadice.server.converterclient.util.LogEventParser;
 import org.levigo.jadice.server.converterclient.util.UiUtil;
 
 import javafx.application.Platform;
@@ -90,13 +92,7 @@ public class LogPaneController implements MessageListener {
     ndc.setCellValueFactory(cell -> cell.getValue().ndcProperty());
     logger.setCellValueFactory(cell -> cell.getValue().loggerNameProperty());
     message.setCellValueFactory(cell -> cell.getValue().messageProperty());
-    stacktrace.setCellValueFactory(cell -> cell.getValue().stacktraceProperty()/*{ new 
-      final String[] raw = cell.getValue().getThrowableStrRep();
-      if (raw == null || raw.length <= 0) {
-        return null;
-      }
-      return new SimpleObjectProperty<>(Util.join(Arrays.asList(raw), "\n"));
-    }*/);
+    stacktrace.setCellValueFactory(cell -> cell.getValue().stacktraceProperty());
 
     servers.itemsProperty().bind(Preferences.recentServersProperty());
     servers.setValue(servers.getItems().get(0));
@@ -151,14 +147,14 @@ public class LogPaneController implements MessageListener {
       String raw = ((TextMessage) message).getText();
       LOGGER.debug("Received log event: " + raw);
 
-      final LogEvent logEvent = LogEvent.parse(raw);
+      final LogEvent logEvent = LogEventParser.getInstance().parse(raw);
       Platform.runLater(() -> {
         logMessages.getItems().add(logEvent);
         if (!scrollLock.isSelected()) {
             logMessages.scrollTo(logEvent);
         }
       });
-    } catch (JMSException e) {
+    } catch (JMSException | IOException e) {
       LOGGER.error("Cannot process message", e);
     }
   }

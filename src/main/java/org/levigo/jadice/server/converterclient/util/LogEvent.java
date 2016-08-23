@@ -63,9 +63,4 @@ public class LogEvent {
   public ReadOnlyStringProperty stacktraceProperty() {
     return stacktraceProperty;
   }
-
-  public static LogEvent parse(String raw) {
-    // TODO Auto-generated method stub
-    return null;
-  }
 }

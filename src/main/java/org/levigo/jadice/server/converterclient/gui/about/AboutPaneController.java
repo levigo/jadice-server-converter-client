@@ -45,7 +45,7 @@ public class AboutPaneController {
   }
 
   private void initLogView() {
-    Log4JForwarder.getInstance().setLogHandler(message -> {
+    Log4JForwarder.registerLogHandler(message -> {
       Platform.runLater(() -> {
         if (logView.getLength() == 0) {
           logView.setText(message);

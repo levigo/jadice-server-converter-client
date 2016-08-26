@@ -1,37 +1,18 @@
 package org.levigo.jadice.server.converterclient.util;
 
+import java.util.concurrent.CopyOnWriteArraySet;
+
 import org.apache.log4j.Layout;
 import org.apache.log4j.WriterAppender;
 import org.apache.log4j.spi.LoggingEvent;
 
 public class Log4JForwarder extends WriterAppender {
-
+  
   public static interface LogHandler {
     void appendLogEntry(String s);
   }
 
-  private static Log4JForwarder INSTANCE;
-
-  public static Log4JForwarder getInstance() {
-    if (INSTANCE == null) {
-      INSTANCE = new Log4JForwarder();
-    }
-    return INSTANCE;
-  }
-
-  public Log4JForwarder() {
-    INSTANCE = this;
-  }
-
-  private LogHandler handler;
-
-  public void setLogHandler(LogHandler handler) {
-    this.handler = handler;
-  }
-
-  public LogHandler getLogHandler() {
-    return handler;
-  }
+  private final static CopyOnWriteArraySet<LogHandler> HANDLERS = new CopyOnWriteArraySet<>();
 
   /**
    * Format and then append the loggingEvent to the stored TextArea.
@@ -40,18 +21,24 @@ public class Log4JForwarder extends WriterAppender {
    */
   @Override
   public void append(final LoggingEvent loggingEvent) {
-    if (handler == null) {
+    if (HANDLERS.isEmpty()) {
       return;
     }
     final String message = this.layout.format(loggingEvent);
-    handler.appendLogEntry(message);
+    HANDLERS.stream().forEach(h -> h.appendLogEntry(message));
     
     if (!layout.ignoresThrowable() || loggingEvent.getThrowableStrRep() == null) {
       return;
     }
     for (String s : loggingEvent.getThrowableStrRep()) {
-      handler.appendLogEntry(s);
-      handler.appendLogEntry(Layout.LINE_SEP);
+      HANDLERS.stream().forEach(h-> {
+          h.appendLogEntry(s);
+          h.appendLogEntry(Layout.LINE_SEP);
+      });
     }
+  }
+
+  public static void registerLogHandler(LogHandler handler) {
+    HANDLERS.add(handler);
   }
 }

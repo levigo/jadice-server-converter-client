@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.levigo.jadice.server.converterclient.util.FilenameGenerator;
 import org.levigo.jadice.server.converterclient.util.PasswordObfuscator;
 
-import com.levigo.jadice.server.client.jms.JMSJobFactory;
+import com.levigo.jadice.server.jms.client.JMSJobFactory;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ListProperty;

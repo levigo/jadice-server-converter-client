@@ -27,9 +27,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     
     <!-- Dependency versions -->
-    <jadice.server.version>5.4.7.0</jadice.server.version>
-    <levigo.utils.version>2.5.7</levigo.utils.version>
-    <filetype.analyzer.version>5.1.2.3</filetype.analyzer.version>
+    <jadice.server.version>5.5.0.0</jadice.server.version>
+    <levigo.utils.version>2.5.8</levigo.utils.version>
+    <filetype.analyzer.version>5.1.3.0</filetype.analyzer.version>
     <log4j.version>1.2.17</log4j.version>
     <slf4j.version>1.7.12</slf4j.version>
     <jfreechart.version>1.0.19</jfreechart.version>
@@ -43,7 +43,7 @@
     <ehcache.version>2.10.0</ehcache.version>
     
     <!-- Spring version as it is also managed by jadice server -->
-    <spring-context.version>4.1.4.RELEASE</spring-context.version>
+    <spring-context.version>4.1.6.RELEASE</spring-context.version>
   </properties>
 
   <build>
@@ -185,7 +185,7 @@
     </dependency>
     <dependency>
       <groupId>com.levigo.jadice.server</groupId>
-      <artifactId>server-shared</artifactId>
+      <artifactId>jms-transport-shared</artifactId>
       <version>${jadice.server.version}</version>
     </dependency>
     <dependency>

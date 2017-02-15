@@ -7,7 +7,7 @@ import com.levigo.jadice.server.ConnectionException;
 import com.levigo.jadice.server.Job;
 import com.levigo.jadice.server.JobException;
 import com.levigo.jadice.server.client.JobFactory;
-import com.levigo.jadice.server.client.jms.JMSJobFactory;
+import com.levigo.jadice.server.jms.client.JMSJobFactory;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheException;

@@ -43,7 +43,7 @@
     <ehcache.version>2.10.0</ehcache.version>
     
     <!-- Spring version as it is also managed by jadice server -->
-    <spring-context.version>4.1.4.RELEASE</spring-context.version>
+    <spring-context.version>4.1.6.RELEASE</spring-context.version>
   </properties>
 
   <build>

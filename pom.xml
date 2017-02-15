@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.levigo.jadice.server</groupId>
   <artifactId>jadice-server-converter-client</artifactId>
-  <version>1.8.1-SNAPSHOT</version>
+  <version>1.9.0</version>
 
   <name>jadice server :: Converter Client</name>
   <url>http://www.levigo.de</url>
@@ -11,7 +11,7 @@
     <connection>scm:git:ssh://git@github.com/levigo/jadice-server-converter-client.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/levigo/jadice-server-converter-client.git</developerConnection>
     <url>https://github.com/levigo/jadice-server-converter-client</url>
-    <tag>HEAD</tag>
+    <tag>jadice-server-converter-client-1.9.0</tag>
   </scm>  
 
   <distributionManagement>

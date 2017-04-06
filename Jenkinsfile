@@ -7,7 +7,7 @@ pipeline {
 	stages {
 		stage('Compile') {
 			steps {
-				sh 'mvn -B install -Dmaven.test.failure.ignore=true'
+				sh 'mvn -B test -Dmaven.test.failure.ignore=true'
 			}
 		}
 		stage('Archive') {

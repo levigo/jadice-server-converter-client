@@ -9,7 +9,9 @@
 pipeline {
 	agent {
 		docker '3.3.9-jdk-8'
-		}
+	}
+	options {
+		timeout (time: 30, unit: 'MINUTES')
 	}
 	/*tools {
 		maven 'M3' // Maven 3.3.9

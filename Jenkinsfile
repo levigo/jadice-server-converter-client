@@ -5,10 +5,21 @@ pipeline {
 		jdk 'JDK8' // JDK 8u112
 	}
 	stages {
-		stage('Clean') {
+		stage('Compile') {
 			steps {
-				sh 'mvn -B clean'
+				sh 'mvn -B install -Dmaven.test.failure.ignore=true'
 			}
+		}
+		stage('Archive') {
+			steps {
+				archive "*/target/*.exe"
+				junit '**/target/surefire-reports/*.xml'
+			}
+		}
+	}
+	post {
+		always {
+			deleteDir()
 		}
 	}
 }

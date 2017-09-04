@@ -25,6 +25,7 @@ pipeline {
 	}
 	*/
 	options {
+		buildDiscarder(logRotator(daysToKeepStr: '20')))
 		timeout (time: 10, unit: 'MINUTES')
 	}
 	stages {

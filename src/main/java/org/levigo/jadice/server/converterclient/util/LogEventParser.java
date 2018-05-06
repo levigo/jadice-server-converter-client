@@ -15,12 +15,11 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.xml.XMLLayout;
+import org.jadice.util.base.Strings;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.levigo.util.base.Strings;
 
 /**
  * Parses an XML snippet serialized with log4j's {@link XMLLayout}.

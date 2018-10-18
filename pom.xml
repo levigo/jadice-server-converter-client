@@ -27,7 +27,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- levigo dependencies -->
-    <jadice.server.version>5.7.0.0-SNAPSHOT</jadice.server.version>
+    <jadice.server.version>5.7.0.0</jadice.server.version>
     <jadice.utils.version>1.0.2</jadice.utils.version>
     <filetype.analyzer.version>5.2.0.0</filetype.analyzer.version>
 

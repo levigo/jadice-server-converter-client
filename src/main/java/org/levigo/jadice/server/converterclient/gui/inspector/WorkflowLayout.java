@@ -1,6 +1,6 @@
 package org.levigo.jadice.server.converterclient.gui.inspector;
 
-import com.levigo.util.base.Objects;
+import org.jadice.util.base.Objects;
 
 import prefuse.Constants;
 import prefuse.Visualization;

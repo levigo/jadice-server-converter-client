@@ -93,10 +93,10 @@
           </filters>   
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+              <mainClass>ConverterClient</mainClass>
               <manifestEntries>
                 <!-- Property is displayed in Application Title Bar and shall show JS version-->
                 <Implementation-Version>${jadice.server.version}</Implementation-Version>
-                <mainClass>ConverterClient</mainClass>
               </manifestEntries>
             </transformer>
           </transformers>

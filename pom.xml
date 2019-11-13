@@ -39,7 +39,7 @@
     <controlsfx.version>8.40.13</controlsfx.version>
     <enzo.version>0.3.6</enzo.version>
     <fontawesomefx.version>8.9</fontawesomefx.version>
-    <jackson.version>2.9.8</jackson.version>
+    <jackson.version>2.9.10.1</jackson.version>
     <junit.version>4.12</junit.version>
     <ehcache.version>2.10.6</ehcache.version>
     <commons-cli.version>1.4</commons-cli.version>

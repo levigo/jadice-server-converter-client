@@ -27,25 +27,25 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- levigo dependencies -->
-    <jadice.server.version>5.7.6.1</jadice.server.version>
-    <jadice.utils.version>1.1.3</jadice.utils.version>
-    <filetype.analyzer.version>5.2.1.0</filetype.analyzer.version>
+    <jadice.server.version>5.7.11.0</jadice.server.version>
+    <jadice.utils.version>3.0.43</jadice.utils.version>
+    <filetype.analyzer.version>5.3.0.0</filetype.analyzer.version>
 
     <log4j.version>1.2.17</log4j.version>
     <slf4j.version>1.7.25</slf4j.version>
     <jfreechart.version>1.0.19</jfreechart.version>
-    <activemq.version>5.15.9</activemq.version>
+    <activemq.version>5.15.11</activemq.version>
     <prefuse.version>beta-20130106</prefuse.version>
     <controlsfx.version>8.40.13</controlsfx.version>
     <enzo.version>0.3.6</enzo.version>
     <fontawesomefx.version>8.9</fontawesomefx.version>
-    <jackson.version>2.9.10.3</jackson.version>
-    <junit.version>4.12</junit.version>
-    <ehcache.version>2.10.6</ehcache.version>
+    <jackson.version>2.10.3</jackson.version>
+    <junit.version>4.13</junit.version>
+    <ehcache.version>2.10.8.0.59</ehcache.version>
     <commons-cli.version>1.4</commons-cli.version>
     
     <!-- Spring version as it is also managed by jadice server -->
-    <spring-context.version>4.1.6.RELEASE</spring-context.version>
+    <spring-context.version>4.3.26.RELEASE</spring-context.version>
   </properties>
 
   <build>

@@ -11,6 +11,26 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import org.apache.log4j.Logger;
+import org.controlsfx.control.PopOver;
+import org.controlsfx.control.PopOver.ArrowLocation;
+import org.controlsfx.dialog.ExceptionDialog;
+import org.levigo.jadice.server.converterclient.JobCard;
+import org.levigo.jadice.server.converterclient.JobCardFactory;
+import org.levigo.jadice.server.converterclient.Preferences;
+import org.levigo.jadice.server.converterclient.configurations.WorkflowConfiguration;
+import org.levigo.jadice.server.converterclient.gui.ConverterClientApplication;
+import org.levigo.jadice.server.converterclient.gui.Icons;
+import org.levigo.jadice.server.converterclient.gui.OSHelper;
+import org.levigo.jadice.server.converterclient.util.UiUtil;
+
+import com.levigo.jadice.server.Job.State;
+import com.levigo.jadice.server.Limit;
+import com.levigo.jadice.server.util.Util;
+
+import de.jensd.fx.glyphs.GlyphIcons;
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.beans.binding.When;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyListWrapper;
@@ -41,27 +61,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
-import org.apache.log4j.Logger;
-import org.controlsfx.control.PopOver;
-import org.controlsfx.control.PopOver.ArrowLocation;
-import org.controlsfx.dialog.ExceptionDialog;
-import org.levigo.jadice.server.converterclient.JobCard;
-import org.levigo.jadice.server.converterclient.JobCardFactory;
-import org.levigo.jadice.server.converterclient.Preferences;
-import org.levigo.jadice.server.converterclient.configurations.WorkflowConfiguration;
-import org.levigo.jadice.server.converterclient.gui.ConverterClientApplication;
-import org.levigo.jadice.server.converterclient.gui.Icons;
-import org.levigo.jadice.server.converterclient.gui.OSHelper;
-import org.levigo.jadice.server.converterclient.util.UiUtil;
-
-import com.levigo.jadice.server.Job.State;
-import com.levigo.jadice.server.Limit;
-import com.levigo.jadice.server.util.Util;
-
-import de.jensd.fx.glyphs.GlyphIcons;
-import de.jensd.fx.glyphs.GlyphsDude;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-
 public class ConversionPaneController {
 
   private static final Logger LOGGER = Logger.getLogger(ConversionPaneController.class);
@@ -69,7 +68,7 @@ public class ConversionPaneController {
   private static final GlyphIcons LIMITS_ENABLED_ICON = FontAwesomeIcon.BELL_ALT;
 
   private static final GlyphIcons LIMITS_DISABLED_ICON = FontAwesomeIcon.BELL_SLASH_ALT;
-  
+
   @FXML
   private BorderPane pane;
 
@@ -81,7 +80,7 @@ public class ConversionPaneController {
 
   @FXML
   private Button startConversion;
-  
+
   @FXML
   private Button applyLimits;
 
@@ -108,7 +107,7 @@ public class ConversionPaneController {
 
   @FXML
   private TableColumn<JobCard, String> jobServerInstance;
-  
+
   @FXML
   private Button home;
 
@@ -126,15 +125,15 @@ public class ConversionPaneController {
 
   @FXML
   private Button openLogMessages;
-  
+
   @FXML
   private ContextMenu tableContextMenu;
-  
+
   @FXML
   private ResourceBundle resources;
-  
+
   private PopOver applyLimitsPopover;
-  
+
   private ApplyLimitsPaneController applyLimitsController;
 
   // Open subsequent FileChoosers at the last location
@@ -150,7 +149,7 @@ public class ConversionPaneController {
     initTable();
     initDnD();
   }
-  
+
   @FXML
   protected void startConversion() {
     FileChooser chooser = new FileChooser();
@@ -166,7 +165,7 @@ public class ConversionPaneController {
       }
     }
   }
-  
+
   @FXML
   protected void showApplyLimitsPopover() {
     if (applyLimitsPopover == null) {
@@ -178,7 +177,7 @@ public class ConversionPaneController {
       applyLimitsPopover.show(applyLimits);
     }
   }
-  
+
   @FXML
   protected void abortAllJobs() {
     // TODO: Don't run on UI Thread
@@ -186,14 +185,14 @@ public class ConversionPaneController {
       jobCard.abortJob();
     }
   }
-  
+
   @FXML
   protected void openSelectedResults() {
     for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
       openResults(jc);
     }
   }
-  
+
   @FXML
   protected void clearFailedJobs() {
     // TODO: Don't run on UI Thread
@@ -205,7 +204,7 @@ public class ConversionPaneController {
     // Clone list to avoid that we modify the list we are deleting...
     jobTable.getItems().removeAll(toRemove.toArray(new JobCard[0]));
   }
-   
+
   @FXML
   protected void clearFinishedJobs() {
     // TODO: Don't run on UI Thread
@@ -218,7 +217,7 @@ public class ConversionPaneController {
     // Clone list to avoid that we modify the list we are deleting...
     jobTable.getItems().removeAll(toRemove.toArray(new JobCard[0]));
   }
-  
+
   @FXML
   protected void openLogMessages() {
     jobTable.getSelectionModel().getSelectedItems().forEach(jobCard -> {
@@ -232,32 +231,32 @@ public class ConversionPaneController {
       jobCard.abortJob();
     });
   }
-  
+
   @FXML
   protected void saveSelectedResults() {
     jobTable.getSelectionModel().getSelectedItems().forEach(jobCard -> {
       saveResult(jobCard);
     });
   }
-  
+
   @FXML
   protected void openSelectedOriginalFiles() {
     jobTable.getSelectionModel().getSelectedItems().forEach(jobCard -> {
       openOriginal(jobCard);
     });
   }
-  
+
   @FXML
   protected void retrySelectedJobs() {
     jobTable.getSelectionModel().getSelectedItems().forEach(jobCard -> {
-    try {
-      JobCardFactory.getInstance().cloneAndSubmitJob(jobCard, servers.getValue(), buildJobLimits());
-    } catch (Exception e) {
-      LOGGER.error("Could not re-submit job", e);
-    }
+      try {
+        JobCardFactory.getInstance().cloneAndSubmitJob(jobCard, servers.getValue(), buildJobLimits());
+      } catch (Exception e) {
+        LOGGER.error("Could not re-submit job", e);
+      }
     });
   }
-  
+
   @FXML
   protected void inspectSelectedWorkflow() {
     final JobCard jobCard = jobTable.getSelectionModel().getSelectedItem();
@@ -265,7 +264,7 @@ public class ConversionPaneController {
       ConverterClientApplication.getInstance().openInspector(jobCard);
     }
   }
-  
+
   @FXML
   protected void removeSelectedJobs() {
     // TODO: Don't run on UI Thread
@@ -274,7 +273,7 @@ public class ConversionPaneController {
       final int idx = jobTable.getItems().indexOf(it);
       jobTable.getSelectionModel().clearSelection(idx);
     });
-    
+
     // Clone list to avoid that we modify the list we are deleting...
     jobTable.getItems().removeAll(toRemove.toArray(new JobCard[0]));
   }
@@ -302,7 +301,7 @@ public class ConversionPaneController {
       event.setDropCompleted(success);
       event.consume();
     });
-    
+
     jobTable.setOnDragDetected(event -> {
       if (jobTable.getSelectionModel().isEmpty()) {
         return;
@@ -360,7 +359,7 @@ public class ConversionPaneController {
       ((FlowPane) applyLimits.getParent()).getChildren().remove(applyLimits);
       return;
     }
-    
+
     applyLimitsPopover = new PopOver(limits);
     applyLimitsPopover.setHideOnEscape(true);
     applyLimitsPopover.setAutoHide(true);
@@ -389,17 +388,17 @@ public class ConversionPaneController {
         String customStyle = null;
         
         @Override
-        public void updateItem(State item, boolean empty) {
-          setText(empty || item == null ? null : item.name());
+      public void updateItem(State item, boolean empty) {
+        setText(empty || item == null ? null : item.name());
 
-          // Undo any previously made style changes
-          if (customStyle != null) {
-            getStyleClass().remove(customStyle);
-            customStyle = null;
-          }
-            
-          if (!empty && item != null) {
-            customStyle = item.name();
+        // Undo any previously made style changes
+        if (customStyle != null) {
+          getStyleClass().remove(customStyle);
+          customStyle = null;
+        }
+
+        if (!empty && item != null) {
+          customStyle = item.name();
             getStyleClass().add(customStyle);
           }
        }
@@ -412,14 +411,14 @@ public class ConversionPaneController {
         private final static String CUSTOM_STYLE_CLASS = "WARNING_BACKGROUND";
         
         @Override
-        public void updateItem(Number item, boolean empty) {
-          setText(empty || item == null ? null : Integer.toString(item.intValue()));
+      public void updateItem(Number item, boolean empty) {
+        setText(empty || item == null ? null : Integer.toString(item.intValue()));
 
-          if (!empty && item.intValue() > 0) {
-            if (!getStyleClass().contains(CUSTOM_STYLE_CLASS)) {
-              getStyleClass().add(CUSTOM_STYLE_CLASS);
-            }
-          } else {
+        if (!empty && item.intValue() > 0) {
+          if (!getStyleClass().contains(CUSTOM_STYLE_CLASS)) {
+            getStyleClass().add(CUSTOM_STYLE_CLASS);
+          }
+        } else {
             getStyleClass().removeAll(CUSTOM_STYLE_CLASS);
           }
         }
@@ -432,13 +431,13 @@ public class ConversionPaneController {
         private final static String CUSTOM_STYLE_CLASS = "ERROR_BACKGROUND";
         
         @Override
-        public void updateItem(Number item, boolean empty) {
-          setText(empty || item == null ? null : Integer.toString(item.intValue()));
-          if (!empty && item.intValue() > 0) {
-            if (!getStyleClass().contains(CUSTOM_STYLE_CLASS)) {
-              getStyleClass().add(CUSTOM_STYLE_CLASS);
-            }
-          } else {
+      public void updateItem(Number item, boolean empty) {
+        setText(empty || item == null ? null : Integer.toString(item.intValue()));
+        if (!empty && item.intValue() > 0) {
+          if (!getStyleClass().contains(CUSTOM_STYLE_CLASS)) {
+            getStyleClass().add(CUSTOM_STYLE_CLASS);
+          }
+        } else {
             getStyleClass().removeAll(CUSTOM_STYLE_CLASS);
           }
         }
@@ -460,12 +459,12 @@ public class ConversionPaneController {
           }
           event.consume();
           break;
-          
+
         case F5 :
           // Retry
           try {
             for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
-                JobCardFactory.getInstance().cloneAndSubmitJob(jc, servers.getValue(), buildJobLimits());
+              JobCardFactory.getInstance().cloneAndSubmitJob(jc, servers.getValue(), buildJobLimits());
             }
           } catch (Exception e) {
             LOGGER.error("Could not re-submit job", e);
@@ -473,7 +472,7 @@ public class ConversionPaneController {
           }
           event.consume();
           break;
-          
+
         case ENTER :
           // Open Result
           for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
@@ -487,11 +486,11 @@ public class ConversionPaneController {
           }
           event.consume();
           break;
-          
+
         case DELETE :
           // remove selected
           final FilteredList<JobCard> toRemove = jobTable.getItems().filtered(item -> //
-            jobTable.getSelectionModel().getSelectedItems().contains(item)
+          jobTable.getSelectionModel().getSelectedItems().contains(item)
               && item.jobStateProperty.get().isTerminalState());
           // Clone list to avoid that we modify the list we are deleting...
           jobTable.getItems().removeAll(toRemove.toArray(new JobCard[0]));
@@ -502,7 +501,7 @@ public class ConversionPaneController {
         default :
           break;
       }
-      
+
     });
 
     jobTable.setOnMouseClicked(event -> {
@@ -520,36 +519,34 @@ public class ConversionPaneController {
     dialog.setHeaderText(resources.getString("dialogs.conversion.submission-error.masthead"));
     dialog.setContentText(resources.getString("dialogs.conversion.submission-error.message"));
     dialog.initOwner(pane.getScene().getWindow());
-    
+
     // http://code.makery.ch/blog/javafx-dialogs-official/
     Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
     stage.getIcons().addAll(Icons.getAllIcons());
-    dialog.show();    
+    dialog.show();
   }
 
   public void openResults(JobCard job) {
     job.getResults().forEach(file -> {
-      try {
-        OSHelper.open(file);
-      } catch (IOException e) {
-        LOGGER.error("Could not open result file", e);
-      }
+
+      OSHelper.openInBackground(file);
+
     });
+
   }
+
 
   public void openOriginal(JobCard job) {
     for (File file : job.files) {
-      try {
-        OSHelper.open(file);
-      } catch (IOException e) {
-        LOGGER.error("Could not open original file", e);
-      }
+      OSHelper.openInBackground(file);
     }
+
   }
 
   public void submitJob(File file) throws Exception {
     if (file.isFile() && file.canRead()) {
-      JobCardFactory.getInstance().createAndSubmitJobCard(file, servers.getValue(), configurations.getValue(), buildJobLimits());
+      JobCardFactory.getInstance().createAndSubmitJobCard(file, servers.getValue(), configurations.getValue(),
+          buildJobLimits());
     } else if (file.isDirectory()) {
       final File[] files = file.listFiles();
       if (files == null || files.length == 0) {

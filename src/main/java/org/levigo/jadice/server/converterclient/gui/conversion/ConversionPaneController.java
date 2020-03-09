@@ -477,11 +477,7 @@ public class ConversionPaneController {
           // Open Result
           for (JobCard jc : jobTable.getSelectionModel().getSelectedItems()) {
             jc.getResults().stream().forEach(file -> {
-              try {
-                OSHelper.open(file);
-              } catch (IOException e) {
-                LOGGER.error("Could not open result file", e);
-              }
+              OSHelper.openInBackground(file);
             });
           }
           event.consume();

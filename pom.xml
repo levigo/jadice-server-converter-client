@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.levigo.jadice.server</groupId>
   <artifactId>jadice-server-converter-client</artifactId>
-  <version>1.12.1-SNAPSHOT</version>
+  <version>1.14.0-SNAPSHOT</version>
 
   <name>jadice server :: Converter Client</name>
   <url>http://www.levigo.de</url>
@@ -20,6 +20,7 @@
       <url>https://levigo.de/maven2/content/groups/all-repositories/</url>
     </repository>
   </repositories>
+
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

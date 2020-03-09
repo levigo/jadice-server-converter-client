@@ -30,15 +30,7 @@ jobs:
         token: ${{secrets.GITHUB_TOKEN}}
     - name: Print new build number
       run: echo Build number is $BUILD_NUMBER
-    
-    ## Build with maven
-    - name: maven-settings-xml-action
-      uses: whelk-io/maven-settings-xml-action@v4
-      with:
-        repositories: '[{ "id": "maven2.levigo.de", "url": "https://levigo.de/maven2" }]'
-        plugin_repositories: '[{ "id": "maven2.levigo.de", "url": "https://levigo.de/maven2/" }]'
-        servers: '[{ "id": "maven2.levigo.de", "username": "${NEXUS_USERID}", "password": "${NEXUS_PASSWORD}" }]'
-        
+               
     - name: Set version
       id: version
       run: |

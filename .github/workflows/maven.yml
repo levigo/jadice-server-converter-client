@@ -44,7 +44,7 @@ jobs:
       run: mvn -s .m2/settings.xml -gs .m2/settings.xml -B package --file pom.xml
       env:
         NEXUS_USERID: ${{secrets.NEXUS_USERID}}
-        NEXUS_PASSWORD: ${{secretes.NEXUS_PASSWORD}}
+        NEXUS_PASSWORD: ${{secrets.NEXUS_PASSWORD}}
         
     - name: Create Release
       id: create_release

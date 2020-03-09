@@ -14,14 +14,13 @@
     <tag>HEAD</tag>
   </scm>  
 
-  <distributionManagement>
-    <!-- Required for releases, see http://blog.glassdiary.com/post/64370899685/how-to-use-maven-release-plugin-with-github-releases -->
+  <repositories>
     <repository>
-      <id>internal.repo</id>
-      <name>Temporary Staging Repository</name>
-      <url>file://${project.build.directory}/mvn-repo</url>
+      <id>jadice-server-repo</id>
+      <url>https://levigo.de/maven2/content/groups/all-repositories/</url>
     </repository>
-  </distributionManagement>
+  </repositories>
+
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

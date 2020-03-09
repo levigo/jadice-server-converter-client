@@ -31,13 +31,13 @@ jobs:
       run: echo Build number is $BUILD_NUMBER
     
     ## Build with maven
-    - name: Prepare maven settings
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        mkdir -p ~/.m2
-        echo "<settings><servers><server><id>>maven2.levigo.de</id><username>${NEXUS_USERID}</username><password>${NEXUS_PASSWORD}</password></server></servers></settings>" > ~/.m2/settings.xml 
- 
+    - name: maven-settings-xml-action
+      uses: whelk-io/maven-settings-xml-action@v4
+      with:
+        repositories: '[{ "id": "maven2.levigo.de", "url": "https://levigo.de/maven2" }]'
+        plugin_repositories: '[{ "id": "maven2.levigo.de", "url": "https://levigo.de/maven2/" }]'
+        servers: '[{ "id": "maven2.levigo.de", "username": "${NEXUS_USERID}", "password": "${NEXUS_PASSWORD}" }]'
+        
     - name: Set version
       id: version
       run: |

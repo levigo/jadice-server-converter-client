@@ -48,7 +48,7 @@ jobs:
         mvn versions:set -DnewVersion=${release_version} 
     
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn --settings ~/.m2/settings.xml -B package --file pom.xml
       
     - name: Create Release
       id: create_release

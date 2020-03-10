@@ -39,4 +39,6 @@ class User {
   public String type;
   
   public String site_admin;
+  
+  public String node_id;
 }

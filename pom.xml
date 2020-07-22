@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.levigo.jadice.server</groupId>
   <artifactId>jadice-server-converter-client</artifactId>
@@ -6,13 +7,13 @@
 
   <name>jadice server :: Converter Client</name>
   <url>http://www.levigo.de</url>
-  
+
   <scm>
     <connection>scm:git:ssh://git@github.com/levigo/jadice-server-converter-client.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/levigo/jadice-server-converter-client.git</developerConnection>
     <url>https://github.com/levigo/jadice-server-converter-client</url>
     <tag>HEAD</tag>
-  </scm>  
+  </scm>
 
   <repositories>
     <repository>
@@ -26,25 +27,32 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- levigo dependencies -->
-    <jadice.server.version>5.7.11.0</jadice.server.version>
-    <jadice.utils.version>3.0.43</jadice.utils.version>
-    <filetype.analyzer.version>5.3.0.0</filetype.analyzer.version>
+    <jadice.server.version>5.8.0.0</jadice.server.version>
+    <jadice.utils.version>3.0.46</jadice.utils.version>
+    <filetype.analyzer.version>5.3.0.1</filetype.analyzer.version>
 
     <log4j.version>1.2.17</log4j.version>
-    <slf4j.version>1.7.25</slf4j.version>
+    <slf4j.version>1.7.30</slf4j.version>
     <jfreechart.version>1.0.19</jfreechart.version>
-    <activemq.version>5.15.11</activemq.version>
+    <activemq.version>5.15.12</activemq.version>
     <prefuse.version>beta-20130106</prefuse.version>
-    <controlsfx.version>8.40.16</controlsfx.version>
+    <controlsfx.version>8.40.17</controlsfx.version>
     <enzo.version>0.3.6</enzo.version>
     <fontawesomefx.version>8.9</fontawesomefx.version>
-    <jackson.version>2.10.3</jackson.version>
+    <jackson.version>2.10.5</jackson.version>
     <junit.version>4.13.1</junit.version>
     <ehcache.version>2.10.8.0.59</ehcache.version>
     <commons-cli.version>1.4</commons-cli.version>
-    
+
     <!-- Spring version as it is also managed by jadice server -->
-    <spring-context.version>4.3.26.RELEASE</spring-context.version>
+    <spring-context.version>5.2.8.RELEASE</spring-context.version>
+
+    <!-- Maven Plugins -->
+    <gmavenplus-plugin.version>1.9.0</gmavenplus-plugin.version>
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+    <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+    <maven-shade-plugin.version>3.2.2</maven-shade-plugin.version>
+    <launch4j-maven-plugin.version>1.7.25</launch4j-maven-plugin.version>
   </properties>
 
   <build>
@@ -53,7 +61,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.5.1</version>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
@@ -62,7 +70,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.4.3</version>
+        <version>${maven-shade-plugin.version}</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -90,7 +98,7 @@
                 <exclude>META-INF/*.INF</exclude> <!-- This one may not be required -->
               </excludes>
             </filter>
-          </filters>   
+          </filters>
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
               <manifestEntries>
@@ -104,36 +112,40 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.3</version>
+        <version>${maven-release-plugin.version}</version>
       </plugin>
       <plugin>
-       <groupId>org.codehaus.gmaven</groupId>
-       <artifactId>gmaven-plugin</artifactId>
-       <version>1.5</version>
-       <!-- Prepare properties with "-SNAPSHOT" so that launch4j can handle them -->
-       <executions>
-         <execution>
-           <id>prepare-properties-launch4j</id>
-           <phase>initialize</phase>
-           <goals>
-             <goal>execute</goal>
-           </goals>
-           <configuration>
-             <source>
-                def clean = [:] // Avoid ConcurrentModificationException
-             	project.properties.each { k, v -&gt; 
-             	  clean."${k}-clean" = v.replaceAll("-SNAPSHOT", "")
-             	}
-             	project.properties.putAll(clean)
-             </source>
-           </configuration>
-         </execution>
-       </executions>
-     </plugin>
-     <plugin>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${gmavenplus-plugin.version}</version>
+        <!-- Prepare properties with "-SNAPSHOT" so that launch4j can handle them -->
+        <executions>
+          <execution>
+            <id>prepare-properties-launch4j</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>execute</goal>
+            </goals>
+            <configuration>
+              <scripts>
+                <script>
+                  <![CDATA[
+                    def clean = [:] // Avoid ConcurrentModificationException
+                    project.properties.each { k, v ->
+                      clean."${k}-clean" = v.replaceAll("-SNAPSHOT", "")
+                    }
+                    project.properties.putAll(clean)
+                  ]]>
+                </script>
+              </scripts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>com.akathist.maven.plugins.launch4j</groupId>
         <artifactId>launch4j-maven-plugin</artifactId>
-        <version>1.7.16</version>
+        <version>${launch4j-maven-plugin.version}</version>
         <executions>
           <execution>
             <id>l4j-gui</id>
@@ -145,7 +157,7 @@
               <headerType>gui</headerType>
               <outfile>target/${project.artifactId}-${project.version}.exe</outfile>
               <jar>target/${project.artifactId}-${project.version}-shaded.jar</jar>
-               <icon>${basedir}/src/main/resources/icons/jadice-server.ico</icon>
+              <icon>${basedir}/src/main/resources/icons/jadice-server.ico</icon>
               <cmdLine>-gui</cmdLine>
               <customProcName>true</customProcName>
               <classPath>
@@ -204,14 +216,14 @@
       <artifactId>libreoffice-client</artifactId>
       <version>${jadice.server.version}</version>
     </dependency>
-    
+
     <dependency>
-    	<groupId>junit</groupId>
-    	<artifactId>junit</artifactId>
-    	<version>${junit.version}</version>
-    	<scope>test</scope>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
     </dependency>
-    
+
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-client</artifactId>
@@ -289,6 +301,6 @@
       <groupId>net.sf.ehcache</groupId>
       <artifactId>ehcache</artifactId>
       <version>${ehcache.version}</version>
-    </dependency>  
+    </dependency>
   </dependencies>
 </project>

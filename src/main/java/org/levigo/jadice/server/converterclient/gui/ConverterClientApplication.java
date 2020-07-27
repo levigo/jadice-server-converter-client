@@ -61,7 +61,7 @@ public class ConverterClientApplication extends Application {
   
   public ConverterClientApplication() throws IOException {
     instance = this;
-    
+
     aboutPane = FXMLLoader.load(getClass().getResource("/fxml/AboutPane.fxml"), getUiResources());
     conversionPane = FXMLLoader.load(getClass().getResource("/fxml/ConversionPane.fxml"), getUiResources());
     jmxPane = FXMLLoader.load(getClass().getResource("/fxml/JmxPane.fxml"), getUiResources());

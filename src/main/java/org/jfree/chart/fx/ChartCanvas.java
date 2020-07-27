@@ -67,7 +67,7 @@ import org.jfree.chart.fx.interaction.ScrollHandlerFX;
 import org.jfree.chart.fx.interaction.PanHandlerFX;
 import org.jfree.chart.fx.interaction.MouseHandlerFX;
 import org.jfree.chart.plot.PlotRenderingInfo;
-import org.jfree.chart.util.ParamChecks;
+import org.jfree.chart.util.Args;
 
 /**
  * A canvas for displaying a {@link JFreeChart} in JavaFX.  You can use the
@@ -134,7 +134,7 @@ public class ChartCanvas extends Canvas implements ChartChangeListener {
      * @param chart  the chart ({@code null} not permitted). 
      */
     public ChartCanvas(JFreeChart chart) {
-        ParamChecks.nullNotPermitted(chart, "chart");
+        Args.nullNotPermitted(chart, "chart");
         this.chart = chart;
         this.chart.addChangeListener(this);
         this.tooltip = null;
@@ -179,7 +179,7 @@ public class ChartCanvas extends Canvas implements ChartChangeListener {
      * @param chart  the chart ({@code null} not permitted). 
      */
     public void setChart(JFreeChart chart) {
-        ParamChecks.nullNotPermitted(chart, "chart");
+        Args.nullNotPermitted(chart, "chart");
         this.chart.removeChangeListener(this);
         this.chart = chart;
         this.chart.addChangeListener(this);
@@ -234,7 +234,7 @@ public class ChartCanvas extends Canvas implements ChartChangeListener {
      * @param listener  the listener ({@code null} not permitted).
      */
     public void addChartMouseListener(ChartMouseListenerFX listener) {
-        ParamChecks.nullNotPermitted(listener, "listener");
+        Args.nullNotPermitted(listener, "listener");
         this.chartMouseListeners.add(listener);
     }
 

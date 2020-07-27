@@ -58,7 +58,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.fx.interaction.ChartMouseEventFX;
 import org.jfree.chart.fx.interaction.ChartMouseListenerFX;
 import org.jfree.chart.util.ExportUtils;
-import org.jfree.chart.util.ParamChecks;
+import org.jfree.chart.util.Args;
 
 /**
  * A control for displaying a {@link JFreeChart} in JavaFX (embeds a 
@@ -103,7 +103,7 @@ public class ChartViewer extends Control implements Skinnable,
      * @param contextMenuEnabled  enable the context menu?
      */
     public ChartViewer(JFreeChart chart, boolean contextMenuEnabled) {
-        ParamChecks.nullNotPermitted(chart, "chart");
+        Args.nullNotPermitted(chart, "chart");
         this.chart = chart;
         getStyleClass().add("chart-control");
         this.contextMenu = createContextMenu();
@@ -139,7 +139,7 @@ public class ChartViewer extends Control implements Skinnable,
      * @param chart  the chart ({@code null} not permitted). 
      */
     public void setChart(JFreeChart chart) {
-        ParamChecks.nullNotPermitted(chart, "chart");
+        Args.nullNotPermitted(chart, "chart");
         this.chart = chart;
         ChartViewerSkin skin = (ChartViewerSkin) getSkin();
         skin.setChart(chart);
@@ -213,7 +213,7 @@ public class ChartViewer extends Control implements Skinnable,
      * @param listener  the listener ({@code null} not permitted).
      */
     public void addChartMouseListener(ChartMouseListenerFX listener) {
-        ParamChecks.nullNotPermitted(listener, "listener");
+        Args.nullNotPermitted(listener, "listener");
         this.chartMouseListeners.add(listener);
     }
 
@@ -224,7 +224,7 @@ public class ChartViewer extends Control implements Skinnable,
      * @param listener  the listener.
      */
     public void removeChartMouseListener(ChartMouseListenerFX listener) {
-        ParamChecks.nullNotPermitted(listener, "listener");
+        Args.nullNotPermitted(listener, "listener");
         this.chartMouseListeners.remove(listener);
     }
 

@@ -60,21 +60,21 @@ public class PerformanceChart extends ChartViewer implements Chart {
 		differenceRenderer.setAutoPopulateSeriesStroke(false);
 		differenceRenderer.setPositivePaint(differencePaint);
 		differenceRenderer.setNegativePaint(differencePaint);
-		differenceRenderer.setBaseFillPaint(differencePaint);
+		differenceRenderer.setDefaultFillPaint(differencePaint);
 		
-		differenceRenderer.setBaseSeriesVisible(false);
+		differenceRenderer.setDefaultSeriesVisible(false);
     plot.setRenderer(0, differenceRenderer);
     
     final TimeSeriesCollection durationColletion = new TimeSeriesCollection(durations);
     XYItemRenderer dotRenderer = new XYLineAndShapeRenderer(false, true);
-    dotRenderer.setBaseToolTipGenerator(new JobExectionToolTipGenerator(durations));
+    dotRenderer.setDefaultToolTipGenerator(new JobExectionToolTipGenerator(durations));
     plot.setDataset(1, durationColletion);
     plot.mapDatasetToRangeAxis(1, 0);
     plot.setRenderer(1, dotRenderer);
     
     final TimeSeriesCollection avgColletion = new TimeSeriesCollection(avgDurations);
     XYSplineRenderer lineRenderer = new XYSplineRenderer(2);
-    lineRenderer.setBaseShapesVisible(false);
+    lineRenderer.setDefaultShapesVisible(false);
     plot.setDataset(2, avgColletion);
     plot.mapDatasetToRangeAxis(2, 0);
     plot.setRenderer(2, lineRenderer);

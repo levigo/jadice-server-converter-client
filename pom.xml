@@ -33,7 +33,7 @@
 
     <log4j.version>1.2.17</log4j.version>
     <slf4j.version>1.7.30</slf4j.version>
-    <jfreechart.version>1.0.19</jfreechart.version>
+    <jfreechart.version>1.5.0</jfreechart.version>
     <activemq.version>5.15.12</activemq.version>
     <prefuse.version>beta-20130106</prefuse.version>
     <controlsfx.version>8.40.17</controlsfx.version>
@@ -43,6 +43,7 @@
     <junit.version>4.13.1</junit.version>
     <ehcache.version>2.10.8.0.59</ehcache.version>
     <commons-cli.version>1.4</commons-cli.version>
+    <groovy.version>3.0.3</groovy.version>
 
     <!-- Spring version as it is also managed by jadice server -->
     <spring-context.version>5.2.8.RELEASE</spring-context.version>
@@ -63,8 +64,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${maven-compiler-plugin.version}</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
         </configuration>
       </plugin>
       <plugin>
@@ -128,6 +129,7 @@
             </goals>
             <configuration>
               <scripts>
+                <!--suppress UnresolvedMavenProperty -->
                 <script>
                   <![CDATA[
                     def clean = [:] // Avoid ConcurrentModificationException
@@ -159,7 +161,6 @@
               <jar>target/${project.artifactId}-${project.version}-shaded.jar</jar>
               <icon>${basedir}/src/main/resources/icons/jadice-server.ico</icon>
               <cmdLine>-gui</cmdLine>
-              <customProcName>true</customProcName>
               <classPath>
                 <mainClass>ConverterClient</mainClass>
               </classPath>
@@ -173,10 +174,12 @@
                 <minVersion>1.8.0</minVersion>
               </jre>
               <versionInfo>
+                <!--suppress UnresolvedMavenProperty -->
                 <fileVersion>${jadice.server.version-clean}</fileVersion>
                 <txtFileVersion>${project.version}</txtFileVersion>
                 <fileDescription>${project.name}</fileDescription>
                 <copyright>levigo holding gmbh</copyright>
+                <!--suppress UnresolvedMavenProperty -->
                 <productVersion>${jadice.server.version-clean}</productVersion>
                 <txtProductVersion>${project.version}</txtProductVersion>
                 <productName>${project.name}</productName>
@@ -218,10 +221,10 @@
     </dependency>
 
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>${groovy.version}</version>
+      <type>pom</type>
     </dependency>
 
     <dependency>
@@ -301,6 +304,14 @@
       <groupId>net.sf.ehcache</groupId>
       <artifactId>ehcache</artifactId>
       <version>${ehcache.version}</version>
+    </dependency>
+
+    <!-- Test -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

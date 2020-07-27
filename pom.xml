@@ -25,16 +25,12 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
 
-    <!-- levigo dependencies -->
-    <jadice.server.version>5.8.0.0</jadice.server.version>
-    <jadice.utils.version>3.0.46</jadice.utils.version>
-    <filetype.analyzer.version>5.3.0.1</filetype.analyzer.version>
-
+    <jadice.server.version>5.8.0.1</jadice.server.version>
     <log4j.version>1.2.17</log4j.version>
     <slf4j.version>1.7.30</slf4j.version>
     <jfreechart.version>1.5.0</jfreechart.version>
-    <activemq.version>5.15.12</activemq.version>
     <prefuse.version>beta-20130106</prefuse.version>
     <controlsfx.version>8.40.17</controlsfx.version>
     <enzo.version>0.3.6</enzo.version>
@@ -43,10 +39,7 @@
     <junit.version>4.13.1</junit.version>
     <ehcache.version>2.10.8.0.59</ehcache.version>
     <commons-cli.version>1.4</commons-cli.version>
-    <groovy.version>3.0.3</groovy.version>
-
-    <!-- Spring version as it is also managed by jadice server -->
-    <spring-context.version>5.2.8.RELEASE</spring-context.version>
+    <junit.version>4.13</junit.version>
 
     <!-- Maven Plugins -->
     <gmavenplus-plugin.version>1.9.0</gmavenplus-plugin.version>
@@ -193,45 +186,62 @@
     </plugins>
   </build>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.levigo.jadice.server</groupId>
+        <artifactId>jadice-server-bom</artifactId>
+        <version>${jadice.server.version}</version>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>com.levigo.jadice.server</groupId>
       <artifactId>base-nodes-client</artifactId>
-      <version>${jadice.server.version}</version>
     </dependency>
     <dependency>
       <groupId>com.levigo.jadice.server</groupId>
       <artifactId>jms-transport-shared</artifactId>
-      <version>${jadice.server.version}</version>
     </dependency>
     <dependency>
       <groupId>com.levigo.jadice.server</groupId>
       <artifactId>server-msoffice-client</artifactId>
-      <version>${jadice.server.version}</version>
     </dependency>
     <dependency>
       <groupId>com.levigo.jadice.server</groupId>
       <artifactId>javamail-client</artifactId>
-      <version>${jadice.server.version}</version>
     </dependency>
     <dependency>
       <groupId>com.levigo.jadice.server</groupId>
       <artifactId>libreoffice-client</artifactId>
-      <version>${jadice.server.version}</version>
     </dependency>
 
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>${groovy.version}</version>
       <type>pom</type>
     </dependency>
-
     <dependency>
       <groupId>org.apache.activemq</groupId>
       <artifactId>activemq-client</artifactId>
-      <version>${activemq.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.levigo.jadice.filetype</groupId>
+      <artifactId>analyzer</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+    </dependency>
+
     <dependency>
       <!-- Bridge of SLF4J logging to Log4J -->
       <groupId>org.slf4j</groupId>
@@ -242,23 +252,13 @@
       <!-- Bridge of levigo logging to Log4J -->
       <groupId>org.jadice.util</groupId>
       <artifactId>logging-log4j</artifactId>
-      <version>${jadice.utils.version}</version>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>${log4j.version}</version>
     </dependency>
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>${spring-context.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.levigo.jadice.filetype</groupId>
-      <artifactId>analyzer</artifactId>
-      <version>${filetype.analyzer.version}</version>
-    </dependency>
+
     <dependency>
       <groupId>org.controlsfx</groupId>
       <artifactId>controlsfx</artifactId>
@@ -294,11 +294,6 @@
       <groupId>de.jensd</groupId>
       <artifactId>fontawesomefx</artifactId>
       <version>${fontawesomefx.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>${jackson.version}</version>
     </dependency>
     <dependency>
       <groupId>net.sf.ehcache</groupId>

@@ -40,12 +40,21 @@ jobs:
         echo Truncated version found to be ${project_version}, releasing as ${release_version}
         mvn versions:set -DnewVersion=${release_version} 
     
+    ## Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+         languages: ${{ matrix.language }}
+    
     - name: Build with Maven
       run: mvn -s .m2/settings.xml -gs .m2/settings.xml -B package --file pom.xml
       env:
         NEXUS_USERID: ${{secrets.NEXUS_USERID}}
         NEXUS_PASSWORD: ${{secrets.NEXUS_PASSWORD}}
-        
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+    
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1

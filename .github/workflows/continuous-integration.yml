@@ -1,0 +1,40 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches-ignore:
+      - 'master'
+    paths-ignore:
+      #   !! Attention!! removing the following line may produce an endless loop on the build system!!
+      - '**/README.md'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    strategy:
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v2
+
+      ## Configure JDK
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      - name: Build with Maven
+        run: mvn -s .m2/settings.xml -gs .m2/settings.xml -B package --file pom.xml
+        env:
+          NEXUS_USERID: ${{secrets.NEXUS_USERID}}
+          NEXUS_PASSWORD: ${{secrets.NEXUS_PASSWORD}}
+
+      ## Publish test report
+      - name: Publish Test Report
+        id: test-report
+        uses: hennejg/action-surefire-report@v1.0.4.jh2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_failure: true

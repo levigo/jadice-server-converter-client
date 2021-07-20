@@ -46,6 +46,7 @@
     <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
     <maven-shade-plugin.version>3.2.4</maven-shade-plugin.version>
     <launch4j-maven-plugin.version>1.7.25</launch4j-maven-plugin.version>
+    <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
   </properties>
 
   <build>
@@ -181,6 +182,11 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
       </plugin>
     </plugins>
   </build>

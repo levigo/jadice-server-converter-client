@@ -6,12 +6,11 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 import org.apache.log4j.Logger;
+import org.jadice.filetype.Analyzer;
+import org.jadice.filetype.AnalyzerException;
+import org.jadice.filetype.database.ExtensionAction;
 import org.levigo.jadice.server.converterclient.Preferences;
 
-import com.levigo.jadice.filetype.Analyzer;
-import com.levigo.jadice.filetype.AnalyzerException;
-import com.levigo.jadice.filetype.UncloseableSeekableInputStreamWrapper;
-import com.levigo.jadice.filetype.database.ExtensionAction;
 import com.levigo.jadice.server.Job;
 import com.levigo.jadice.server.shared.types.Stream;
 

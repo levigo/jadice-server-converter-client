@@ -56,7 +56,7 @@ jobs:
 
     - name: run mvn set version
       run: |
-        mvn versions:set -DnewVersion=${{ env.NEW_VERSION }}
+        mvn -s .m2/settings.xml versions:set -DnewVersion=${{ env.NEW_VERSION }}
       env:
         NEXUS_USERID: ${{secrets.NEXUS_USERID}}
         NEXUS_PASSWORD: ${{secrets.NEXUS_PASSWORD}}

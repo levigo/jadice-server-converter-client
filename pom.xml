@@ -27,7 +27,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>1.8</java.version>
 
-    <jadice.server.version>5.10.0.2</jadice.server.version>
+    <jadice.server.version>5.10.2.0</jadice.server.version>
     <log4j.version>1.2.17</log4j.version>
     <slf4j.version>1.7.30</slf4j.version>
     <jfreechart.version>1.5.3</jfreechart.version>

@@ -32,9 +32,9 @@
     <slf4j.version>1.7.30</slf4j.version>
     <jfreechart.version>1.5.3</jfreechart.version>
     <prefuse.version>beta-20130106</prefuse.version>
-    <fontawesomefx.version>8.9</fontawesomefx.version>
     <controlsfx.version>11.1.0</controlsfx.version>
     <enzo.version>0.3.6_1-levigo</enzo.version>
+    <fontawesomefx.version>9.1.2</fontawesomefx.version>
     <jackson.version>2.10.5</jackson.version>
     <junit.version>4.13.2</junit.version>
     <ehcache.version>2.10.8.0.59</ehcache.version>
@@ -297,16 +297,56 @@
       <artifactId>Enzo</artifactId>
       <version>${enzo.version}</version>
     </dependency>
-    <dependency>
-      <groupId>de.jensd</groupId>
-      <artifactId>fontawesomefx</artifactId>
-      <version>${fontawesomefx.version}</version>
-    </dependency>
+
     <dependency>
       <groupId>net.sf.ehcache</groupId>
       <artifactId>ehcache</artifactId>
       <version>${ehcache.version}</version>
     </dependency>
+
+    <!--Font Awesome-->
+    <dependency>
+      <groupId>de.jensd</groupId>
+      <artifactId>fontawesomefx-controls</artifactId>
+      <version>${fontawesomefx.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>de.jensd</groupId>
+      <artifactId>fontawesomefx-fontawesome</artifactId>
+      <version>4.7.0-9.1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>de.jensd</groupId>
+      <artifactId>fontawesomefx-commons</artifactId>
+      <version>${fontawesomefx.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>de.jensd</groupId>
+      <artifactId>fontawesomefx-materialicons</artifactId>
+      <version>2.2.0-9.1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>de.jensd</groupId>
+      <artifactId>fontawesomefx-weathericons</artifactId>
+      <version>2.0.10-9.1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>de.jensd</groupId>
+      <artifactId>fontawesomefx-materialicons</artifactId>
+      <version>2.2.0-9.1.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>de.jensd</groupId>
+      <artifactId>fontawesomefx-octicons</artifactId>
+      <version>4.3.0-9.1.2</version>
+    </dependency>
+
 
     <!-- Test -->
     <dependency>

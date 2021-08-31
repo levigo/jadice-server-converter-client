@@ -7,7 +7,7 @@ import org.levigo.jadice.server.converterclient.updatecheck.UpdateDialogs;
 import org.levigo.jadice.server.converterclient.updatecheck.UpdateService;
 
 import de.jensd.fx.glyphs.GlyphIcons;
-import de.jensd.fx.glyphs.GlyphsDude;
+import org.levigo.jadice.server.converterclient.util.JSGlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
@@ -158,12 +158,12 @@ public class MetroMenuPaneController {
     tooltip.textProperty().bind(button.textProperty());
     button.setTooltip(tooltip);
 
-    GlyphsDude.setIcon(button, icon, ICON_SIZE_SMALL, ContentDisplay.GRAPHIC_ONLY);
+    JSGlyphsDude.setIcon(button, icon, ICON_SIZE_SMALL, ContentDisplay.GRAPHIC_ONLY);
     button.setOnAction(evt);
   }
   
   private void initIconButton(Button button, GlyphIcons icon, EventHandler<ActionEvent> evt) {
-    GlyphsDude.setIcon(button, icon, ICON_SIZE, ContentDisplay.TOP);
+    JSGlyphsDude.setIcon(button, icon, ICON_SIZE, ContentDisplay.TOP);
     button.setOnAction(evt);
   }
 }

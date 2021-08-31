@@ -29,7 +29,7 @@ import com.levigo.jadice.server.Limit;
 import com.levigo.jadice.server.util.Util;
 
 import de.jensd.fx.glyphs.GlyphIcons;
-import de.jensd.fx.glyphs.GlyphsDude;
+import org.levigo.jadice.server.converterclient.util.JSGlyphsDude;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.beans.binding.When;
 import javafx.beans.property.ReadOnlyBooleanProperty;
@@ -366,8 +366,8 @@ public class ConversionPaneController {
     applyLimitsPopover.setDetachable(false);
     applyLimitsPopover.setArrowLocation(ArrowLocation.TOP_RIGHT);
 
-    final Text enabledIcon = GlyphsDude.createIcon(LIMITS_ENABLED_ICON);
-    final Text disabledIcon = GlyphsDude.createIcon(LIMITS_DISABLED_ICON);
+    final Text enabledIcon = JSGlyphsDude.createIcon(LIMITS_ENABLED_ICON);
+    final Text disabledIcon = JSGlyphsDude.createIcon(LIMITS_DISABLED_ICON);
     final ReadOnlyBooleanProperty emptyLimitsProperty = new ReadOnlyListWrapper<Limit>(applyLimitsController.getLimits()).emptyProperty();
     applyLimits.graphicProperty().bind(new When(emptyLimitsProperty).then(disabledIcon).otherwise(enabledIcon));
   }

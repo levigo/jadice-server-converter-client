@@ -32,9 +32,9 @@
     <slf4j.version>1.7.30</slf4j.version>
     <jfreechart.version>1.5.3</jfreechart.version>
     <prefuse.version>beta-20130106</prefuse.version>
-    <enzo.version>0.3.6</enzo.version>
     <fontawesomefx.version>8.9</fontawesomefx.version>
     <controlsfx.version>11.1.0</controlsfx.version>
+    <enzo.version>0.3.6_1-levigo</enzo.version>
     <jackson.version>2.10.5</jackson.version>
     <junit.version>4.13.2</junit.version>
     <ehcache.version>2.10.8.0.59</ehcache.version>

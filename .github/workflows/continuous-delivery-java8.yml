@@ -1,11 +1,11 @@
 # This workflow will build a Java project with Maven
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
 
-name: Continuous Delivery Java 11
+name: Continuous Delivery
 
 on:
   push:
-    branches: [ java11 ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -13,17 +13,16 @@ jobs:
     timeout-minutes: 10
 
     env:
-      JSCC_VERSION_PREFIX: 'java11-1.'
-      JSCC_TAG_PREFIX: 'java11-1.'
+      JSCC_VERSION_PREFIX: '1.'
+      JSCC_TAG_PREFIX: '1.'
 
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 11
-      uses: actions/setup-java@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
       with:
-        distribution: 'zulu'
-        java-version: '11'
+        java-version: 1.8
         java-package: jdk+fx
 
     ## Enable Caching
@@ -37,9 +36,9 @@ jobs:
 
     - name: Bump version and create tag
       id: semanticversion
-      uses: hennejg/github-tag-action@v4.3.1
+      uses: hennejg/github-tag-action@v4.2.4
       with:
-        release_branches: java11
+        release_branches: master
         github_token: ${{ secrets.GITHUB_TOKEN }}
         tag_prefix: ${{ env.JSCC_TAG_PREFIX }}
 

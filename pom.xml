@@ -15,14 +15,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <repositories>
-    <repository>
-      <id>jadice-server-repo</id>
-      <url>https://levigo.de/maven2/content/groups/all-repositories/</url>
-    </repository>
-  </repositories>
-
-
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>11</java.version>

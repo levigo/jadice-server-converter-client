@@ -96,9 +96,9 @@
       <artifactId>jackson-databind</artifactId>
     </dependency>
     <dependency>
-      <!-- Bridge of SLF4J logging to Log4J -->
+      <!-- SLF4J Reload4j Binding (ch.qos.reload4j:reload4j see https://reload4j.qos.ch) -->
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
+      <artifactId>slf4j-reload4j</artifactId>
       <version>${slf4j.version}</version>
     </dependency>
     <dependency>

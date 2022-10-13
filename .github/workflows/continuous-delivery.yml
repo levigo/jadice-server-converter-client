@@ -53,9 +53,9 @@ jobs:
 
       ## Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v1
+      uses: github/codeql-action/init@v2
       with:
-         languages: ${{ matrix.language }}
+         languages: java
     
     - name: Build with Maven
       run: mvn -s .m2/settings.xml -gs .m2/settings.xml -B package --file pom.xml
@@ -64,7 +64,7 @@ jobs:
         NEXUS_PASSWORD: ${{secrets.NEXUS_PASSWORD}}
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v1
+      uses: github/codeql-action/analyze@v2
     
     - name: Create Release
       id: create_release
@@ -83,7 +83,7 @@ jobs:
       env:
        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing its ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
         asset_path: ./target/jadice-server-converter-client-${{ env.NEW_VERSION }}.exe
         asset_name: jadice-server-converter-client-${{ env.NEW_VERSION }}.exe
         asset_content_type: application/octet-stream 

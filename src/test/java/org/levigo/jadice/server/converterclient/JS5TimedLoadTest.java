@@ -16,6 +16,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.levigo.jadice.server.converterclient.configurations.WorkflowConfiguration;
 
@@ -45,6 +46,7 @@ public class JS5TimedLoadTest {
   private String serverLocation = "tcp://localhost:61616";
   private WorkflowConfiguration config;
 
+  @Disabled // TODO: Enable on your local machine
   @Test
   public void performLoadTest() throws Exception {
     init();

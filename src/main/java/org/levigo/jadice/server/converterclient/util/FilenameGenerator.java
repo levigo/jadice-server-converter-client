@@ -3,6 +3,7 @@ package org.levigo.jadice.server.converterclient.util;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 
 import org.apache.log4j.Logger;
@@ -15,13 +16,13 @@ import com.levigo.jadice.server.Job;
 import com.levigo.jadice.server.shared.types.Stream;
 
 public class FilenameGenerator {
-  
-  private static final Logger LOGGER = Logger.getLogger(FilenameGenerator.class);
-  
-  private static Analyzer analyzer; 
 
-  public final static String DEFAULT_PATTERN = PatternKeys.ORIGINAL_FILENAME + "-" + PatternKeys.NUMMER + "."
-      + PatternKeys.EXTENSION;
+  private static final Logger LOGGER = Logger.getLogger(FilenameGenerator.class);
+
+  private static Analyzer analyzer;
+
+  public final static String DEFAULT_PATTERN = PatternKeys.ORIGINAL_FILENAME + "-" + PatternKeys.NUMMER + "-"
+      + PatternKeys.UUID + "." + PatternKeys.EXTENSION;
 
   public static interface PatternKeys {
     final String JOB_ID = "%j";
@@ -29,13 +30,14 @@ public class FilenameGenerator {
     final String EXTENSION = "%e";
     final String NUMMER = "%n";
     final String TIMESTAMP = "%t";
+    final String UUID = "%u";
     final String PERCENT_SIGN = "%%";
   }
 
   public static String generateFilename(Job job, Stream stream, File originalFile, int nmbr) {
     String pttrn = Preferences.resultFilenamePatternProperty().getValue();
     // Caveat! Matcher.quoteReplacement(...) in order to escape $ and \ signs
-    
+
     if (mustDetermineExtension()) {
       final String extension = determineExtension(stream);
       pttrn = pttrn.replaceAll(PatternKeys.EXTENSION, Matcher.quoteReplacement(extension));
@@ -43,20 +45,22 @@ public class FilenameGenerator {
     return pttrn.replaceAll(PatternKeys.JOB_ID, Matcher.quoteReplacement(job.getUUID()))//
         .replaceAll(PatternKeys.ORIGINAL_FILENAME, Matcher.quoteReplacement(originalFile.getName()))//
         .replaceAll(PatternKeys.NUMMER, Integer.toString(nmbr))//
+        .replaceAll(PatternKeys.UUID, UUID.randomUUID().toString().replace("-", ""))//
         .replaceAll(PatternKeys.TIMESTAMP, Long.toString(System.currentTimeMillis()))//
         .replaceAll(PatternKeys.PERCENT_SIGN, "%")
         // Paranoia checks to prevent from storing in other folders:
         .replaceAll("/", "")//
         .replace("\\", "");
   }
-  
+
   protected static boolean mustDetermineExtension() {
     return Preferences.resultFilenamePatternProperty().getValue().contains(PatternKeys.EXTENSION);
   }
 
   private static String determineExtension(Stream stream) {
     try {
-      final UncloseableSeekableInputStreamWrapper usis = new UncloseableSeekableInputStreamWrapper(stream.getInputStream());
+      final UncloseableSeekableInputStreamWrapper usis = new UncloseableSeekableInputStreamWrapper(
+          stream.getInputStream());
       final Map<String, Object> alResults;
       try {
         usis.seek(0);
@@ -103,6 +107,8 @@ public class FilenameGenerator {
     s += FilenameGenerator.PatternKeys.TIMESTAMP + ": timestamp";
     s += sep;
     s += FilenameGenerator.PatternKeys.PERCENT_SIGN + ": %";
+    s += sep;
+    s += FilenameGenerator.PatternKeys.UUID + ": generated UUID";
     return s;
   }
 }

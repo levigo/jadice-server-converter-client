@@ -21,8 +21,8 @@ public class FilenameGenerator {
 
   private static Analyzer analyzer;
 
-  public final static String DEFAULT_PATTERN = PatternKeys.ORIGINAL_FILENAME + "-" + PatternKeys.UUID + "."
-      + PatternKeys.EXTENSION;
+  public final static String DEFAULT_PATTERN = PatternKeys.ORIGINAL_FILENAME + "-" + PatternKeys.NUMMER + "-"
+      + PatternKeys.UUID + "." + PatternKeys.EXTENSION;
 
   public static interface PatternKeys {
     final String JOB_ID = "%j";

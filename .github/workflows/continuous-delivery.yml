@@ -15,9 +15,10 @@ jobs:
 
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+
     - name: Set up JDK 11
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
         java-version: '11'
@@ -26,7 +27,7 @@ jobs:
 
     - name: Bump version and create tag
       id: semanticversion
-      uses: hennejg/github-tag-action@v4.3.1
+      uses: mathieudutour/github-tag-action@v6.2
       with:
         release_branches: main
         github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -65,25 +66,11 @@ jobs:
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
-    
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: create release and upload release asset
+      uses: softprops/action-gh-release@v2
       with:
-        tag_name: ${{ env.NEW_VERSION }}
-        release_name: ${{ env.NEW_VERSION }}
-        draft: false
-        prerelease: false
-        
-    - name: Upload Release Asset
-      id: upload-release-asset 
-      uses: actions/upload-release-asset@v1
-      env:
-       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing its ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        asset_path: ./target/jadice-server-converter-client-${{ env.NEW_VERSION }}.exe
-        asset_name: jadice-server-converter-client-${{ env.NEW_VERSION }}.exe
-        asset_content_type: application/octet-stream 
+        name: ${{ steps.semanticversion.outputs.new_version }}
+        tag_name: ${{ steps.semanticversion.outputs.new_tag }}
+        files: |
+          ./target/jadice-server-converter-client-${{ env.NEW_VERSION }}.exe

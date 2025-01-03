@@ -18,25 +18,25 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>11</java.version>
-    <jadice.server.version>5.14.3.0</jadice.server.version>
-    <slf4j.version>2.0.3</slf4j.version>
-    <jfreechart.version>1.5.3</jfreechart.version>
+    <jadice.server.version>5.15.0.0</jadice.server.version>
+    <slf4j.version>2.0.13</slf4j.version>
+    <jfreechart.version>1.5.5</jfreechart.version>
     <prefuse.version>beta-20130106</prefuse.version>
-    <controlsfx.version>11.1.1</controlsfx.version>
+    <controlsfx.version>11.2.1</controlsfx.version>
     <enzo.version>0.3.6_1-levigo</enzo.version>
     <fontawesomefx.version>11.0</fontawesomefx.version>
     <jackson.version>2.10.5</jackson.version>
     <junit.version>4.13.2</junit.version>
-    <ehcache.version>2.10.10.4.43</ehcache.version>
-    <commons-cli.version>1.4</commons-cli.version>
+    <ehcache.version>2.10.9.2</ehcache.version>
+    <commons-cli.version>1.9.0</commons-cli.version>
 
     <!-- Maven Plugins -->
-    <gmavenplus-plugin.version>1.13.1</gmavenplus-plugin.version>
-    <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-    <maven-release-plugin.version>3.0.0-M6</maven-release-plugin.version>
-    <maven-shade-plugin.version>3.3.0</maven-shade-plugin.version>
-    <launch4j-maven-plugin.version>2.1.2</launch4j-maven-plugin.version>
-    <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+    <gmavenplus-plugin.version>4.0.1</gmavenplus-plugin.version>
+    <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+    <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
+    <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
+    <launch4j-maven-plugin.version>2.5.2</launch4j-maven-plugin.version>
+    <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -75,7 +75,17 @@
       <artifactId>libreoffice-client</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.groovy</groupId>
+      <groupId>com.levigo.jadice.server</groupId>
+      <artifactId>addon-callas-pdftoolbox-client</artifactId>
+      <version>${jadice.server.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.levigo.jadice.documentplatform.core</groupId>
+      <artifactId>jadice-format-xrechnung</artifactId>
+      <version>3.165.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.groovy</groupId>
       <artifactId>groovy-all</artifactId>
       <type>pom</type>
     </dependency>

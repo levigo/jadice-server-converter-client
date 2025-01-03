@@ -41,4 +41,6 @@ class User {
   public String site_admin;
   
   public String node_id;
+
+  public String user_view_type;
 }

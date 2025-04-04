@@ -1,9 +1,9 @@
 package org.levigo.jadice.server.converterclient.gui.serverlog;
 
-import javax.jms.JMSException;
-import javax.jms.TopicConnection;
-import javax.jms.TopicSession;
-import javax.jms.TopicSubscriber;
+import jakarta.jms.JMSException;
+import jakarta.jms.TopicConnection;
+import jakarta.jms.TopicSession;
+import jakarta.jms.TopicSubscriber;
 
 public class Subscription {
 

@@ -17,8 +17,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <java.version>11</java.version>
-    <jadice.server.version>5.15.3.1</jadice.server.version>
+    <java.version>17</java.version>
+    <jadice.server.version>5.16.0.0-SNAPSHOT</jadice.server.version>
     <slf4j.version>2.0.17</slf4j.version>
     <jfreechart.version>1.5.5</jfreechart.version>
     <prefuse.version>beta-20130106</prefuse.version>
@@ -293,7 +293,7 @@
                 <timeoutErr>true</timeoutErr>
               </splash>
               <jre>
-                <minVersion>11</minVersion>
+                <minVersion>17</minVersion>
                 <opts>
                   <opt>--add-opens=javafx.graphics/javafx.css=ALL-UNNAMED</opt>
                   <opt>--add-opens=java.base/java.util=ALL-UNNAMED</opt>

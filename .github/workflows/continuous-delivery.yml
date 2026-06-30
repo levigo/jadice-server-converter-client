@@ -48,8 +48,9 @@ jobs:
       run: |
         mvn -s .m2/settings.xml versions:set -DnewVersion=${{ env.NEW_VERSION }}
       env:
-        NEXUS_USERID: ${{secrets.NEXUS_USERID}}
-        NEXUS_PASSWORD: ${{secrets.NEXUS_PASSWORD}}
+        NEXUS_USERID: ${{ secrets.PUB_NEXUS2_USERNAME }}
+        NEXUS_PASSWORD: ${{ secrets.PUB_NEXUS2_PASSWORD }}
+        NEXUS_URL: ${{ vars.LEVIGO_MAVEN2_ALL_REPOSITORIES }}
 
       ## Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
@@ -60,8 +61,9 @@ jobs:
     - name: Build with Maven
       run: mvn -s .m2/settings.xml -gs .m2/settings.xml -B package --file pom.xml
       env:
-        NEXUS_USERID: ${{secrets.NEXUS_USERID}}
-        NEXUS_PASSWORD: ${{secrets.NEXUS_PASSWORD}}
+        NEXUS_USERID: ${{ secrets.PUB_NEXUS2_USERNAME }}
+        NEXUS_PASSWORD: ${{ secrets.PUB_NEXUS2_PASSWORD }}
+        NEXUS_URL: ${{ vars.LEVIGO_MAVEN2_ALL_REPOSITORIES }}
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2

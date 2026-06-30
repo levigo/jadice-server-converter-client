@@ -26,8 +26,9 @@ jobs:
       - name: Build with Maven
         run: mvn -s .m2/settings.xml -gs .m2/settings.xml -B verify -Dmaven.test.failure.ignore=true
         env:
-          NEXUS_USERID: ${{secrets.NEXUS_USERID}}
-          NEXUS_PASSWORD: ${{secrets.NEXUS_PASSWORD}}
+          NEXUS_USERID: ${{ secrets.PUB_NEXUS2_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.PUB_NEXUS2_PASSWORD }}
+          NEXUS_URL: ${{ vars.LEVIGO_MAVEN2_ALL_REPOSITORIES }}
 
       ## Publish test report
       - name: Publish Test Report

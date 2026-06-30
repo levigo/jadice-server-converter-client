@@ -2,8 +2,10 @@ package org.levigo.jadice.server.converterclient.updatecheck;
 
 import java.net.URL;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 class Asset {
 
   public String id;

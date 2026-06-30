@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: Continuous Integration Java 17
 
 on:
   push:
@@ -8,17 +8,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       ## Configure JDK
       - name: Set up JDK
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0 v5
         with:
-          java-version: '11'
+          java-version: '17'
           java-package: 'jdk+fx'
           cache: 'maven'
           distribution: 'zulu'
@@ -32,7 +32,7 @@ jobs:
       ## Publish test report
       - name: Publish Test Report
         id: test-report
-        uses: scacap/action-surefire-report@v1
+        uses: ScalableCapital/action-surefire-report@1e92f48016e566e4eed2d81560edbfe0f524cfb7 # v2.0.3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           fail_on_test_failures: true

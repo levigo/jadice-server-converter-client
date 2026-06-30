@@ -3,10 +3,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.levigo.jadice.server</groupId>
   <artifactId>jadice-server-converter-client</artifactId>
-  <version>1.14.0-SNAPSHOT</version>
+  <version>1.15.0-SNAPSHOT</version>
 
   <name>jadice server :: Converter Client</name>
-  <url>http://www.levigo.de</url>
+  <url>https://www.levigo.de</url>
 
   <scm>
     <connection>scm:git:ssh://git@github.com/levigo/jadice-server-converter-client.git</connection>
@@ -18,25 +18,25 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>17</java.version>
-    <jadice.server.version>5.16.0.0</jadice.server.version>
-    <slf4j.version>2.0.17</slf4j.version>
-    <jfreechart.version>1.5.5</jfreechart.version>
+    <jadice.server.version>5.16.8.2</jadice.server.version>
+    <slf4j.version>2.0.18</slf4j.version>
+    <jfreechart.version>1.5.6</jfreechart.version>
     <prefuse.version>beta-20130106</prefuse.version>
-    <controlsfx.version>11.2.2</controlsfx.version>
+    <controlsfx.version>11.2.3</controlsfx.version>
     <enzo.version>0.3.6_1-levigo</enzo.version>
     <fontawesomefx.version>11.0</fontawesomefx.version>
     <jackson.version>2.10.5</jackson.version>
     <junit.version>4.13.2</junit.version>
     <ehcache.version>2.10.9.2</ehcache.version>
-    <commons-cli.version>1.9.0</commons-cli.version>
+    <commons-cli.version>1.11.0</commons-cli.version>
 
     <!-- Maven Plugins -->
-    <gmavenplus-plugin.version>4.1.1</gmavenplus-plugin.version>
-    <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
-    <maven-release-plugin.version>3.1.1</maven-release-plugin.version>
-    <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
-    <launch4j-maven-plugin.version>2.5.3</launch4j-maven-plugin.version>
-    <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
+    <gmavenplus-plugin.version>5.0.0</gmavenplus-plugin.version>
+    <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+    <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
+    <maven-shade-plugin.version>3.6.2</maven-shade-plugin.version>
+    <launch4j-maven-plugin.version>2.7.0</launch4j-maven-plugin.version>
+    <maven-surefire-plugin.version>3.5.6</maven-surefire-plugin.version>
   </properties>
 
   <dependencyManagement>

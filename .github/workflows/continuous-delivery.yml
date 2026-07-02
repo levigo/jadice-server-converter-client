@@ -54,7 +54,7 @@ jobs:
 
       ## Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@54f647b7e1bb85c95cddabcd46b0c578ec92bc1a # v4.36.3
       with:
          languages: java
     
@@ -66,7 +66,7 @@ jobs:
         NEXUS_URL: ${{ vars.LEVIGO_MAVEN2_ALL_REPOSITORIES }}
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@54f647b7e1bb85c95cddabcd46b0c578ec92bc1a # v4.36.3
 
     - name: create release and upload release asset
       uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
@@ -75,3 +75,5 @@ jobs:
         tag_name: ${{ steps.semanticversion.outputs.new_tag }}
         files: |
           ./target/jadice-server-converter-client-${{ env.NEW_VERSION }}.exe
+          ./target/jadice-server-converter-client-${{ env.NEW_VERSION }}.jar
+          ./target/jadice-server-converter-client-${{ env.NEW_VERSION }}-shaded.jar

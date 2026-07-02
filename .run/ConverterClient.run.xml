@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ConverterClient" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="ALTERNATIVE_JRE_PATH" value="zulu-17-fx" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="MAIN_CLASS_NAME" value="ConverterClient" />
+    <module name="jadice-server-converter-client" />
+    <option name="PROGRAM_PARAMETERS" value="-gui" />
+    <option name="VM_PARAMETERS" value="--add-opens=javafx.graphics/javafx.css=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

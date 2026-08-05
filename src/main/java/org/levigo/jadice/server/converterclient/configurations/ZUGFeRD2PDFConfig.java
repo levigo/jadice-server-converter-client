@@ -19,7 +19,7 @@ public class ZUGFeRD2PDFConfig implements WorkflowConfiguration {
             .appendSuccessor(streamAnalysisNode) //
             .appendSuccessor(disassemblingNode) //
             .appendSuccessor(dynamicPipelineNode) //
-            .appendSuccessor(new PDFMergeNode()) ///
+            .appendSuccessor(new PDFMergeNode()) //
             .appendSuccessor(new StreamOutputNode()) //
         );
     }

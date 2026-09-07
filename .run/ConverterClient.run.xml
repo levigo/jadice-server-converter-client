@@ -5,7 +5,7 @@
     <option name="MAIN_CLASS_NAME" value="ConverterClient" />
     <module name="jadice-server-converter-client" />
     <option name="PROGRAM_PARAMETERS" value="-gui" />
-    <option name="VM_PARAMETERS" value="--add-opens=javafx.graphics/javafx.css=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED" />
+    <option name="VM_PARAMETERS" value="--add-opens=javafx.graphics/javafx.css=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.desktop/java.awt=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

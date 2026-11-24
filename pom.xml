@@ -18,11 +18,11 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <java.version>17</java.version>
-    <jadice.server.version>5.17.3.0</jadice.server.version>
-    <slf4j.version>2.0.19</slf4j.version>
+    <jadice.server.version>5.17.9.0</jadice.server.version>
+    <slf4j.version>2.0.20</slf4j.version>
     <jfreechart.version>1.5.6</jfreechart.version>
     <prefuse.version>beta-20130106</prefuse.version>
-    <controlsfx.version>11.2.5</controlsfx.version>
+    <controlsfx.version>11.2.7</controlsfx.version>
     <enzo.version>0.3.6_1-levigo</enzo.version>
     <fontawesomefx.version>11.0</fontawesomefx.version>
     <jackson.version>2.10.5</jackson.version>
@@ -36,7 +36,7 @@
     <maven-release-plugin.version>3.3.1</maven-release-plugin.version>
     <maven-shade-plugin.version>3.6.2</maven-shade-plugin.version>
     <launch4j-maven-plugin.version>2.7.0</launch4j-maven-plugin.version>
-    <maven-surefire-plugin.version>3.6.0</maven-surefire-plugin.version>
+    <maven-surefire-plugin.version>3.6.1</maven-surefire-plugin.version>
   </properties>
 
   <dependencyManagement>
@@ -73,6 +73,19 @@
     <dependency>
       <groupId>com.levigo.jadice.server</groupId>
       <artifactId>libreoffice-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.levigo.jadice.server</groupId>
+      <artifactId>addon-callas-pdftoolbox-client</artifactId>
+      <version>${jadice.server.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.levigo.jadice.documentplatform.core</groupId>
+      <artifactId>jadice-reshape-pdf</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.levigo.jadice.documentplatform.core</groupId>
+      <artifactId>jadice-reshape-tiff</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.groovy</groupId>
